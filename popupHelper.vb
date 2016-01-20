@@ -1,11 +1,11 @@
 ﻿Public Class popupHelper
 
-    Public Property selectedCode As String
-    Public Property selectedCodeName As String
+    Public selectedCode As String
+    Public selectedCodeName As String
     Private skipSelectionChanged As Boolean = True
-    Public Property currentMode As String
-    Public Property TransType As String
-    Public Property dbkCode As String
+    Public currentMode As String
+    Public TransType As String
+    Public dbkCode As String
 
     Private _mode As Integer
 

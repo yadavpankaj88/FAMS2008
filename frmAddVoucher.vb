@@ -262,8 +262,7 @@
                 ComboBoxDaybookSelect.ValueMember = "DM_Dbk_Cd"
                 ' ComboBoxDaybookSelect.SelectedIndex = 0
             Else
-                MessageBox.Show("There are no daybooks configured for this transaction type , please configure the daybooks", "Configuration Help",
-                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("There are no daybooks configured for this transaction type , please configure the daybooks", "Configuration Help", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 
                 'ButtonNext.Enabled = False
             End If

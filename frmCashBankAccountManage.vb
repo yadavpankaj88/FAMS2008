@@ -337,8 +337,7 @@
         If currentRec("DM_Acc_Cd") IsNot DBNull.Value And currentRec("DM_Dbk_Cd") IsNot DBNull.Value Then
             Dim transCount As Integer = helper.GetTransactionCount(currentRec("DM_Acc_Cd"), currentRec("DM_Dbk_Cd"))
             If transCount = 0 Then
-                If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) =
-                    DialogResult.Yes Then
+                If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     daybookHelper.Delete(TextBoxDayBookCode.Text)
                     TextBoxDayBookCode.Text = "true"
                     TextBoxDaybookName.Text = ""

@@ -141,8 +141,7 @@ Public Class LedgerAccountHelper
     Function IsAccountLinked(ByVal pAccountCode As String, ByVal pDaybookcode As String) As Boolean
         Dim count As Integer
         Dim query As String = String.Format("Select AM_Acc_Cd,AM_Calls from " + InstitutionMasterData.XInstType + "_Accounts where AM_Inst_Cd='{0}' and AM_Inst_Typ='{1}' " + _
-                                            "and AM_Fin_Yr='{2}' and AM_Acc_Cd='{3}'", InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType,
-                                             InstitutionMasterData.XFinYr, pAccountCode.Trim)
+                                            "and AM_Fin_Yr='{2}' and AM_Acc_Cd='{3}'", InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, InstitutionMasterData.XFinYr, pAccountCode.Trim)
         Dim dtAccount As DataTable
         Try
             dtAccount = dataHelper.ExecuteQuery(query, CommandType.Text, Nothing)
@@ -163,7 +162,7 @@ Public Class LedgerAccountHelper
         End Try
     End Function
 
-    Function GetBalance(Optional ByVal pDate? As DateTime = Nothing, Optional ByVal pDaybookcode As String = "") As Double
+    Function GetBalance(Optional ByVal pDate As DateTime = Nothing, Optional ByVal pDaybookcode As String = "") As Double
         Dim query As String
         Dim dtAcc As DataTable
         Dim dtBalance As DataTable
@@ -182,8 +181,8 @@ Public Class LedgerAccountHelper
                 query = "CalculateBalance"
                 parameters.Add("@lgrCode", dtAcc.Rows(0)("DM_Acc_Cd").ToString())
 
-                If pDate.HasValue Then
-                    parameters.Add("@vchDate", pDate.Value.Date)
+                If pDate <> DateTime.MinValue Then
+                    parameters.Add("@vchDate", pDate.Date)
                 Else
                     parameters.Add("@vchDate", InstitutionMasterData.XDate.Date.ToString("yyyy-MM-dd"))
                 End If

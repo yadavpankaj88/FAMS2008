@@ -87,8 +87,7 @@
 
             If transCount = 1 Then
 
-                If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) =
-                    DialogResult.Yes Then
+                If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     helper.DeleteAccount(currentRec.Row("Usr_Id").ToString)
                     txtUserID.Text = ""
                     txtusername.Text = ""
@@ -110,8 +109,7 @@
 
             MessageBox.Show("It's empty record")
         Else
-            If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) =
-                   DialogResult.Yes Then
+            If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 helper.DeleteAccount(currentRec.Row("Usr_Id").ToString)
                 Return True
             Else

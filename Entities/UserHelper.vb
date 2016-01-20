@@ -6,12 +6,12 @@ Public Class UserHelper
         Try
             Dim dataHelper As New DataHelper
             Dim saveQuery As String
-            saveQuery = "If(Exists(select 'x' from User_Master where Usr_Id=@UserId)) " &
-                        " Begin " &
-                        "Update User_Master Set Usr_Inst_Typ=@InstitutionType,Usr_Nm=@UserName,Usr_Role=@Role,Usr_Pwd=@password,Usr_Mdl_Cd=@ModuleCode, Usr_Lckd=@UserLocked,Usr_Lst_Wrk_Stn=@LastWorkStation,Usr_Lst_Login=GetDate() where Usr_Id=@UserId" &
-                        " End " &
-                        " Else " &
-                        "Insert into User_Master(Usr_Id,Usr_Mdl_Cd,Usr_Inst_Typ,Usr_Nm,Usr_Role,Usr_Pwd,Usr_Lst_Login,Usr_Lckd) " &
+            saveQuery = "If(Exists(select 'x' from User_Master where Usr_Id=@UserId)) " & _
+                        " Begin " & _
+                        "Update User_Master Set Usr_Inst_Typ=@InstitutionType,Usr_Nm=@UserName,Usr_Role=@Role,Usr_Pwd=@password,Usr_Mdl_Cd=@ModuleCode, Usr_Lckd=@UserLocked,Usr_Lst_Wrk_Stn=@LastWorkStation,Usr_Lst_Login=GetDate() where Usr_Id=@UserId" & _
+                        " End " & _
+                        " Else " & _
+                        "Insert into User_Master(Usr_Id,Usr_Mdl_Cd,Usr_Inst_Typ,Usr_Nm,Usr_Role,Usr_Pwd,Usr_Lst_Login,Usr_Lckd) " & _
                         "values(@UserId,@ModuleCode,@InstitutionType,@UserName,@Role,@password,GetDate(),@UserLocked)"
 
             Dim parameters As New Dictionary(Of String, Object)()

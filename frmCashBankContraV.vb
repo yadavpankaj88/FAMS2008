@@ -55,8 +55,7 @@
 
 
                 Else
-                    MessageBox.Show("There are no daybooks configured for this transaction type , please configure the daybooks", "Configuration Help",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    MessageBox.Show("There are no daybooks configured for this transaction type , please configure the daybooks", "Configuration Help", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 
                     ComboBoxGoesOut.Enabled = False
                 End If
@@ -458,8 +457,7 @@
             End If
 
             If calculateDiff Then
-                If (Not String.IsNullOrEmpty(ComboBoxGoesOut.SelectedValue) And Not String.IsNullOrEmpty(txtLinkVoucherNumber.Text) And
-                    Not String.IsNullOrEmpty(ComboBoxGoesInto.SelectedValue)) Then
+                If (Not String.IsNullOrEmpty(ComboBoxGoesOut.SelectedValue) And Not String.IsNullOrEmpty(txtLinkVoucherNumber.Text) And Not String.IsNullOrEmpty(ComboBoxGoesInto.SelectedValue)) Then
 
                     Dim dt As DataTable = helper.GetNextVoucherNumber(datepickerVoucherConfirm.Value, ComboBoxGoesOut.SelectedValue)
                     If Not dt Is Nothing Then
@@ -474,8 +472,7 @@
 
                     lblVoucherConfNo.Visible = True
                     If (lblVoucherConfNo.Text.Trim() <> "-") Then
-                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, Convert.ToDateTime(datepickerVoucherConfirm.Value.ToString()),
-                                         lblVoucherConfNo.Text.Trim())
+                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, Convert.ToDateTime(datepickerVoucherConfirm.Value.ToString()), lblVoucherConfNo.Text.Trim())
                     End If
 
                     Dim lgdr As Ledger = New Ledger()

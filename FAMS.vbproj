@@ -341,12 +341,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmFillDaybookCode.resx">
       <DependentUpon>frmFillDaybookCode.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmFillUserName.resx">
       <DependentUpon>frmFillUserName.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmReports.resx">
       <DependentUpon>frmReports.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCashRecV.resx">
       <DependentUpon>frmCashRecV.vb</DependentUpon>
@@ -362,6 +365,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmFillAccCode.resx">
       <DependentUpon>frmFillAccCode.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmInstitutionSelection.resx">
       <DependentUpon>frmInstitutionSelection.vb</DependentUpon>
@@ -385,9 +389,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSelectDaybook.resx">
       <DependentUpon>frmSelectDaybook.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUserMaster.resx">
       <DependentUpon>frmUserMaster.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -417,6 +423,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserLogin.resx">
       <DependentUpon>UserLogin.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

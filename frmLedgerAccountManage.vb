@@ -220,8 +220,7 @@
 
             If transCount = 0 Then
 
-                If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) =
-                    DialogResult.Yes Then
+                If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     ledgerAcc.DeleteAccount(currentRec.Row("AM_Acc_Cd").ToString)
                     txtAccCode.Text = "true"
                     txtAccName.Text = ""
@@ -246,8 +245,7 @@
 
             MessageBox.Show("It's empty record")
         Else
-            If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) =
-                   DialogResult.Yes Then
+            If MessageBox.Show("You are about to delete an Account , are you sure you want to delete?", "Deleting Account", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 ledgerAcc.DeleteAccount(currentRec.Row("AM_Acc_Cd").ToString)
                 Return True
             Else

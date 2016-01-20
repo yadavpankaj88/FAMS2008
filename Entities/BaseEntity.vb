@@ -1,6 +1,6 @@
 ﻿Public Class BaseEntity
-    Public Property CreatedBy As String
-    Public Property CreatedOn As DateTime
-    Public Property UpdatedBy As String
-    Public Property UpdatedOn As DateTime
+    Public CreatedBy As String
+    Public CreatedOn As DateTime
+    Public UpdatedBy As String
+    Public UpdatedOn As DateTime
 End Class

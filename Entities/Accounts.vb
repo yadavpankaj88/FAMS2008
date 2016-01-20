@@ -1,18 +1,18 @@
 ﻿Public Class Accounts
     Inherits BaseEntity
 
-    Public Property FinancialYear As String
-    Public Property AccInstiCode As String
-    Public Property AccInstiType As String
+    Public FinancialYear As String
+    Public AccInstiCode As String
+    Public AccInstiType As String
     Public AccCode As String
-    Public Property AccName As String
-    Public Property AccOpenBalance As Double
-    Public Property CreditDebit As String
-    Public Property AccAbsOpenBalance As Double
-    Public Property AccLLYbudget As Double
-    Public Property AccLLYactual As Double
-    Public Property AccLYbudget As Double
-    Public Property AccLYactual As Double
-    Public Property AccCYbudget As Double
-   
+    Public AccName As String
+    Public AccOpenBalance As Double
+    Public CreditDebit As String
+    Public AccAbsOpenBalance As Double
+    Public AccLLYbudget As Double
+    Public AccLLYactual As Double
+    Public AccLYbudget As Double
+    Public AccLYactual As Double
+    Public AccCYbudget As Double
+
 End Class
