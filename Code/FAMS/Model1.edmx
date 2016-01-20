@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FAMModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="FAMModelStoreContainer">
+          <EntitySet Name="CG_Voucher_Detail" EntityType="FAMModel.Store.CG_Voucher_Detail" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="CG_Voucher_Detail">
+          <Key>
+            <PropertyRef Name="VD_Fin_Yr" />
+            <PropertyRef Name="VD_Inst_Cd" />
+            <PropertyRef Name="VD_Inst_Typ" />
+            <PropertyRef Name="VD_Brn_Cd" />
+          </Key>
+          <Property Name="VD_Fin_Yr" Type="char" Nullable="false" MaxLength="4" />
+          <Property Name="VD_Inst_Cd" Type="char" Nullable="false" MaxLength="4" />
+          <Property Name="VD_Inst_Typ" Type="char" Nullable="false" MaxLength="2" />
+          <Property Name="VD_Brn_Cd" Type="char" Nullable="false" MaxLength="3" />
+          <Property Name="VD_Lnk_No" Type="char" MaxLength="12" />
+          <Property Name="VD_Dbk_Cd" Type="char" MaxLength="4" />
+          <Property Name="VD_Trn_Typ" Type="char" MaxLength="2" />
+          <Property Name="VD_Vch_No" Type="char" MaxLength="6" />
+          <Property Name="VD_Vch_Ref_No" Type="char" MaxLength="6" />
+          <Property Name="VD_Seq_No" Type="char" MaxLength="3" />
+          <Property Name="VD_Ref_No" Type="char" MaxLength="40" />
+          <Property Name="VD_Ref_Dt" Type="datetime" />
+          <Property Name="VD_Narr" Type="char" MaxLength="100" />
+          <Property Name="VD_Lgr_Cd" Type="char" MaxLength="2" />
+          <Property Name="VD_Acc_Cd" Type="char" MaxLength="6" />
+          <Property Name="VD_Amt" Type="money" />
+          <Property Name="VD_Cr_Dr" Type="char" MaxLength="2" />
+          <Property Name="VD_ABS_Amt" Type="money" />
+          <Property Name="VD_Ent_By" Type="char" MaxLength="5" />
+          <Property Name="VD_Ent_Dt" Type="datetime" />
+          <Property Name="VD_Upd_By" Type="char" MaxLength="5" />
+          <Property Name="VD_Upd_Dt" Type="datetime" />
+          <Property Name="VD_Conf_By" Type="char" MaxLength="5" />
+          <Property Name="VD_Conf_Dt" Type="datetime" />
+        </EntityType>
+        <Function Name="getdata" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Insert_OR_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="voucherDT" Type="datetime" Mode="In" />
+          <Parameter Name="PayeeName" Type="char" Mode="In" />
+          <Parameter Name="daybookCode" Type="char" Mode="In" />
+          <Parameter Name="chequeNo" Type="char" Mode="In" />
+          <Parameter Name="chequeDate" Type="datetime" Mode="In" />
+          <Parameter Name="referenceNo" Type="char" Mode="In" />
+          <Parameter Name="referenceDate" Type="datetime" Mode="In" />
+          <Parameter Name="creditDebit" Type="char" Mode="In" />
+          <Parameter Name="amount" Type="money" Mode="In" />
+        </Function>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FAMModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="FAMEntities">
+          <EntitySet Name="CG_Voucher_Detail" EntityType="FAMModel.CG_Voucher_Detail" />
+          <FunctionImport Name="Insert_OR_Update">
+            <Parameter Name="voucherDT" Mode="In" Type="DateTime" />
+            <Parameter Name="PayeeName" Mode="In" Type="String" />
+            <Parameter Name="daybookCode" Mode="In" Type="String" />
+            <Parameter Name="chequeNo" Mode="In" Type="String" />
+            <Parameter Name="chequeDate" Mode="In" Type="DateTime" />
+            <Parameter Name="referenceNo" Mode="In" Type="String" />
+            <Parameter Name="referenceDate" Mode="In" Type="DateTime" />
+            <Parameter Name="creditDebit" Mode="In" Type="String" />
+            <Parameter Name="amount" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="getdata" />
+        </EntityContainer>
+        <EntityType Name="CG_Voucher_Detail">
+          <Key>
+            <PropertyRef Name="VD_Fin_Yr" />
+            <PropertyRef Name="VD_Inst_Cd" />
+            <PropertyRef Name="VD_Inst_Typ" />
+            <PropertyRef Name="VD_Brn_Cd" />
+          </Key>
+          <Property Name="VD_Fin_Yr" Type="String" Nullable="false" MaxLength="4" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Inst_Cd" Type="String" Nullable="false" MaxLength="4" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Inst_Typ" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Brn_Cd" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Lnk_No" Type="String" MaxLength="12" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Dbk_Cd" Type="String" MaxLength="4" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Trn_Typ" Type="String" MaxLength="2" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Vch_No" Type="String" MaxLength="6" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Vch_Ref_No" Type="String" MaxLength="6" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Seq_No" Type="String" MaxLength="3" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Ref_No" Type="String" MaxLength="40" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Ref_Dt" Type="DateTime" />
+          <Property Name="VD_Narr" Type="String" MaxLength="100" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Lgr_Cd" Type="String" MaxLength="2" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Acc_Cd" Type="String" MaxLength="6" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Amt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="VD_Cr_Dr" Type="String" MaxLength="2" Unicode="false" FixedLength="true" />
+          <Property Name="VD_ABS_Amt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="VD_Ent_By" Type="String" MaxLength="5" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Ent_Dt" Type="DateTime" />
+          <Property Name="VD_Upd_By" Type="String" MaxLength="5" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Upd_Dt" Type="DateTime" />
+          <Property Name="VD_Conf_By" Type="String" MaxLength="5" Unicode="false" FixedLength="true" />
+          <Property Name="VD_Conf_Dt" Type="DateTime" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="FAMModelStoreContainer" CdmEntityContainer="FAMEntities">
+          <EntitySetMapping Name="CG_Voucher_Detail">
+            <EntityTypeMapping TypeName="FAMModel.CG_Voucher_Detail">
+              <MappingFragment StoreEntitySet="CG_Voucher_Detail">
+                <ScalarProperty Name="VD_Fin_Yr" ColumnName="VD_Fin_Yr" />
+                <ScalarProperty Name="VD_Inst_Cd" ColumnName="VD_Inst_Cd" />
+                <ScalarProperty Name="VD_Inst_Typ" ColumnName="VD_Inst_Typ" />
+                <ScalarProperty Name="VD_Brn_Cd" ColumnName="VD_Brn_Cd" />
+                <ScalarProperty Name="VD_Lnk_No" ColumnName="VD_Lnk_No" />
+                <ScalarProperty Name="VD_Dbk_Cd" ColumnName="VD_Dbk_Cd" />
+                <ScalarProperty Name="VD_Trn_Typ" ColumnName="VD_Trn_Typ" />
+                <ScalarProperty Name="VD_Vch_No" ColumnName="VD_Vch_No" />
+                <ScalarProperty Name="VD_Vch_Ref_No" ColumnName="VD_Vch_Ref_No" />
+                <ScalarProperty Name="VD_Seq_No" ColumnName="VD_Seq_No" />
+                <ScalarProperty Name="VD_Ref_No" ColumnName="VD_Ref_No" />
+                <ScalarProperty Name="VD_Ref_Dt" ColumnName="VD_Ref_Dt" />
+                <ScalarProperty Name="VD_Narr" ColumnName="VD_Narr" />
+                <ScalarProperty Name="VD_Lgr_Cd" ColumnName="VD_Lgr_Cd" />
+                <ScalarProperty Name="VD_Acc_Cd" ColumnName="VD_Acc_Cd" />
+                <ScalarProperty Name="VD_Amt" ColumnName="VD_Amt" />
+                <ScalarProperty Name="VD_Cr_Dr" ColumnName="VD_Cr_Dr" />
+                <ScalarProperty Name="VD_ABS_Amt" ColumnName="VD_ABS_Amt" />
+                <ScalarProperty Name="VD_Ent_By" ColumnName="VD_Ent_By" />
+                <ScalarProperty Name="VD_Ent_Dt" ColumnName="VD_Ent_Dt" />
+                <ScalarProperty Name="VD_Upd_By" ColumnName="VD_Upd_By" />
+                <ScalarProperty Name="VD_Upd_Dt" ColumnName="VD_Upd_Dt" />
+                <ScalarProperty Name="VD_Conf_By" ColumnName="VD_Conf_By" />
+                <ScalarProperty Name="VD_Conf_Dt" ColumnName="VD_Conf_Dt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Insert_OR_Update" FunctionName="FAMModel.Store.Insert_OR_Update" />
+          <FunctionImportMapping FunctionImportName="getdata" FunctionName="FAMModel.Store.getdata" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1" ZoomLevel="98">
+        <EntityTypeShape EntityType="FAMModel.CG_Voucher_Detail" Width="1.5" PointX="0.75" PointY="0.75" Height="5.634013671875" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

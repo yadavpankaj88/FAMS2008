@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="FAMS">
+</Property><Property Name="Solution File" Value="D:\FAMS\FAMS.sln">
+</Property><Property Name="Date" Value="Saturday, December 05, 2015">
+</Property><Property Name="Time" Value="21:24:13 PM">
+</Property></Properties><Event ErrorLevel="0" Project="FAMS" Source="FAMS.vbproj" Description="Project file successfully backed up as D:\FAMS\Backup\FAMS.vbproj">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="FAMS.vbproj.user" Description="Project user file successfully backed up as D:\FAMS\Backup\FAMS.vbproj.user">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="BusinessEntities\CommonFunctions.vb" Description="File successfully backed up as D:\FAMS\Backup\BusinessEntities\CommonFunctions.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="BusinessEntities\ValidateClass.vb" Description="File successfully backed up as D:\FAMS\Backup\BusinessEntities\ValidateClass.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\Accounts.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\Accounts.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\BaseEntity.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\BaseEntity.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\ComboBoxHelper.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\ComboBoxHelper.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\DataHelper.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\DataHelper.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\Daybooks.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\Daybooks.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\DayBooksHelper.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\DayBooksHelper.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\InstitutionMasterData.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\InstitutionMasterData.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\LedgerAccountHelper.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\LedgerAccountHelper.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\VoucherDetails.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\VoucherDetails.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\VoucherHeader.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\VoucherHeader.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Entities\VoucherHelper.vb" Description="File successfully backed up as D:\FAMS\Backup\Entities\VoucherHelper.vb">
+</Event><Event ErrorLevel="2" Project="FAMS" Source="frmAddVoucher.Designer.vb" Description="Failed to backup file as D:\FAMS\Backup\frmAddVoucher.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmAddVoucher.vb" Description="File successfully backed up as D:\FAMS\Backup\frmAddVoucher.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmBankPayV.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmBankPayV.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmBankPayV.vb" Description="File successfully backed up as D:\FAMS\Backup\frmBankPayV.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmBankRecV.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmBankRecV.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmBankRecV.vb" Description="File successfully backed up as D:\FAMS\Backup\frmBankRecV.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmBaseMaster.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmBaseMaster.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmBaseMaster.vb" Description="File successfully backed up as D:\FAMS\Backup\frmBaseMaster.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashBankAccountManage.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashBankAccountManage.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashBankAccountManage.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashBankAccountManage.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashBankContraV.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashBankContraV.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashBankContraV.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashBankContraV.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashPayV.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashPayV.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashPayV.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashPayV.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashRecV.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashRecV.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashRecV.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashRecV.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashBBMaster.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashBBMaster.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashBBMaster.vb" Description="File successfully backed up as D:\FAMS\Backup\frmCashBBMaster.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmEDCBank.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmEDCBank.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmEDCBank.vb" Description="File successfully backed up as D:\FAMS\Backup\frmEDCBank.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmFAMSMain.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmFAMSMain.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmFAMSMain.vb" Description="File successfully backed up as D:\FAMS\Backup\frmFAMSMain.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmInstitutionSelection.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmInstitutionSelection.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmInstitutionSelection.vb" Description="File successfully backed up as D:\FAMS\Backup\frmInstitutionSelection.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmJournalV.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmJournalV.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmJournalV.vb" Description="File successfully backed up as D:\FAMS\Backup\frmJournalV.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmLedgerAccMaster.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmLedgerAccMaster.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmLedgerAccMaster.vb" Description="File successfully backed up as D:\FAMS\Backup\frmLedgerAccMaster.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmLedgerAccountManage.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmLedgerAccountManage.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmLedgerAccountManage.vb" Description="File successfully backed up as D:\FAMS\Backup\frmLedgerAccountManage.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmProcessingDateAcceptance.vb" Description="File successfully backed up as D:\FAMS\Backup\frmProcessingDateAcceptance.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmProcessingDateAcceptance.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\frmProcessingDateAcceptance.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="My Project\AssemblyInfo.vb" Description="File successfully backed up as D:\FAMS\Backup\My Project\AssemblyInfo.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="My Project\Application.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\My Project\Application.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="My Project\Resources.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\My Project\Resources.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="My Project\Settings.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\My Project\Settings.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="popupHelper.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\popupHelper.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="popupHelper.vb" Description="File successfully backed up as D:\FAMS\Backup\popupHelper.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="SelectDaybookVoucher.Designer.vb" Description="File successfully backed up as D:\FAMS\Backup\SelectDaybookVoucher.Designer.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="SelectDaybookVoucher.vb" Description="File successfully backed up as D:\FAMS\Backup\SelectDaybookVoucher.vb">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="app.config" Description="File successfully backed up as D:\FAMS\Backup\app.config">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Images\edit" Description="File successfully backed up as D:\FAMS\Backup\Images\edit">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="My Project\Application.myapp" Description="File successfully backed up as D:\FAMS\Backup\My Project\Application.myapp">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="My Project\Settings.settings" Description="File successfully backed up as D:\FAMS\Backup\My Project\Settings.settings">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Images\view.jpg" Description="File successfully backed up as D:\FAMS\Backup\Images\view.jpg">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Images\save.jpg" Description="File successfully backed up as D:\FAMS\Backup\Images\save.jpg">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Images\clear.jpg" Description="File successfully backed up as D:\FAMS\Backup\Images\clear.jpg">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Images\print.jpg" Description="File successfully backed up as D:\FAMS\Backup\Images\print.jpg">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Images\search.jpg" Description="File successfully backed up as D:\FAMS\Backup\Images\search.jpg">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Images\delete.jpg" Description="File successfully backed up as D:\FAMS\Backup\Images\delete.jpg">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="Images\searchIcon.png" Description="File successfully backed up as D:\FAMS\Backup\Images\searchIcon.png">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmAddVoucher.resx" Description="File successfully backed up as D:\FAMS\Backup\frmAddVoucher.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmBankPayV.resx" Description="File successfully backed up as D:\FAMS\Backup\frmBankPayV.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmBankRecV.resx" Description="File successfully backed up as D:\FAMS\Backup\frmBankRecV.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmBaseMaster.resx" Description="File successfully backed up as D:\FAMS\Backup\frmBaseMaster.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashBankAccountManage.resx" Description="File successfully backed up as D:\FAMS\Backup\frmCashBankAccountManage.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashBankContraV.resx" Description="File successfully backed up as D:\FAMS\Backup\frmCashBankContraV.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashPayV.resx" Description="File successfully backed up as D:\FAMS\Backup\frmCashPayV.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashRecV.resx" Description="File successfully backed up as D:\FAMS\Backup\frmCashRecV.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmCashBBMaster.resx" Description="File successfully backed up as D:\FAMS\Backup\frmCashBBMaster.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmFAMSMain.resx" Description="File successfully backed up as D:\FAMS\Backup\frmFAMSMain.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmInstitutionSelection.resx" Description="File successfully backed up as D:\FAMS\Backup\frmInstitutionSelection.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmJournalV.resx" Description="File successfully backed up as D:\FAMS\Backup\frmJournalV.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmLedgerAccMaster.resx" Description="File successfully backed up as D:\FAMS\Backup\frmLedgerAccMaster.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmLedgerAccountManage.resx" Description="File successfully backed up as D:\FAMS\Backup\frmLedgerAccountManage.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="frmProcessingDateAcceptance.resx" Description="File successfully backed up as D:\FAMS\Backup\frmProcessingDateAcceptance.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="My Project\Resources.resx" Description="File successfully backed up as D:\FAMS\Backup\My Project\Resources.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="popupHelper.resx" Description="File successfully backed up as D:\FAMS\Backup\popupHelper.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="SelectDaybookVoucher.resx" Description="File successfully backed up as D:\FAMS\Backup\SelectDaybookVoucher.resx">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="FAMS.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="FAMS" Source="FAMS.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="FAMS" Source="app.config" Description="File converted successfully. All &lt;supportedRuntime&gt; and &lt;requiredRuntime&gt; tags were removed to enable the project to build and run with Visual Studio 2005.">
+</Event><Event ErrorLevel="3" Project="FAMS" Source="app.config" Description="Converted">
+</Event><Event ErrorLevel="1" Project="FAMS" Source="frmAddVoucher.Designer.vb" Description="File not found.  Unable to determine whether the file requires upgrade.">
+</Event><Event ErrorLevel="3" Project="FAMS" Source="frmAddVoucher.Designer.vb" Description="Not Converted">
+</Event></UpgradeLog>
