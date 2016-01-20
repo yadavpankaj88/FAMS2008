@@ -25,7 +25,7 @@
         Try
             If (Not String.IsNullOrEmpty(_mode) And Not String.IsNullOrEmpty(dtpfromdate.Value.ToString()) And Not String.IsNullOrEmpty(dtptodate.Value.ToString())) Then
                 If ((dtpfromdate.Value >= InstitutionMasterData.XStartFinYr And dtpfromdate.Value <= InstitutionMasterData.XEndFinYr) And (dtptodate.Value >= InstitutionMasterData.XStartFinYr And dtptodate.Value <= InstitutionMasterData.XEndFinYr)) Then
-                    If (Not String.Equals(_mode, "TrialBalance") And String.IsNullOrEmpty(txtAccountFrom.Text) And String.IsNullOrEmpty(txtAccountTo.Text)) Then
+                    If ((String.Equals(_mode, "GeneralLedgerCASHBank") Or String.Equals(_mode, "GeneralLedgerOther")) And String.IsNullOrEmpty(txtAccountFrom.Text) And String.IsNullOrEmpty(txtAccountTo.Text)) Then
                         MessageBox.Show("Please select all neccessary parameters")
                     Else
                         If (LoadReportCount() > 0) Then
@@ -57,9 +57,9 @@
         Dim count As Integer = 0
         Select Case _mode
             Case "CashBook"
-                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue, txtAccountFrom.Text, txtAccountTo.Text)
+                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue)
             Case "BankBook"
-                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue, txtAccountFrom.Text, txtAccountTo.Text)
+                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue)
             Case "GeneralLedgerCASHBank"
                 count = reportCountHelper.GetLedgerReportCount(dtpfromdate.Value, dtptodate.Value, True, txtAccountFrom.Text, txtAccountTo.Text)
             Case "GeneralLedgerOther"
@@ -100,10 +100,10 @@
         Select Case _mode
             Case "CashBook"
                 showDayBookOption = True
-                showAccountCodeOption = True
+                showAccountCodeOption = False
             Case "BankBook"
-                showAccountCodeOption = True
                 showDayBookOption = True
+                showAccountCodeOption = False
             Case "GeneralLedgerCASHBank"
                 showDayBookOption = False
                 showAccountCodeOption = True

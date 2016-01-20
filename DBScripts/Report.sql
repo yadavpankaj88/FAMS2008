@@ -464,9 +464,7 @@ ALTER PROCEDURE [dbo].[GetCashBankReportDetails]
 	@instType varchar(2),
 	@Fromdate as datetime = NULL,-- vh confirm date
 	@ToDate as datetime = NULL,
-	@VH_Dbk_Cd char(4),
-	@AccountFrom as char(6),
-	@AccountTo as char(6)
+	@VH_Dbk_Cd char(4)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -522,7 +520,7 @@ BEGIN
 	ON				VD.VD_Vch_Ref_No = VH.VH_Vch_Ref_No 
 	LEFT OUTER JOIN	'+@instType+'_Accounts AS Acc 
 	ON				VD.VD_Acc_Cd = Acc.AM_Acc_Cd
-	WHERE			VH.VH_Dbk_Cd = '''+@VH_Dbk_Cd+''' AND VH.VH_Vch_No IS NOT NULL and VH.VH_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' and VH.VH_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+''' and Acc.AM_ACC_Cd between '''+@AccountFrom+''' and '''+@AccountTo+'''
+	WHERE			VH.VH_Dbk_Cd = '''+@VH_Dbk_Cd+''' AND VH.VH_Vch_No IS NOT NULL and VH.VH_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' and VH.VH_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+'''
 	ORDER BY		VD.VD_Lnk_No ASC'
 
 	exec(@strQuery)
