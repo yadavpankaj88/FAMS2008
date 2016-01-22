@@ -68,8 +68,6 @@ Public Class frmReports
         view.SetParameterValue("@Fromdate", _fromDate.ToShortDateString())
         view.SetParameterValue("@ToDate", _toDate.ToShortDateString())
         view.SetParameterValue("@VH_Dbk_Cd", _dayBookCode)
-        view.SetParameterValue("@AccountFrom", _accountFrom)
-        view.SetParameterValue("@AccountTo", _accountTo)
         crystalRptVwr.ReportSource = view
         crystalRptVwr.Refresh()
 
