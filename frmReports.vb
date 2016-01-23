@@ -58,12 +58,12 @@ Public Class frmReports
     End Sub
 
     Private Sub ShowCashBookReport()
-        Dim view As New rptCashBook
+        Dim view As New rptCashBook2008
         Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
         Dim pwd As String = System.Configuration.ConfigurationSettings.AppSettings("Password")
         Dim Server As String = System.Configuration.ConfigurationSettings.AppSettings("Server")
         Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database")
-        view.SetDatabaseLogon(user, pwd,Server,Database)
+        view.SetDatabaseLogon(user, pwd, Server, Database)
         view.SetParameterValue("@instType", InstitutionMasterData.XInstType)
         view.SetParameterValue("@Fromdate", _fromDate.ToShortDateString())
         view.SetParameterValue("@ToDate", _toDate.ToShortDateString())
@@ -74,7 +74,7 @@ Public Class frmReports
     End Sub
 
     Private Sub ShowGeneralLedger(ByVal pIsCashBank As Boolean)
-        Dim view As New rptGeneralLedger
+        Dim view As New rptGeneralLedger2008
         Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
         Dim pwd As String = System.Configuration.ConfigurationSettings.AppSettings("Password")
         Dim Server As String = System.Configuration.ConfigurationSettings.AppSettings("Server")
@@ -90,7 +90,7 @@ Public Class frmReports
     End Sub
 
     Private Sub ShowTrialBalance()
-        Dim view As New rptTrialBalance
+        Dim view As New rptTrialBalance2008
         Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
         Dim Server As String = System.Configuration.ConfigurationSettings.AppSettings("Server")
         Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database")
