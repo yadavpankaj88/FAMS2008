@@ -709,3 +709,70 @@ SET @totalBalance= ISNULL(@totalBalance,0)
 	RETURN @totalBalance
 	END
 	go
+	
+print'--------------------------------------------------------------------------'
+go
+ALTER PROCEDURE dbo.GetVoucherHeaderReportDetails
+		@instType as varchar(2),		
+		@VH_Lnk_No as varchar(12),
+		@VH_Dbk_Cd as varchar(4),
+		@VH_Trn_Typ as varchar(2),
+		@VH_Fin_Yr as varchar(4)
+
+AS
+BEGIN
+declare @strQuery as nvarchar(max);
+            set @strQuery = 'Select LTRIM(RTRIM([VH_Ref_No])) AS [VH_Ref_No]
+									,[VH_Lnk_Dt]
+									,[VH_Ref_Dt]
+									,[VH_VCH_Dt]
+									,LTRIM(RTRIM([VH_VCH_No])) AS [VH_VCH_No]
+									,LTRIM(RTRIM([VH_VCH_Ref_No])) AS [VH_VCH_Ref_No]
+									,LTRIM(RTRIM([VH_Chq_No])) AS [VH_Chq_No]
+									,[VH_Chq_Dt],[VH_Amt],[VH_Abs_Amt]
+									,LTRIM(RTRIM([VH_Cr_Dr])) AS [VH_Cr_Dr]
+									,LTRIM(RTRIM([VH_Pty_Nm])) AS [VH_Pty_Nm] 
+								from  ' + @instType + '_Voucher_Header 
+								where [VH_Lnk_No]='''+@VH_Lnk_No+''' 
+								and [VH_Dbk_Cd]='''+@VH_Dbk_Cd+''' 
+								and [VH_Trn_Typ]='''+@VH_Trn_Typ+'''
+								and VH_Fin_Yr='''+@VH_Fin_Yr+''''
+								
+								exec(@strQuery)
+
+END
+	go
+	
+print'--------------------------------------------------------------------------'
+go
+ALTER PROCEDURE dbo.GetVoucherDetailsReportDetails
+		@instType as varchar(2),		
+		@VH_Lnk_No as varchar(12),
+		@VH_Dbk_Cd as varchar(4),
+		@VH_Trn_Typ as varchar(2),
+		@VH_Fin_Yr as varchar(4)
+
+AS
+BEGIN
+
+declare @strQuery as nvarchar(max);
+            set @strQuery = 'Select LTRIM(RTRIM(VD_Acc_Cd)) as [LedgerAccount]
+									,LTRIM(RTRIM(ac.Am_Acc_Nm)) as [AccountName]
+									,VD_ABS_Amt as [Amount]
+									,LTRIM(RTRIM(VD_Cr_Dr)) as [CrDr]
+									,LTRIM(RTRIM(VD_Ref_No)) as [RefNo]
+									,VD_Ref_Dt as [RefDate]
+									,LTRIM(RTRIM(VD_Narr)) as [VoucherDesc]
+									,LTRIM(RTRIM(VD_Seq_No)) as [VD_Seq_No] 
+							from ' + @instType + '_Voucher_Detail vd 
+							Inner Join ' + @instType + '_Accounts ac 
+							on vd.VD_Acc_Cd=ac.Am_Acc_Cd  
+							where [VD_Lnk_No]='''+@VH_Lnk_No+''' 
+							and [VD_Dbk_Cd]='''+@VH_Dbk_Cd+''' 
+							and [VD_Trn_Typ]='''+@VH_Trn_Typ+'''
+							and [VD_Fin_Yr]='''+@VH_Fin_Yr+''' 
+							ORDER BY [VD_Seq_No] Asc'
+								
+			exec(@strQuery)
+END
+go
