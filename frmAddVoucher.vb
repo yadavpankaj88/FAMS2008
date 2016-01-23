@@ -525,7 +525,7 @@
                         If dgvVoucherDetails.Rows.Count > 0 Then
                             For Each dgRows As DataGridViewRow In dgvVoucherDetails.Rows
                                 Try
-                                    If Not dgRows.Cells("DebitCr").Value = String.Empty And Not dgRows.Cells("Amount").EditedFormattedValue = String.Empty And Not dgRows.Cells("LedgerAccount").Value = String.Empty And Not dgRows.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgRows.Cells("RefNo").EditedFormattedValue = String.Empty Then
+                                    If Not dgRows.Cells("DebitCr").Value = String.Empty And Not dgRows.Cells("Amount").EditedFormattedValue = String.Empty And dgRows.Cells("LedgerAccount").Value IsNot DBNull.Value And Not dgRows.Cells("LedgerAccount").Value = String.Empty And Not dgRows.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgRows.Cells("RefNo").EditedFormattedValue = String.Empty Then
                                         i = i + 1
                                         Dim drcr As String = dgRows.Cells("DebitCr").EditedFormattedValue.ToString()
                                         Dim amount As String = dgRows.Cells("Amount").EditedFormattedValue
@@ -621,7 +621,18 @@
 
             For Each dgvrow As DataGridViewRow In dgvVoucherDetails.Rows
 
-                If Not str1 = String.Empty And Not dgvrow.Cells("Amount").EditedFormattedValue = String.Empty Then
+                Dim ledgerAccount As String = dgvrow.Cells("LedgerAccount").EditedFormattedValue
+                Dim InValidLedgerCode As Boolean = False
+                Dim lgrHelper As LedgerAccountHelper = New LedgerAccountHelper()
+                Dim dt As DataTable = lgrHelper.GetAccountDetails(ledgerAccount)
+                If dt IsNot Nothing Then
+                    If dt.Rows.Count < 1 Then
+                        InValidLedgerCode = True
+                        Exit For
+                    End If
+                End If
+
+                If Not InValidLedgerCode And Not str1 = String.Empty And Not dgvrow.Cells("Amount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("LedgerAccount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefNo").EditedFormattedValue = String.Empty Then
                     Dim rowDecimal As Decimal
                     rowDecimal = Decimal.Parse(dgvrow.Cells("Amount").EditedFormattedValue)
                     Dim drcr As String = dgvrow.Cells("DebitCr").EditedFormattedValue.ToString()

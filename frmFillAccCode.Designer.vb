@@ -22,7 +22,7 @@ Partial Class frmFillAccCode
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.dgvFillAccCode = New System.Windows.Forms.DataGridView()
+        Me.dgvFillAccCode = New System.Windows.Forms.DataGridView
         CType(Me.dgvFillAccCode, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '

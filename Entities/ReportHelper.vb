@@ -11,8 +11,8 @@
         Try
             query = "GetGeneralLedgerReportDetails"
             parameters.Add("@instType", InstitutionMasterData.XInstType)
-            parameters.Add("@Fromdate", Fromdate)
-            parameters.Add("@ToDate", ToDate)
+            parameters.Add("@Fromdate", Fromdate.ToString("MM-dd-yyyy"))
+            parameters.Add("@ToDate", ToDate.ToString("MM-dd-yyyy"))
             parameters.Add("@IsCashBank", pIsCashBank)
             parameters.Add("@AccountFrom", pAccountFrom)
             parameters.Add("@AccountTo", pAccountTo)
@@ -35,8 +35,8 @@
         Try
             query = "GetCashBankReportDetails"
             parameters.Add("@instType", InstitutionMasterData.XInstType)
-            parameters.Add("@Fromdate", Fromdate)
-            parameters.Add("@ToDate", ToDate)
+            parameters.Add("@Fromdate", Fromdate.ToString("MM-dd-yyyy"))
+            parameters.Add("@ToDate", ToDate.ToString("MM-dd-yyyy"))
             parameters.Add("@VH_Dbk_Cd", pDaybookcode)
             dtCount = dataHelper.ExecuteQuery(query, CommandType.StoredProcedure, parameters)
             If dtCount Is Nothing Then
@@ -57,8 +57,8 @@
         Try
             query = "GetTrialBalanceReportDetails"
             parameters.Add("@instType", InstitutionMasterData.XInstType)
-            parameters.Add("@Fromdate", Fromdate)
-            parameters.Add("@ToDate", ToDate)
+            parameters.Add("@Fromdate", Fromdate.ToString("MM-dd-yyyy"))
+            parameters.Add("@ToDate", ToDate.ToString("MM-dd-yyyy"))
             dtCount = dataHelper.ExecuteQuery(query, CommandType.StoredProcedure, parameters)
             If dtCount Is Nothing Then
             Else

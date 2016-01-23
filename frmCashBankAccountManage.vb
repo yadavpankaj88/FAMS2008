@@ -73,7 +73,7 @@
     End Sub
 
     Public Sub EnableDisableControls(ByVal enable As Boolean)
-        TextBoxDayBookCode.Enabled = enable
+        TextBoxDayBookCode.Enabled = True
         TextBoxDaybookName.Enabled = enable
         ComboBoxDaybookType.Enabled = enable
         ComboBoxLedgerAccountCode.Enabled = enable
@@ -212,6 +212,7 @@
     End Sub
 
     Public Sub SaveDaybooks()
+        Dim dt As DataTable = daybookHelper.GetDaybooksByCode(TextBoxDayBookCode.Text)
 
         If Not IsAccountLinked() Then
 
@@ -235,10 +236,13 @@
                 daybook.DMInstCd = InstitutionMasterData.XInstCode.Trim()
                 daybook.DMInstTyp = InstitutionMasterData.XInstType.Trim()
                 daybook.DMFinYear = InstitutionMasterData.XFinYr.Trim()
-                daybook.DMBranchCode = "01"
+                daybook.DMBranchCode = "HO"
                 If (_mode = "AddNew" And daybookHelper.GetCount(TextBoxDayBookCode.Text) > 0) Then
-                    MessageBox.Show("Daybook code already exist")
+                    MessageBox.Show("Daybook code already exists")
                 Else
+                    If (_mode = "edit") Then
+                        daybookHelper.UpdateAccCode(dt.Rows(0)("DM_Acc_Cd").ToString())
+                    End If
                     daybookHelper.SaveDaybooks(daybook)
                     MessageBox.Show("Data updated successfully")
                     FillRecords()
@@ -267,42 +271,53 @@
         Dim daybookcode As String
         Dim daybookHelper As New DayBooksHelper
         Dim daybook As New frmFillDaybookCode
+        Dim message As String
         daybook.setvalue(TextBoxDayBookCode.Text)
         daybook.ShowDialog()
         daybookcode = daybook.val
         If (daybookcode = Nothing) Then
             MessageBox.Show("Please select daybook")
             daybook.ShowDialog()
-            daybookcode = daybook.val
-        End If
-        Dim dt As DataTable = daybookHelper.GetDaybooksDetails(daybookcode)
-        TextBoxDayBookCode.Text = daybookcode
-        If dt.Rows(0)("DM_Dbk_Typ") = "B" Then
-            TextBoxBankName.Text = dt.Rows(0)("DM_Bnk_Nm")
-            TextBoxBranchName.Text = dt.Rows(0)("DM_Bnk_Brn")
-            TextBoxAccountNumber.Text = dt.Rows(0)("DM_Bnk_AcNo")
-            TextBoxBankOD.Text = dt.Rows(0)("DM_Bnk_OD")
-        Else
-            TextBoxBankName.Text = ""
-            TextBoxBranchName.Text = ""
-            TextBoxAccountNumber.Text = ""
-            'TextBoxBankOD.Text = ""
-        End If
-        TextBoxDaybookName.Text = dt.Rows(0)("DM_Dbk_Nm").ToString()
-        If (dt.Rows(0)("DM_Dbk_Typ") = "V") Then
-            ComboBoxDaybookType.Text = "Voucher"
+            message = daybook.msg
+            If (message <> "") Then
+                MessageBox.Show(message)
+                ClearData()
+            Else
+                daybookHelper.CheckDaybookCd(TextBoxDayBookCode.Text)
+
+                daybookcode = daybook.val
+            End If
+            Dim dt As DataTable = daybookHelper.GetDaybooksDetails(daybookcode)
+            TextBoxDayBookCode.Text = daybookcode
+            If dt.Rows(0)("DM_Dbk_Typ") = "B" Then
+                TextBoxBankName.Text = dt.Rows(0)("DM_Bnk_Nm")
+                TextBoxBranchName.Text = dt.Rows(0)("DM_Bnk_Brn")
+                TextBoxAccountNumber.Text = dt.Rows(0)("DM_Bnk_AcNo")
+                TextBoxBankOD.Text = dt.Rows(0)("DM_Bnk_OD")
+            Else
+                TextBoxBankName.Text = ""
+                TextBoxBranchName.Text = ""
+                TextBoxAccountNumber.Text = ""
+                'TextBoxBankOD.Text = ""
+            End If
+            TextBoxDaybookName.Text = dt.Rows(0)("DM_Dbk_Nm").ToString()
+            If (dt.Rows(0)("DM_Dbk_Typ") = "V") Then
+                ComboBoxDaybookType.Text = "Voucher"
+            End If
+
+            If (dt.Rows(0)("DM_Dbk_Typ") = "C") Then
+                ComboBoxDaybookType.Text = "Cash"
+            End If
+
+            If (dt.Rows(0)("DM_Dbk_Typ") = "B") Then
+                ComboBoxDaybookType.Text = "Bank"
+            End If
+
+            ' ComboBoxDaybookType.Text = dt.Rows(0)("DM_Dbk_Typ")
+            ComboBoxLedgerAccountCode.Text = dt.Rows(0)("DM_Acc_Cd")
         End If
 
-        If (dt.Rows(0)("DM_Dbk_Typ") = "C") Then
-            ComboBoxDaybookType.Text = "Cash"
-        End If
-
-        If (dt.Rows(0)("DM_Dbk_Typ") = "B") Then
-            ComboBoxDaybookType.Text = "Bank"
-        End If
-
-        ' ComboBoxDaybookType.Text = dt.Rows(0)("DM_Dbk_Typ")
-        ComboBoxLedgerAccountCode.Text = dt.Rows(0)("DM_Acc_Cd")
+        EnableDisableControls(False)
 
         'Dim dr As DataRow = FindDaybookRecord()
         'If Not dr Is Nothing Then

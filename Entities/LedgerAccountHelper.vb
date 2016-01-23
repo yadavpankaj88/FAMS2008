@@ -147,8 +147,13 @@ Public Class LedgerAccountHelper
             dtAccount = dataHelper.ExecuteQuery(query, CommandType.Text, Nothing)
             If dtAccount.Rows.Count > 0 Then
                 Dim selectedAccount, selectedDaybook As String
+
                 selectedAccount = dtAccount.Rows(0)("AM_Acc_Cd").ToString
-                selectedDaybook = dtAccount.Rows(0)("AM_Calls").ToString
+                If dtAccount.Rows(0)("AM_Acc_Cd") IsNot DBNull.Value Then
+                    selectedDaybook = String.Empty
+                Else
+                    selectedDaybook = dtAccount.Rows(0)("AM_Calls").ToString()
+                End If
 
                 If String.IsNullOrEmpty(selectedDaybook) Then
                     Return False

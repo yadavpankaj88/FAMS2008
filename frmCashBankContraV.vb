@@ -556,7 +556,7 @@
                             Me.DatePickerVoucherDate.Enabled = False
                             LabelVoucherDate.Visible = True
                             Me.panelVoucherControls.Enabled = False
-
+                            frmParent.toolstripSave.Enabled = True
                         Case "edit"
                             Me.panelVoucherControls.Visible = True
                             Me.DatePickerVoucherDate.Visible = True
@@ -565,6 +565,7 @@
                             Me.DatePickerVoucherDate.Enabled = True
                             LabelVoucherDate.Visible = True
                             txtLinkVoucherNumber.Enabled = False
+                            frmParent.toolstripSave.Enabled = True
                             If frmParent.lblBankBalance.Visible Then
                                 TextBoxChequeNo.Enabled = True
                                 datepickerChequeDate.Enabled = True

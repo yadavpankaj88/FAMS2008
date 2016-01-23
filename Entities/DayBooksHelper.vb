@@ -126,4 +126,10 @@ Public Class DayBooksHelper
         End Try
     End Function
 
+    Public Sub UpdateAccCode(ByVal AccountCode As String)
+        Dim datahelper As New DataHelper
+        Dim query As String = String.Format(" UPDATE " + InstitutionMasterData.XInstType + "_Accounts SET AM_Calls= 'NULL' WHERE AM_Acc_Cd='" + AccountCode + "' AND AM_Inst_Typ='" + InstitutionMasterData.XInstType + "' AND AM_Inst_Cd='" + InstitutionMasterData.XInstCode + "' AND AM_Fin_Yr='" + InstitutionMasterData.XFinYr + "'")
+        datahelper.ExecuteNonQuery(query, CommandType.Text)
+    End Sub
+
 End Class

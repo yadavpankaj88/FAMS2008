@@ -48,7 +48,7 @@
         If IsDecimal(e, txtLYBudget) Then
             Return
         End If
-       
+
         e.Handled = True
     End Sub
 
@@ -57,7 +57,7 @@
         If IsDecimal(e, txtLYActual) Then
             Return
         End If
-        
+
         e.Handled = True
     End Sub
 
@@ -66,7 +66,7 @@
         If IsDecimal(e, txtLLYBudget) Then
             Return
         End If
-       
+
         e.Handled = True
     End Sub
 
@@ -83,7 +83,7 @@
         If IsDecimal(e, txtCYBudget) Then
             Return
         End If
-      
+
         e.Handled = True
     End Sub
 
@@ -91,7 +91,7 @@
         If IsDecimal(e, txtAccOpenBalance) Then
             Return
         End If
-        
+
         e.Handled = True
     End Sub
 
@@ -159,7 +159,7 @@
                     account.AccLYactual = decimal_Notnull(txtLYActual.Text)
                     account.AccCYbudget = decimal_Notnull(txtCYBudget.Text)
                     If (_mode = "add" And ledgerAcc.GetCount(txtAccCode.Text) > 0) Then
-                        MessageBox.Show("Account code already exist")
+                        MessageBox.Show("Account code already exists")
                     Else
                         ledgerAcc.AddLedgerAccount(account)
                         dtAccounts = ledgerAcc.GetAccountDetails(String.Empty)
@@ -169,9 +169,9 @@
 
                     End If
                 Else
-                EnableDisableControls(True)
-                MessageBox.Show(errorStr)
-            End If
+                    EnableDisableControls(True)
+                    MessageBox.Show(errorStr)
+                End If
             End If
 
         Catch ex As Exception
@@ -449,25 +449,36 @@
             Dim dt As New DataTable
             Dim ldgAccHelper As New LedgerAccountHelper
             Dim fillAccCode As New frmFillAccCode
+            Dim message As String
             Dim itemPosition As Integer = bindingSourceCtrl.Find("AM_Acc_Cd", txtAccCode.Text)
             fillAccCode.setvalue(txtAccCode.Text)
             fillAccCode.ShowDialog()
-            ldgAccHelper.CheckAccCd(txtAccCode.Text)
-            txtAccCode.Text = fillAccCode.val
-            If (fillAccCode.val = Nothing) Then
-                MessageBox.Show("Please select account")
-                fillAccCode.ShowDialog()
+            message = fillAccCode.msg
+            If (message <> "") Then
+                MessageBox.Show(message)
+                ClearData()
+            Else
+                'fillAccCode.ShowDialog()
+
+                ldgAccHelper.CheckAccCd(txtAccCode.Text)
                 txtAccCode.Text = fillAccCode.val
+                If (fillAccCode.val = Nothing) Then
+                    MessageBox.Show("Please select account")
+                    fillAccCode.ShowDialog()
+                    txtAccCode.Text = fillAccCode.val
+                End If
+                dt = ledgerAcc.GetAccountDetails(txtAccCode.Text)
+                txtAccCode.BackColor = Color.White
+                txtAccName.Text = dt.Rows(0)("AM_Acc_Nm").ToString()
+                txtAccOpenBalance.Text = dt.Rows(0)("AM_ABS_Opn_Bal").ToString()
+                txtLLYBudget.Text = dt.Rows(0)("AM_LLY_Budg")
+                txtLLYActual.Text = dt.Rows(0)("AM_LLY_Actu")
+                txtLYActual.Text = dt.Rows(0)("AM_LYr_Actu")
+                txtLYBudget.Text = dt.Rows(0)("AM_LYr_Budg")
+                txtCYBudget.Text = dt.Rows(0)("AM_Cyr_Budg")
+                LblLinkedTo.Text = dt.Rows(0)("AM_Calls")
             End If
-            dt = ledgerAcc.GetAccountDetails(txtAccCode.Text)
-            txtAccCode.BackColor = Color.White
-            txtAccName.Text = dt.Rows(0)("AM_Acc_Nm").ToString()
-            txtAccOpenBalance.Text = dt.Rows(0)("AM_ABS_Opn_Bal").ToString()
-            txtLLYBudget.Text = dt.Rows(0)("AM_LLY_Budg")
-            txtLLYActual.Text = dt.Rows(0)("AM_LLY_Actu")
-            txtLYActual.Text = dt.Rows(0)("AM_LYr_Actu")
-            txtLYBudget.Text = dt.Rows(0)("AM_LYr_Budg")
-            txtCYBudget.Text = dt.Rows(0)("AM_Cyr_Budg")
+            EnableDisableControls(False)
 
         Catch ex As Exception
             MessageBox.Show("Account not found")
