@@ -733,4 +733,10 @@ Public Class frmFAMSMain
     Private Sub mnu_otherAcc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnu_otherAcc.Click
         LoadDayBookSelection("GeneralLedgerOther")
     End Sub
+
+    Private Sub ToolStripButtonPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButtonPrint.Click
+        Dim objfrmVoucherPrintReport As New frmVoucherPrintReport
+        objfrmVoucherPrintReport.SetControls("000000000048", "cash", "cp")
+        ShowNewForm(objfrmVoucherPrintReport, Nothing)
+    End Sub
 End Class

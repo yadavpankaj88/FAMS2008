@@ -22,9 +22,9 @@ Partial Class frmReports
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.crystalRptVwr = New CrystalDecisions.Windows.Forms.CrystalReportViewer()
-        Me.CashReceipt1 = New FAMS.rptCashBook()
-        Me.rptCashBook1 = New FAMS.rptCashBook()
+        Me.crystalRptVwr = New CrystalDecisions.Windows.Forms.CrystalReportViewer
+        Me.CashReceipt1 = New FAMS.rptCashBook
+        Me.rptCashBook1 = New FAMS.rptCashBook
         Me.SuspendLayout()
         '
         'crystalRptVwr
@@ -36,14 +36,14 @@ Partial Class frmReports
         Me.crystalRptVwr.Location = New System.Drawing.Point(0, 0)
         Me.crystalRptVwr.Name = "crystalRptVwr"
         Me.crystalRptVwr.ReportSource = Me.CashReceipt1
-        Me.crystalRptVwr.Size = New System.Drawing.Size(927, 466)
+        Me.crystalRptVwr.Size = New System.Drawing.Size(1244, 475)
         Me.crystalRptVwr.TabIndex = 0
         '
         'frmReports
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(927, 466)
+        Me.ClientSize = New System.Drawing.Size(1244, 475)
         Me.Controls.Add(Me.crystalRptVwr)
         Me.Name = "frmReports"
         Me.Text = "Report"
