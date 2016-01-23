@@ -69,7 +69,8 @@ Public Class frmReports
         view.SetParameterValue("@ToDate", _toDate.ToShortDateString())
         view.SetParameterValue("@VH_Dbk_Cd", _dayBookCode)
         crystalRptVwr.ReportSource = view
-        crystalRptVwr.Refresh()
+        crystalRptVwr.DisplayGroupTree = False
+        crystalRptVwr.ShowRefreshButton = False
 
     End Sub
 
@@ -87,6 +88,8 @@ Public Class frmReports
         view.SetParameterValue("@AccountFrom", _accountFrom)
         view.SetParameterValue("@AccountTo", _accountTo)
         crystalRptVwr.ReportSource = view
+        crystalRptVwr.DisplayGroupTree = False
+        crystalRptVwr.ShowRefreshButton = False
     End Sub
 
     Private Sub ShowTrialBalance()
@@ -100,6 +103,8 @@ Public Class frmReports
         view.SetParameterValue("@Fromdate", _fromDate.ToShortDateString())
         view.SetParameterValue("@ToDate", _toDate.ToShortDateString())
         crystalRptVwr.ReportSource = view
+        crystalRptVwr.DisplayGroupTree = False
+        crystalRptVwr.ShowRefreshButton = False
     End Sub
 
 End Class

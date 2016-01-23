@@ -39,6 +39,8 @@
         view.SetParameterValue("@VH_Trn_Typ", _VH_Trn_Typ)
         view.SetParameterValue("@VH_Fin_Yr", InstitutionMasterData.XFinYr)
         crystalviewerVoucher.ReportSource = view
+        crystalviewerVoucher.DisplayGroupTree = False
+        crystalviewerVoucher.ShowRefreshButton = False
     End Sub
 
 End Class
