@@ -506,7 +506,6 @@
     <Content Include="DBScripts\FAMS.sql" />
     <Content Include="DBScripts\Report.sql" />
     <Content Include="DBScripts\Tables.sql" />
-    <Content Include="FAMS.vbproj.vspscc" />
     <Content Include="FAM_SchemaData_Script27012014.sql" />
     <Content Include="Images\searchIcon.png" />
   </ItemGroup>
