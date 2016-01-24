@@ -44,7 +44,7 @@ Partial Class frmVoucherPrintReport
         Me.ClientSize = New System.Drawing.Size(1242, 486)
         Me.Controls.Add(Me.crystalviewerVoucher)
         Me.Name = "frmVoucherPrintReport"
-        Me.Text = "frmVoucherPrintReport"
+        Me.Text = "Voucher"
         Me.ResumeLayout(False)
 
     End Sub

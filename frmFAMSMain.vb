@@ -506,7 +506,7 @@ Public Class frmFAMSMain
                 toolstripSave.Enabled = False
                 ToolStripButtonConfirm.Enabled = False
                 ToolStripButtonView.Enabled = False
-
+                ToolStripButtonPrint.Enabled = False
             Case "view"
                 toolstripAdd.Enabled = False
                 toolstripedit.Enabled = False
@@ -519,6 +519,7 @@ Public Class frmFAMSMain
                 BindingNavigatorMovePreviousItem.Enabled = False
                 BindingNavigatorPositionItem.Enabled = False
                 ToolStripButtonClear.Enabled = True
+                ToolStripButtonPrint.Enabled = False
             Case "clear"
                 toolstripAdd.Enabled = True
                 toolstripedit.Enabled = True
@@ -531,6 +532,7 @@ Public Class frmFAMSMain
                 ToolStripButtonClear.Enabled = True
                 ToolStripButtonConfirm.Enabled = True
                 ToolStripButtonView.Enabled = True
+                ToolStripButtonPrint.Enabled = False
                 ' pnlNavigator.Enabled = False
                 If TypeOf Me.ActiveMdiChild Is frmAddVoucher Then
                     Dim frmAddVoucher As frmAddVoucher = DirectCast(Me.ActiveMdiChild, frmAddVoucher)
@@ -551,6 +553,7 @@ Public Class frmFAMSMain
                 ToolStripButtonClear.Enabled = True
                 ToolStripButtonView.Enabled = False
                 toolstripSave.Enabled = True
+                ToolStripButtonPrint.Enabled = False
             Case "edit"
                 toolstripedit.Enabled = False
                 toolstripDeleteItem.Enabled = False
@@ -564,6 +567,7 @@ Public Class frmFAMSMain
                 ToolStripButtonClear.Enabled = True
                 ToolStripButtonView.Enabled = False
                 toolstripSave.Enabled = False
+                ToolStripButtonPrint.Enabled = False
             Case "delete"
                 toolstripAdd.Enabled = False
                 toolstripedit.Enabled = False
@@ -576,6 +580,7 @@ Public Class frmFAMSMain
                 ToolStripButtonClear.Enabled = True
                 toolstripSave.Enabled = False
                 ToolStripButtonView.Enabled = False
+                ToolStripButtonPrint.Enabled = False
         End Select
 
     End Sub
@@ -735,8 +740,24 @@ Public Class frmFAMSMain
     End Sub
 
     Private Sub ToolStripButtonPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButtonPrint.Click
-        Dim objfrmVoucherPrintReport As New frmVoucherPrintReport
-        objfrmVoucherPrintReport.SetControls("000000000048", "cash", "cp")
-        ShowNewForm(objfrmVoucherPrintReport, Nothing)
+        Dim activeForm As Form = Me.ActiveMdiChild
+
+        If activeForm IsNot Nothing Then
+
+            Select Case activeForm.GetType().Name
+                Case "frmCashBankAccountManage"
+                    MessageBox.Show("This feature is not available yet.")
+                Case "frmAddVoucher"
+                    DirectCast(Me.ActiveMdiChild, frmAddVoucher).PrintVoucher()
+                Case "frmCashBankContraV"
+                    DirectCast(Me.ActiveMdiChild, frmCashBankContraV).PrintVoucher()
+                Case "frmUserMaster"
+                    MessageBox.Show("This feature is not available yet.")
+                Case "frmLedgerAccountManage"
+                    MessageBox.Show("This feature is not available yet.")
+            End Select
+            lblActivity.Text = "Print"
+        End If
+
     End Sub
 End Class

@@ -246,6 +246,7 @@ Partial Class frmFAMSMain
         'ToolStripButtonPrint
         '
         Me.ToolStripButtonPrint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButtonPrint.Enabled = False
         Me.ToolStripButtonPrint.Image = Global.FAMS.My.Resources.Resources.print
         Me.ToolStripButtonPrint.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButtonPrint.Name = "ToolStripButtonPrint"

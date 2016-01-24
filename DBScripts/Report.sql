@@ -712,7 +712,7 @@ SET @totalBalance= ISNULL(@totalBalance,0)
 	
 print'--------------------------------------------------------------------------'
 go
-ALTER PROCEDURE dbo.GetVoucherHeaderReportDetails
+ALTER PROCEDURE [dbo].[GetVoucherHeaderReportDetails]
 		@instType as varchar(2),		
 		@VH_Lnk_No as varchar(12),
 		@VH_Dbk_Cd as varchar(4),
@@ -722,7 +722,7 @@ ALTER PROCEDURE dbo.GetVoucherHeaderReportDetails
 AS
 BEGIN
 declare @strQuery as nvarchar(max);
-            set @strQuery = 'Select LTRIM(RTRIM([VH_Ref_No])) AS [VH_Ref_No]
+            set @strQuery = 'Select LTRIM(RTRIM([VH_Vch_Ref_No])) AS [VH_Ref_No]
 									,[VH_Lnk_Dt]
 									,[VH_Ref_Dt]
 									,[VH_VCH_Dt]
@@ -732,7 +732,13 @@ declare @strQuery as nvarchar(max);
 									,[VH_Chq_Dt],[VH_Amt],[VH_Abs_Amt]
 									,LTRIM(RTRIM([VH_Cr_Dr])) AS [VH_Cr_Dr]
 									,LTRIM(RTRIM([VH_Pty_Nm])) AS [VH_Pty_Nm] 
-								from  ' + @instType + '_Voucher_Header 
+									,ISNULL(UM1.Usr_Nm,''-'') AS [EnteredBy]
+									,ISNULL(UM2.Usr_Nm,''-'') AS [ConfirmedBy]
+								from  ' + @instType + '_Voucher_Header VH
+								LEFT OUTER JOIN User_Master UM1
+								ON UM1.Usr_Id=VH.VH_Ent_By
+								LEFT OUTER JOIN User_Master UM2
+								ON UM2.Usr_Id=VH.VH_Conf_By
 								where [VH_Lnk_No]='''+@VH_Lnk_No+''' 
 								and [VH_Dbk_Cd]='''+@VH_Dbk_Cd+''' 
 								and [VH_Trn_Typ]='''+@VH_Trn_Typ+'''
@@ -741,11 +747,12 @@ declare @strQuery as nvarchar(max);
 								exec(@strQuery)
 
 END
+
 	go
 	
 print'--------------------------------------------------------------------------'
 go
-ALTER PROCEDURE dbo.GetVoucherDetailsReportDetails
+ALTER PROCEDURE [dbo].[GetVoucherDetailsReportDetails]
 		@instType as varchar(2),		
 		@VH_Lnk_No as varchar(12),
 		@VH_Dbk_Cd as varchar(4),

@@ -4,7 +4,6 @@
     Private _PayeeReceipt As String
     Private _TrnType As String
     Private _mode As String
-
     Private ledgerAcc As LedgerAccountHelper
     Private parentForm As frmFAMSMain
     Private ledgerAccBalance As Double
@@ -48,7 +47,7 @@
         End Set
     End Property
 
-    Public WriteOnly Property MDIForm As frmFAMSMain
+    Public WriteOnly Property MDIForm() As frmFAMSMain
         Set(ByVal Value As frmFAMSMain)
             parentForm = Value
         End Set
@@ -73,10 +72,11 @@
             If _mode.ToLower() = "edit" Or _mode.ToLower() = "delete" Or _mode = "confirm" Or _mode = "view" Then
                 If txtLinkVoucherNumber.Text <> String.Empty Then
                     Dim flgEnable As String = BindVoucherDetails()
-                    Me.pnlConfirm.Visible = True
-
+                    Dim frmMain As frmFAMSMain = DirectCast(Me.MdiParent, frmFAMSMain)
                     'populate voucher details
                     If String.IsNullOrEmpty(flgEnable) Then
+                        Me.pnlConfirm.Visible = True
+
                         Select Case _mode
                             Case "view"
                                 Me.panelVoucherControls.Visible = True
@@ -88,7 +88,7 @@
                                 LabelVoucherDate.Visible = True
                                 txtLinkVoucherNumber.Enabled = False
                                 Me.DatePickerVoucherLinkDate.Enabled = False
-
+                                frmMain.ToolStripButtonPrint.Enabled = True
                             Case "delete"
                                 Me.panelVoucherControls.Visible = True
                                 Me.panelVoucherControls.Enabled = False
@@ -99,9 +99,8 @@
                                 Me.DatePickerVoucherLinkDate.Visible = True
                                 Me.DatePickerVoucherLinkDate.Enabled = False
                                 LabelVoucherDate.Visible = True
-                                Dim frmMain As frmFAMSMain = DirectCast(Me.MdiParent, frmFAMSMain)
                                 frmMain.toolstripSave.Enabled = True
-
+                                frmMain.ToolStripButtonPrint.Enabled = False
                             Case "edit"
                                 Me.panelVoucherControls.Visible = True
                                 Me.dgvVoucherDetails.Visible = True
@@ -111,8 +110,8 @@
                                 Me.DatePickerVoucherLinkDate.Enabled = True
                                 LabelVoucherDate.Visible = True
                                 txtLinkVoucherNumber.Enabled = False
-                                Dim frmMain As frmFAMSMain = DirectCast(Me.MdiParent, frmFAMSMain)
                                 frmMain.toolstripSave.Enabled = True
+                                frmMain.ToolStripButtonPrint.Enabled = False
                             Case "confirm"
 
                                 Me.panelVoucherControls.Visible = True
@@ -120,36 +119,18 @@
                                 Me.dgvVoucherDetails.Visible = True
                                 Me.dgvVoucherDetails.Enabled = False
                                 txtLinkVoucherNumber.Text = txtLinkVoucherNumber.Text.PadLeft(12, "0")
-
-                                'If (datepickerVoucherDateConfirm.Enabled) Then
-                                '    Dim vHelper As VoucherHelper = New VoucherHelper()
-                                '    Dim dt As DataTable = vHelper.GetNextVoucherNumber(datepickerVoucherDateConfirm.Value, ComboBoxDaybookSelect.SelectedValue)
-                                '    If Not dt Is Nothing Then
-                                '        If dt.Rows.Count > 0 Then
-                                '            lblConfirmNumber.Text = dt.Rows(0)(0).ToString()
-                                '            lblConfirmNumber.BackColor = Color.Red
-                                '            lblConfirmNumber.ForeColor = Color.White
-                                '            txtNextCount.Text = dt.Rows(0)(1).ToString()
-                                '        End If
-
-                                '    End If
-                                'End If
-
                                 txtLinkVoucherNumber.Enabled = False
                                 DatePickerVoucherLinkDate.Visible = True
                                 DatePickerVoucherLinkDate.Enabled = False
                                 Me.pnlConfirm.Enabled = True
-
                                 lblConfirmNumber.Text = "-"
                                 lblConfirmNumber.BackColor = Color.Transparent
-
                                 lblConfirmedVoucherNumber.Visible = False
-
-                                Dim frmMain As frmFAMSMain = DirectCast(Me.MdiParent, frmFAMSMain)
                                 frmMain.toolstripSave.Enabled = True
                                 LabelVoucherDate.Visible = True
                                 txtLinkVoucherNumber.Enabled = False
                                 datepickerVoucherDateConfirm.Enabled = True
+                                frmMain.ToolStripButtonPrint.Enabled = False
                         End Select
                     Else
                         If (ShowMessagebox) Then
@@ -225,11 +206,7 @@
             parentForm.pnlMenu.Visible = False
             parentForm.pnlNavigator.Enabled = False
             ComboBoxDaybookSelect.Enabled = True
-            'ButtonNext.Visible = True
-            'ButtonNext.Enabled = True
-
             PupulateDaybookCombo()
-
         End If
 
         If Not String.IsNullOrEmpty(PaymentReceipt) Then
@@ -260,32 +237,10 @@
                 ComboBoxDaybookSelect.DataSource = dt
                 ComboBoxDaybookSelect.DisplayMember = "DisplayName"
                 ComboBoxDaybookSelect.ValueMember = "DM_Dbk_Cd"
-                ' ComboBoxDaybookSelect.SelectedIndex = 0
             Else
                 MessageBox.Show("There are no daybooks configured for this transaction type , please configure the daybooks", "Configuration Help", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-
-                'ButtonNext.Enabled = False
             End If
         End If
-    End Sub
-
-    Private Sub ButtonNext_Click(ByVal sender As Object, ByVal e As EventArgs)
-
-        'SplitContainer1.Panel1Collapsed = True
-        'SplitContainer1.Panel2Collapsed = False
-        'panelVoucherControls.Visible = True
-        'LabelVoucherDate.Visible = False
-        'DatePickerVoucherDate.Visible = False
-        'parentForm.pnlNavigator.Visible = True
-        'parentForm.pnlNavigator.Enabled = True
-        'parentForm.DisableNavToolBar(frmFAMSMain.NavSettings.Voucher)
-        'ComboBoxDaybookSelect.Enabled = False
-        'ButtonNext.Enabled = False
-        'LabelNameOfPayee.Visible = True
-        'TextBoxAmount.Visible = True
-        'SetOperationMode(String.Empty)
-        'SetControls(String.Empty)
-
     End Sub
 
     Private Sub ConfirmVoucher()
@@ -351,9 +306,6 @@
         Catch ex As Exception
             Throw
         End Try
-
-
-
     End Sub
 
     Private Sub DeleteVoucher()
@@ -604,8 +556,6 @@
         Dim headerValue As Decimal
         Dim calculateDiff As Boolean = True
         Dim detailv As Decimal
-
-
         headerValue = Decimal.Parse(TextBoxAmount.Text)
 
         If _TrnType.Equals("BP") Or _TrnType.Equals("CP") Then
@@ -732,7 +682,6 @@
         dgvVoucherDetails.Rows(e.RowIndex).Cells("RefDate").Value = DateTimeReferenceDate.Value.ToShortDateString()
 
         If (String.IsNullOrEmpty(dgvVoucherDetails.Rows(e.RowIndex).Cells("SeqNo").Value)) Then
-            'dgvVoucherDetails.Rows(e.RowIndex).Cells("SeqNo").Value = (e.RowIndex + 1).ToString().PadLeft(3, "0")
             Dim newSeqNo As Integer = 0
             For x As Integer = 0 To dgvVoucherDetails.Rows.Count - 1
                 If newSeqNo = 0 Then
@@ -765,8 +714,6 @@
         Dim charValue As Integer
 
         Dim checkDecimal As Boolean = False
-
-
         If Integer.TryParse(AscW(keyArgs.KeyChar), charValue) Then
             If (charValue >= zero And charValue <= nine) Or charValue = backspace Then
                 checkDecimal = True
@@ -815,11 +762,9 @@
         Me.pnlConfirm.Visible = False
         Select Case _mode
             Case "view"
-                'Me.SplitContainer1.Panel1Collapsed = True
                 Me.SplitContainer1.Panel2Collapsed = False
                 Me.panelVoucherControls.Visible = False
                 Me.dgvVoucherDetails.Visible = False
-                'Me.pnlConfirm.Visible = False
                 Me.pnlConfirm.Enabled = False
                 Me.Text = Me.Text.Split("(")(0).Trim() + " (Operation: View)"
                 ComboBoxDaybookSelect.Enabled = False
@@ -828,25 +773,17 @@
                 Me.txtLinkVoucherNumber.Visible = True
                 Me.LabelVoucherDate.Visible = False
                 Me.DatePickerVoucherLinkDate.Visible = False
-
-                'Me.SplitContainer1.Panel2.Enabled = False
-                'Me.SplitContainer1.Panel1.Enabled = False
-                'ButtonNext.Enabled = False
             Case "confirm"
-                'Me.SplitContainer1.Panel1Collapsed = True
                 Me.SplitContainer1.Panel2Collapsed = False
                 Me.panelVoucherControls.Visible = False
-
                 Me.LabelVoucherDate.Visible = False
                 Me.DatePickerVoucherLinkDate.Visible = False
                 Me.txtLinkVoucherNumber.Visible = True
                 Me.lblLinkVoucherNumber.Visible = True
                 Me.txtLinkVoucherNumber.Enabled = True
-
                 Me.dgvVoucherDetails.Visible = False
                 Me.pnlConfirm.Enabled = False
                 ComboBoxDaybookSelect.Enabled = False
-                'ButtonNext.Enabled = False
                 DatePickerVoucherLinkDate.Visible = False
                 LabelVoucherDate.Visible = False
                 ComboBoxDaybookSelect.Enabled = False
@@ -854,10 +791,8 @@
                 Me.Text = Me.Text.Split("(")(0).Trim() + " (Operation: Confirm)"
 
             Case "delete"
-                ' Me.SplitContainer1.Panel1Collapsed = True
                 Me.SplitContainer1.Panel2Collapsed = False
                 Me.panelVoucherControls.Visible = False
-
                 Me.LabelVoucherDate.Visible = False
                 Me.DatePickerVoucherLinkDate.Visible = False
                 Me.txtLinkVoucherNumber.Visible = True
@@ -867,7 +802,6 @@
                 Me.dgvVoucherDetails.Visible = False
                 Me.pnlConfirm.Enabled = False
                 ComboBoxDaybookSelect.Enabled = False
-                'ButtonNext.Enabled = False
 
                 Me.Text = Me.Text.Split("(")(0).Trim() + " (Operation: Delete)"
 
@@ -931,8 +865,6 @@
 
     Sub SetOperationMode(ByVal pMode As String)
         _mode = pMode
-        ' ClearControls()
-
     End Sub
 
     Private Function BindVoucherDetails() As String
@@ -1004,14 +936,11 @@
     End Function
 
     Private Sub frmAddVoucher_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
-
-        ''frmMain.mainBindingNavigator.BindingSource = Nothing
         Me.parentForm.pnlNavigator.Visible = False
         Me.parentForm.pnlMenu.Visible = True
         Me.parentForm.MenuVisibility = True
         Me.parentForm.lblBankBalance.Text = String.Empty
         Me.parentForm.lblBankBalance.Visible = False
-        ''frmMain.EnableNavToolBar()
     End Sub
 
     Private Sub ComboBoxDaybookSelect_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxDaybookSelect.SelectedIndexChanged
@@ -1025,20 +954,6 @@
 
             parentForm.pnlNavigator.Enabled = True
             parentForm.DisableNavToolBar(frmFAMSMain.NavSettings.Voucher)
-            'ComboBoxDaybookSelect.Enabled = False
-            'ButtonNext.Enabled = False
-
-
-            'If ComboBoxDaybookSelect.SelectedValue <> String.Empty Then
-            '    parentForm.pnlNavigator.Enabled = True
-            '    parentForm.DisableNavToolBar(frmFAMSMain.NavSettings.Voucher)
-            '    ComboBoxDaybookSelect.Enabled = False
-            '    ButtonNext.Enabled = False
-            'Else
-
-            '    parentForm.pnlNavigator.Enabled = False
-            'End If
-
 
             parentForm.lblBankBalance.Text = String.Format("Bank Balance : {0}", ledgerAccBalance)
         Else
@@ -1080,6 +995,14 @@
             VoucherDetailsDeleteMenu.Show(dgvVoucherDetails, e.Location)
             VoucherDetailsDeleteMenu.Show(Cursor.Position)
         End If
+    End Sub
+
+    Public Sub PrintVoucher()
+        Dim frmMain As frmFAMSMain = DirectCast(Me.MdiParent, frmFAMSMain)
+        Dim objfrmVoucherPrintReport As New frmVoucherPrintReport
+        objfrmVoucherPrintReport.parentForm = frmMain
+        objfrmVoucherPrintReport.SetControls(txtLinkVoucherNumber.Text, ComboBoxDaybookSelect.SelectedValue, TransactionType)
+        frmMain.ShowNewForm(objfrmVoucherPrintReport, Nothing)
     End Sub
 
 End Class

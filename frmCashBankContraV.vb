@@ -546,7 +546,7 @@
                             Me.panelVoucherControls.Enabled = False
                             Me.pnlConfirm.Visible = True
                             Me.pnlConfirm.Enabled = True
-
+                            frmParent.ToolStripButtonPrint.Enabled = True
                         Case "delete"
                             Me.panelVoucherControls.Visible = True
                             Me.panelVoucherControls.Enabled = False
@@ -557,6 +557,8 @@
                             LabelVoucherDate.Visible = True
                             Me.panelVoucherControls.Enabled = False
                             frmParent.toolstripSave.Enabled = True
+                            frmParent.ToolStripButtonPrint.Enabled = False
+
                         Case "edit"
                             Me.panelVoucherControls.Visible = True
                             Me.DatePickerVoucherDate.Visible = True
@@ -573,6 +575,8 @@
                                 TextBoxChequeNo.Enabled = False
                                 datepickerChequeDate.Enabled = False
                             End If
+                            frmParent.ToolStripButtonPrint.Enabled = False
+
                         Case "confirm"
                             Me.panelVoucherControls.Visible = True
                             Me.panelVoucherControls.Enabled = True
@@ -593,6 +597,8 @@
                             txtLinkVoucherNumber.Enabled = False
                             lblVoucherConfNo.Text = "-"
                             lblVoucherConfNo.BackColor = Color.Transparent
+                            frmParent.ToolStripButtonPrint.Enabled = False
+
                     End Select
                 Else
                     Me.panelVoucherControls.Visible = False
@@ -671,5 +677,12 @@
         End Try
     End Sub
 
+    Public Sub PrintVoucher()
+        Dim frmMain As frmFAMSMain = DirectCast(Me.MdiParent, frmFAMSMain)
+        Dim objfrmVoucherPrintReport As New frmVoucherPrintReport
+        objfrmVoucherPrintReport.parentForm = frmParent
+        objfrmVoucherPrintReport.SetControls(txtLinkVoucherNumber.Text, ComboBoxGoesOut.SelectedValue, "CT")
+        frmMain.ShowNewForm(objfrmVoucherPrintReport, Nothing)
+    End Sub
 
 End Class
