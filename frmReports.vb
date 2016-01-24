@@ -62,7 +62,8 @@ Public Class frmReports
         Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
         Dim pwd As String = System.Configuration.ConfigurationSettings.AppSettings("Password")
         Dim Server As String = System.Configuration.ConfigurationSettings.AppSettings("Server")
-        Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database")
+        Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database") + InstitutionMasterData.XFinYr
+        view.DataSourceConnections(0).SetConnection(Server, Database, user, pwd)
         view.SetDatabaseLogon(user, pwd, Server, Database)
         view.SetParameterValue("@instType", InstitutionMasterData.XInstType)
         view.SetParameterValue("@Fromdate", _fromDate.ToShortDateString())
@@ -79,7 +80,8 @@ Public Class frmReports
         Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
         Dim pwd As String = System.Configuration.ConfigurationSettings.AppSettings("Password")
         Dim Server As String = System.Configuration.ConfigurationSettings.AppSettings("Server")
-        Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database")
+        Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database") + InstitutionMasterData.XFinYr
+        view.DataSourceConnections(0).SetConnection(Server, Database, user, pwd)
         view.SetDatabaseLogon(user, pwd, Server, Database)
         view.SetParameterValue("@instType", InstitutionMasterData.XInstType)
         view.SetParameterValue("@Fromdate", _fromDate.ToShortDateString())
@@ -96,8 +98,9 @@ Public Class frmReports
         Dim view As New rptTrialBalance2008
         Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
         Dim Server As String = System.Configuration.ConfigurationSettings.AppSettings("Server")
-        Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database")
+        Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database") + InstitutionMasterData.XFinYr
         Dim pwd As String = System.Configuration.ConfigurationSettings.AppSettings("Password")
+        view.DataSourceConnections(0).SetConnection(Server, Database, user, pwd)
         view.SetDatabaseLogon(user, pwd, Server, Database)
         view.SetParameterValue("@instType", InstitutionMasterData.XInstType)
         view.SetParameterValue("@Fromdate", _fromDate.ToShortDateString())

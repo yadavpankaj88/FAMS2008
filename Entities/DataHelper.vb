@@ -5,11 +5,11 @@ Public Class DataHelper
 
     Private Sub CreateConnection()
         Try
-
-            sqlConnection = New SqlConnection(System.Configuration.ConfigurationSettings.AppSettings("DBConnection"))
+            Dim strConnection As String = System.Configuration.ConfigurationSettings.AppSettings("DBConnection")
+            Dim year As String = InstitutionMasterData.XFinYr
+            strConnection = String.Format(strConnection, System.Configuration.ConfigurationSettings.AppSettings("Server"), System.Configuration.ConfigurationSettings.AppSettings("Database") + year, System.Configuration.ConfigurationSettings.AppSettings("Username"), System.Configuration.ConfigurationSettings.AppSettings("Password"))
+            sqlConnection = New SqlConnection(strConnection)
             sqlConnection.Open()
-
-
         Catch ex As Exception
             Throw ex
         End Try
