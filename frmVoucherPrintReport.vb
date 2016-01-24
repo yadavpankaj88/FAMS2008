@@ -31,7 +31,8 @@
         Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
         Dim pwd As String = System.Configuration.ConfigurationSettings.AppSettings("Password")
         Dim Server As String = System.Configuration.ConfigurationSettings.AppSettings("Server")
-        Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database")
+        Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database") + InstitutionMasterData.XFinYr
+        view.DataSourceConnections(0).SetConnection(Server, Database, user, pwd)
         view.SetDatabaseLogon(user, pwd, Server, Database)
         view.SetParameterValue("@instType", InstitutionMasterData.XInstType)
         view.SetParameterValue("@VH_Lnk_No", _VH_Lnk_No)
