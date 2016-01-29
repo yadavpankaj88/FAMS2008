@@ -783,3 +783,134 @@ declare @strQuery as nvarchar(max);
 			exec(@strQuery)
 END
 go
+
+print'-----------------------------------------------------------'
+go
+ALTER PROCEDURE dbo.GetAccountDetailsReport
+		@AccCode as char(6),
+		@InstType as varchar(2),		
+		@AM_Fin_Yr as varchar(4)
+AS
+BEGIN
+declare @strQuery as nvarchar(max);
+      set @strQuery = 'SELECT [AM_Fin_Yr]
+      ,[AM_Inst_Cd]
+      ,[AM_Inst_Typ]
+      ,[AM_Brn_Cd]
+      ,[AM_Lgr_Cd]
+      ,[AM_Acc_Cd]
+      ,[AM_Acc_Nm]
+      ,[AM_Calls]
+      ,[AM_Opn_Bal]
+      ,[AM_OB_Cr_Dr]
+      ,[AM_ABS_Opn_Bal]      
+      ,[AM_LLY_Budg]
+      ,[AM_LLY_Actu]
+      ,[AM_LYr_Budg]
+      ,[AM_LYr_Actu]
+      ,[AM_Cyr_Budg]
+      ,[AM_Ent_By]
+      ,[AM_Ent_Dt]
+      ,[AM_Upd_By]
+      ,[AM_Upd_Dt]
+  FROM [dbo].[' + @instType + '_Accounts]
+  where AM_Acc_Cd='''+@AccCode+'''
+  and AM_Fin_Yr='''+@AM_Fin_Yr+''''
+								
+exec(@strQuery)
+
+END
+go
+
+print'-----------------------------------------------------------'
+go
+
+ALTER PROCEDURE dbo.GetDaybookDetailsReport
+		@DaybookCode as char(4),
+		@InstType as varchar(2),		
+		@DM_Fin_Yr as varchar(4)
+AS
+BEGIN
+declare @strQuery as nvarchar(max);
+      set @strQuery = 'SELECT        
+							DM_Fin_Yr
+							, DM_Inst_Cd
+							, DM_Inst_Typ
+							, DM_Brn_Cd
+							, DM_Dbk_Cd
+							, DM_Dbk_Nm
+							, DM_Dbk_Typ
+							, DM_Acc_Cd
+							, DM_Bnk_Nm
+							, DM_Bnk_Brn
+							, DM_Bnk_AcNo
+							, DM_Bnk_OD
+							, DM_Ent_By
+							, DM_Ent_Dt
+							, DM_Upd_By
+							, DM_Upd_Dt
+				FROM ' + @instType + '_Daybooks
+				where DM_Dbk_Cd='''+@DaybookCode+'''
+				and DM_Fin_Yr='''+@DM_Fin_Yr+''''
+								
+exec(@strQuery)
+
+END
+
+
+go
+
+print'-----------------------------------------------------------'
+go
+
+ALTER PROCEDURE [dbo].[GetInstitutionDetails]
+	@instType nvarchar(2)
+	,@instCode nvarchar(5)
+	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	Select Inst_Nm, Inst_Adr from Inst_Master
+	where Inst_cd=@instCode
+	AND Inst_Typ=@instType
+	 
+END
+
+
+go
+
+print'-----------------------------------------------------------'
+go
+ALTER PROCEDURE [dbo].[GetTrialBalanceReportDetails] 
+	-- Add the parameters for the stored procedure here
+	@instType varchar(2),
+	@Fromdate as datetime,-- vh confirm date
+	@ToDate as datetime
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	declare @strQuery as nvarchar(max)
+	
+set @strQuery = 'SELECT
+				AM_Acc_Nm
+				,dbo.OpeningBalanceValue(AM_Acc_Cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,-1,@Fromdate),101)+''','''+@instType+''') as OpeningBalance
+				,AM_Acc_Cd
+				,ISNULL((SELECT SUM(Lgr_ABS_Amt) FROM '+@instType+'_Ledger WHERE Lgr_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' 
+				and Lgr_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+''' AND Lgr_Acc_Cd=AM_Acc_Cd AND LOWER(Lgr_Cr_Dr)=''cr''),0) AS Credit
+				,ISNULL((SELECT SUM(Lgr_ABS_Amt) FROM '+@instType+'_Ledger WHERE Lgr_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' 
+				and Lgr_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+''' AND Lgr_Acc_Cd=AM_Acc_Cd AND LOWER(Lgr_Cr_Dr)=''dr''),0) AS Debit
+				,dbo.OpeningBalanceValue(AM_Acc_Cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''') as ClosingBalance
+			FROM '+@instType+'_Accounts'
+
+
+	exec(@strQuery)
+
+END
+
+go

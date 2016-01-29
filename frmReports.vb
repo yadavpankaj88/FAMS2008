@@ -69,6 +69,7 @@ Public Class frmReports
         view.SetParameterValue("@Fromdate", _fromDate.ToShortDateString())
         view.SetParameterValue("@ToDate", _toDate.ToShortDateString())
         view.SetParameterValue("@VH_Dbk_Cd", _dayBookCode)
+        view.SetParameterValue("@instCode", InstitutionMasterData.XInstCode)
         crystalRptVwr.ReportSource = view
         crystalRptVwr.DisplayGroupTree = False
         crystalRptVwr.ShowRefreshButton = False
@@ -89,6 +90,7 @@ Public Class frmReports
         view.SetParameterValue("@IsCashBank", pIsCashBank)
         view.SetParameterValue("@AccountFrom", _accountFrom)
         view.SetParameterValue("@AccountTo", _accountTo)
+        view.SetParameterValue("@instCode", InstitutionMasterData.XInstCode)
         crystalRptVwr.ReportSource = view
         crystalRptVwr.DisplayGroupTree = False
         crystalRptVwr.ShowRefreshButton = False
@@ -105,6 +107,7 @@ Public Class frmReports
         view.SetParameterValue("@instType", InstitutionMasterData.XInstType)
         view.SetParameterValue("@Fromdate", _fromDate.ToShortDateString())
         view.SetParameterValue("@ToDate", _toDate.ToShortDateString())
+        view.SetParameterValue("@instCode", InstitutionMasterData.XInstCode)
         crystalRptVwr.ReportSource = view
         crystalRptVwr.DisplayGroupTree = False
         crystalRptVwr.ShowRefreshButton = False
