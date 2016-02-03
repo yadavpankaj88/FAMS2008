@@ -518,6 +518,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DBScripts\FAMS2015.sql" />
+    <None Include="Docs\Changes_in_FAMS_Phase_I.xls" />
     <None Include="Images\view.jpg" />
     <None Include="Images\save.jpg" />
     <None Include="Images\clear.jpg" />
