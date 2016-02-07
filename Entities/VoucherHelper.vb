@@ -243,10 +243,10 @@ Public Class VoucherHelper
         query = "Declare @month as int; " & _
         "Declare @date as int; " & _
         "set @month=MONTH('" + InstitutionMasterData.XDate + "'); " & _
-        "set @date=DAY('" + InstitutionMasterData.XDate + "')); " & _
+        "set @date=DAY('" + InstitutionMasterData.XDate + "'); " & _
         "declare @nextVoucherNumber as int; " & _
-        "If EXISTS(select 1 from " + InstitutionMasterData.XInstType + "_Voucher_Header where VH_Dbk_Cd=@dbkCd AND VH_VCH_No IS NOT NULL)" & _
-        "set @nextVoucherNumber=(SELECT REPLACE(STR(MAX(RIGHT(VH_Vch_No, 4)) + 1, 4), SPACE(1), '0')  from " + InstitutionMasterData.XInstType + "_Voucher_Header where VH_Dbk_Cd=@dbkCd AND VH_VCH_No IS NOT NULL) " & _
+        "If EXISTS(select 1 from " + InstitutionMasterData.XInstType + "_Voucher_Header where VH_Dbk_Cd=@dbkCd AND VH_VCH_No LIKE REPLACE(STR(@month, 2), SPACE(1), '0')+REPLACE(STR(@date, 2), SPACE(1), '0')+'%')" & _
+        "set @nextVoucherNumber=(SELECT REPLACE(STR(MAX(RIGHT(VH_Vch_No, 4)) + 1, 4), SPACE(1), '0')  from " + InstitutionMasterData.XInstType + "_Voucher_Header where VH_Dbk_Cd=@dbkCd AND VH_VCH_No LIKE REPLACE(STR(@month, 2), SPACE(1), '0')+REPLACE(STR(@date, 2), SPACE(1), '0')+'%') " & _
         "ELSE " & _
         "set @nextVoucherNumber=1" & _
         "Declare @voucherNumber as varchar(8); " & _

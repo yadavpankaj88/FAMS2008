@@ -759,6 +759,9 @@
         Else
             SetChequeControlVisibility(False)
         End If
+
+        datepickerVoucherDateConfirm.Value = InstitutionMasterData.XDate
+
         Me.pnlConfirm.Visible = False
         Select Case _mode
             Case "view"

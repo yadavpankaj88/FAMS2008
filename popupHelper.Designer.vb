@@ -22,13 +22,13 @@ Partial Class popupHelper
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.VoucherSelectionGrid = New System.Windows.Forms.DataGridView()
-        Me.AccountName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.LedgerCode = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.VoucherNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.VoucherDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.VoucherNarration = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Amount = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.VoucherSelectionGrid = New System.Windows.Forms.DataGridView
+        Me.AccountName = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.LedgerCode = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.VoucherNumber = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.VoucherDate = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.VoucherNarration = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Amount = New System.Windows.Forms.DataGridViewTextBoxColumn
         CType(Me.VoucherSelectionGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
