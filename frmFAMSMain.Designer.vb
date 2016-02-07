@@ -113,6 +113,9 @@ Partial Class frmFAMSMain
         Me.mnu_TBNFY = New System.Windows.Forms.ToolStripMenuItem
         Me.mnu_CloseFinancialYear = New System.Windows.Forms.ToolStripMenuItem
         Me.pnlNavigator = New System.Windows.Forms.Panel
+        Me.mnu_PrcessingDate = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnu_ChangeInstitution = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnu_ChangeUser = New System.Windows.Forms.ToolStripMenuItem
         CType(Me.mainBindingNavigator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.mainBindingNavigator.SuspendLayout()
         Me.pnlDetails.SuspendLayout()
@@ -714,7 +717,7 @@ Partial Class frmFAMSMain
         'mnuUtilities
         '
         Me.mnuUtilities.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.mnuUtilities.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnu_ChngPassword, Me.mnu_UnlockUser, Me.mnu_EUSDEF, Me.mnu_GRCVMR, Me.mnu_NFinancialYear, Me.mnu_TBNFY, Me.mnu_CloseFinancialYear})
+        Me.mnuUtilities.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnu_PrcessingDate, Me.mnu_ChangeInstitution, Me.mnu_ChangeUser, Me.mnu_ChngPassword, Me.mnu_UnlockUser, Me.mnu_EUSDEF, Me.mnu_GRCVMR, Me.mnu_NFinancialYear, Me.mnu_TBNFY, Me.mnu_CloseFinancialYear})
         Me.mnuUtilities.Name = "mnuUtilities"
         Me.mnuUtilities.Size = New System.Drawing.Size(62, 20)
         Me.mnuUtilities.Text = "Utilities"
@@ -770,6 +773,24 @@ Partial Class frmFAMSMain
         Me.pnlNavigator.Size = New System.Drawing.Size(1173, 27)
         Me.pnlNavigator.TabIndex = 17
         Me.pnlNavigator.Visible = False
+        '
+        'mnu_PrcessingDate
+        '
+        Me.mnu_PrcessingDate.Name = "mnu_PrcessingDate"
+        Me.mnu_PrcessingDate.Size = New System.Drawing.Size(301, 22)
+        Me.mnu_PrcessingDate.Text = "Change Processing Date"
+        '
+        'mnu_ChangeInstitution
+        '
+        Me.mnu_ChangeInstitution.Name = "mnu_ChangeInstitution"
+        Me.mnu_ChangeInstitution.Size = New System.Drawing.Size(301, 22)
+        Me.mnu_ChangeInstitution.Text = "Change Institution"
+        '
+        'mnu_ChangeUser
+        '
+        Me.mnu_ChangeUser.Name = "mnu_ChangeUser"
+        Me.mnu_ChangeUser.Size = New System.Drawing.Size(301, 22)
+        Me.mnu_ChangeUser.Text = "Change User"
         '
         'frmFAMSMain
         '
@@ -888,5 +909,8 @@ Partial Class frmFAMSMain
     Friend WithEvents mnu_NFinancialYear As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnu_TBNFY As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnu_CloseFinancialYear As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnu_PrcessingDate As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnu_ChangeInstitution As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnu_ChangeUser As System.Windows.Forms.ToolStripMenuItem
 
 End Class

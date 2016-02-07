@@ -45,7 +45,7 @@ Public Class frmFAMSMain
         End Set
     End Property
 
-    Property bindingNavigatorVisibility As Boolean
+    Property bindingNavigatorVisibility() As Boolean
         Get
             Return pnlNavigator.Visible
         End Get
@@ -358,7 +358,7 @@ Public Class frmFAMSMain
                     Dim ledgerAcc As frmLedgerAccountManage = DirectCast(activeForm, frmLedgerAccountManage)
                     ledgerAcc.EnableDisableControls(True)
                     ledgerAcc.SetControls("edit")
-                    ledgerAcc.txtAccCode.Enabled = False                    
+                    ledgerAcc.txtAccCode.Enabled = False
                     toolstripSave.Enabled = True
                     DisableNavToolBar(NavSettings.Edit)
 
@@ -726,7 +726,7 @@ Public Class frmFAMSMain
         mainBindingNavigator.BindingSource = Nothing
         ShowNewForm(objSelectDaybook, Nothing)
     End Sub
- 
+
     Private Sub mnu_Trialbnlc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnu_Trialbnlc.Click
         LoadDayBookSelection("TrialBalance")
     End Sub
@@ -759,5 +759,75 @@ Public Class frmFAMSMain
             lblActivity.Text = "Print"
         End If
 
+    End Sub
+
+    Private Sub mnu_PrcessingDate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnu_PrcessingDate.Click
+        Try
+            Me.Text = String.Empty
+            Me.pnlMenu.Visible = False
+            Me.lblActivity.Text = "Processing Date Acceptance"
+            SelectProcessingDate()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub mnu_ChangeInstitution_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnu_ChangeInstitution.Click
+        Try
+            Dim frmInstituteSelection As frmInstitutionSelection
+            Dim frmuserlogin As New UserLogin
+
+            Me.lblActivity.Text = "Institution Selection"
+            frmInstituteSelection = New frmInstitutionSelection(_institutionDetails)
+
+            If frmInstituteSelection.ShowDialog = Windows.Forms.DialogResult.OK Then
+                Me.lblActivity.Text = "User Authentication"
+                frmuserlogin.ShowDialog()
+                If (frmuserlogin.DialogResult = Windows.Forms.DialogResult.OK) Then
+                    Me.Text = title
+                    Me.pnlMenu.Visible = True
+                    Me.pnlDetails.Visible = True
+                    pnlNavigator.Visible = False
+                    Me.lblInstitution.Text = InstitutionMasterData.XInstName
+                    Me.lblUser.Text = String.Format("User : {0}", InstitutionMasterData.XUsrName) ''TODO use user data when user master is avaiable.
+                    Me.lblYear.Text = String.Format("Year : {0}-{1}", InstitutionMasterData.XFinYr, (Convert.ToInt32(InstitutionMasterData.XFinYr) + 1))
+                    Me.lblDate.Text = String.Format("Date : {0}", InstitutionMasterData.XDate.ToString("dd-MM-yyyy"))
+                    Me.lblActivity.Text = String.Empty
+                    Me.lblCashBalance.Text = String.Format("Cash Balance : {0}", legerAcc.GetBalance())
+                    EnableDisableMenus()
+                Else
+                    Me.Close()
+                End If
+            Else
+                SelectProcessingDate()
+            End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub mnu_ChangeUser_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnu_ChangeUser.Click
+        Try
+            Dim frmuserlogin As New UserLogin
+            Me.lblActivity.Text = "User Authentication"
+            frmuserlogin.ShowDialog()
+            If (frmuserlogin.DialogResult = Windows.Forms.DialogResult.OK) Then
+                Me.Text = title
+                Me.pnlMenu.Visible = True
+                Me.pnlDetails.Visible = True
+                pnlNavigator.Visible = False
+                Me.lblInstitution.Text = InstitutionMasterData.XInstName
+                Me.lblUser.Text = String.Format("User : {0}", InstitutionMasterData.XUsrName) ''TODO use user data when user master is avaiable.
+                Me.lblYear.Text = String.Format("Year : {0}-{1}", InstitutionMasterData.XFinYr, (Convert.ToInt32(InstitutionMasterData.XFinYr) + 1))
+                Me.lblDate.Text = String.Format("Date : {0}", InstitutionMasterData.XDate.ToString("dd-MM-yyyy"))
+                Me.lblActivity.Text = String.Empty
+                Me.lblCashBalance.Text = String.Format("Cash Balance : {0}", legerAcc.GetBalance())
+                EnableDisableMenus()
+            Else
+                Me.Close()
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 End Class
