@@ -93,12 +93,14 @@
 
     Public Sub SetControls(ByVal pMode As String)
         _mode = pMode
+        datepickerVoucherConfirm.Value = InstitutionMasterData.XDate
+        pnlConfirm.Enabled = False
+
         lblStatus.Text = ""
         Try
             'ClearControls()
             Select Case _mode
                 Case "add"
-
                     AddOperation()
                 Case "edit"
                     UpdateOperation()
@@ -237,7 +239,7 @@
                             lblVoucherConfNo.BackColor = Color.Red
                     End Select
                     pnlConfirm.Visible = True
-                    pnlConfirm.Enabled = True
+                    pnlConfirm.Enabled = False
                     datepickerVoucherConfirm.Value = voucherHeader.VH_VCH_Dt
                     lblVoucherConfNo.Text = voucherHeader.VH_VCH_NO
                     lblStatus.Text = "Status: CONFIRMED"
@@ -405,7 +407,7 @@
                 voucherDetail.VD_Fin_Yr = InstitutionMasterData.XFinYr
                 voucherDetail.VD_Inst_Cd = InstitutionMasterData.XInstCode
                 voucherDetail.VD_Inst_Typ = InstitutionMasterData.XInstType
-                voucherDetail.VD_Dbk_Cd = ComboBoxGoesOut.SelectedValue
+                voucherDetail.VD_Dbk_Cd = ComboBoxGoesInto.SelectedValue
                 voucherDetail.VD_Trn_Typ = "CT"
                 voucherDetail.VD_Lgr_Cd = "00"
                 voucherDetail.VD_Lnk_No = txtLinkVoucherNumber.Text
@@ -545,7 +547,7 @@
                             Me.DatePickerVoucherDate.Enabled = False
                             Me.panelVoucherControls.Enabled = False
                             Me.pnlConfirm.Visible = True
-                            Me.pnlConfirm.Enabled = True
+                            Me.pnlConfirm.Enabled = False
                             frmParent.ToolStripButtonPrint.Enabled = True
                         Case "delete"
                             Me.panelVoucherControls.Visible = True

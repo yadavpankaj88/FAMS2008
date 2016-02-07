@@ -22,32 +22,32 @@ Partial Class frmCashBankContraV
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-        Me.lblStatus = New System.Windows.Forms.Label()
-        Me.lblVchRefNo = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.ComboBoxGoesOut = New System.Windows.Forms.ComboBox()
-        Me.panelVoucherControls = New System.Windows.Forms.Panel()
-        Me.ComboBoxGoesInto = New System.Windows.Forms.ComboBox()
-        Me.LabelDescription1 = New System.Windows.Forms.Label()
-        Me.TextBoxAmount = New System.Windows.Forms.TextBox()
-        Me.LabelNameOfPayee = New System.Windows.Forms.Label()
-        Me.TextBoxNameOfPayee = New System.Windows.Forms.TextBox()
-        Me.datepickerChequeDate = New System.Windows.Forms.DateTimePicker()
-        Me.LabelChequeDate = New System.Windows.Forms.Label()
-        Me.LabelChequeNo = New System.Windows.Forms.Label()
-        Me.TextBoxChequeNo = New System.Windows.Forms.TextBox()
-        Me.LabelAmount = New System.Windows.Forms.Label()
-        Me.pnlConfirm = New System.Windows.Forms.Panel()
-        Me.lblVoucherConfNo = New System.Windows.Forms.Label()
-        Me.lblConfirmedVoucherNumber = New System.Windows.Forms.Label()
-        Me.lblVoucherNo = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.datepickerVoucherConfirm = New System.Windows.Forms.DateTimePicker()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.txtLinkVoucherNumber = New System.Windows.Forms.TextBox()
-        Me.DatePickerVoucherDate = New System.Windows.Forms.DateTimePicker()
-        Me.LabelVoucherDate = New System.Windows.Forms.Label()
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
+        Me.lblStatus = New System.Windows.Forms.Label
+        Me.lblVchRefNo = New System.Windows.Forms.Label
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.ComboBoxGoesOut = New System.Windows.Forms.ComboBox
+        Me.panelVoucherControls = New System.Windows.Forms.Panel
+        Me.ComboBoxGoesInto = New System.Windows.Forms.ComboBox
+        Me.LabelDescription1 = New System.Windows.Forms.Label
+        Me.TextBoxAmount = New System.Windows.Forms.TextBox
+        Me.LabelNameOfPayee = New System.Windows.Forms.Label
+        Me.TextBoxNameOfPayee = New System.Windows.Forms.TextBox
+        Me.datepickerChequeDate = New System.Windows.Forms.DateTimePicker
+        Me.LabelChequeDate = New System.Windows.Forms.Label
+        Me.LabelChequeNo = New System.Windows.Forms.Label
+        Me.TextBoxChequeNo = New System.Windows.Forms.TextBox
+        Me.LabelAmount = New System.Windows.Forms.Label
+        Me.pnlConfirm = New System.Windows.Forms.Panel
+        Me.lblVoucherConfNo = New System.Windows.Forms.Label
+        Me.lblConfirmedVoucherNumber = New System.Windows.Forms.Label
+        Me.lblVoucherNo = New System.Windows.Forms.Label
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.datepickerVoucherConfirm = New System.Windows.Forms.DateTimePicker
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.txtLinkVoucherNumber = New System.Windows.Forms.TextBox
+        Me.DatePickerVoucherDate = New System.Windows.Forms.DateTimePicker
+        Me.LabelVoucherDate = New System.Windows.Forms.Label
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -338,7 +338,6 @@ Partial Class frmCashBankContraV
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ComboBoxGoesOut As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
@@ -364,4 +363,5 @@ Partial Class frmCashBankContraV
     Friend WithEvents lblVchRefNo As System.Windows.Forms.Label
     Friend WithEvents lblVoucherConfNo As System.Windows.Forms.Label
     Friend WithEvents lblStatus As System.Windows.Forms.Label
+    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
 End Class
