@@ -184,7 +184,7 @@ Public Class LedgerAccountHelper
 
             If dtAcc.Rows.Count > 0 Then
                 query = "CalculateBalance"
-                parameters.Add("@lgrCode", dtAcc.Rows(0)("DM_Acc_Cd").ToString())
+                parameters.Add("@accCode", dtAcc.Rows(0)("DM_Acc_Cd").ToString())
 
                 If pDate <> DateTime.MinValue Then
                     parameters.Add("@vchDate", pDate.Date)
@@ -192,7 +192,8 @@ Public Class LedgerAccountHelper
                     parameters.Add("@vchDate", InstitutionMasterData.XDate.Date.ToString("yyyy-MM-dd"))
                 End If
                 parameters.Add("@instType", InstitutionMasterData.XInstType)
-
+                parameters.Add("@lgrCode", String.Empty)
+                parameters.Add("@finYear", InstitutionMasterData.XFinYr)
                 dtBalance = dataHelper.ExecuteQuery(query, CommandType.StoredProcedure, parameters)
                 If dtBalance.Rows.Count > 0 Then
                     Return Convert.ToDouble(dtBalance.Rows(0)("Total Balance"))

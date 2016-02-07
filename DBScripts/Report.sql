@@ -1,29 +1,14 @@
-go
-ALTER FUNCTION dbo.OpeningBalanceValue
+GO
+ALTER FUNCTION [dbo].[OpeningBalanceValue]
 (
-	@lgrCode varchar(10),
-	@vchDate date,
-	@instType varchar(5)
+	@accCode AS NVARCHAR(6),
+	@vchDate AS DATETIME,
+	@instType AS VARCHAR(2),
+	@finYear AS NVARCHAR(4)
 )
 RETURNS money
 AS
 	BEGIN
-
-		declare @firstDate as datetime
-		set @firstDate=(SELECT CONVERT(VARCHAR(25),DATEADD(dd,-(DAY(@vchDate)-1),@vchDate),101))
-
-		declare @processingMonth as int
-		set @processingMonth=DATEPART(mm,@vchDate)
-
-		declare @totalBalance as money
-		declare @balanceAdd as money
-
-		declare @opnBalance as money
-		declare @opnQuery as nvarchar(max)
-
-		declare @monthAmt as money
-		declare @monthQuery as nvarchar(max)
-
 		--Institution Type
 		--UR – Undergraduate Regular Section
 		--UP – Undergraduate Professional Section
@@ -38,444 +23,222 @@ AS
 		--SO – Society Section
 		--AB – Apex Body (Education Trust)
 
+		DECLARE @FinYearStartDate DateTime;
+		DECLARE @OpeningBalance FLOAT;
+		DECLARE @TotalBalance FLOAT;
+		DECLARE @LedgerBalance FLOAT;
+		DECLARE @VoucherDateToConsider DateTime;
+		DECLARE @FinYearStartDateString NVARCHAR(MAX);
+
+		SET @FinYearStartDateString='01-04-'+@finYear
+		SET @FinYearStartDate=CONVERT(DATETIME,@FinYearStartDateString ,105)
+
 		IF @instType = 'CG'
 		BEGIN
 		
-		select @opnBalance=AM_Opn_Bal from CG_Accounts where AM_Acc_Cd=@lgrCode
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM CG_Accounts WHERE AM_Acc_Cd=@accCode
 
-		select @monthAmt=SUM(Lgr_Amt) from CG_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM CG_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate
 		END
 		ELSE IF @instType = 'UR'
 		BEGIN
 		
-		select @opnBalance=AM_Opn_Bal from UR_Accounts where AM_Acc_Cd=@lgrCode
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM UR_Accounts WHERE AM_Acc_Cd=@accCode
 
-		select @monthAmt=SUM(Lgr_Amt) from UR_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM UR_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate       
 
 		END
 		ELSE IF @instType = 'UP'
 		BEGIN
 		
-		select @opnBalance=AM_Opn_Bal from UP_Accounts where AM_Acc_Cd=@lgrCode
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM UP_Accounts WHERE AM_Acc_Cd=@accCode
 
-		select @monthAmt=SUM(Lgr_Amt) from UP_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'JR'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from JR_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from JR_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'PG'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from PG_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from PG_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'VO'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from VO_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from VO_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'PO'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from PO_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from PO_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'EN'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from EN_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from EN_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'PP'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from PP_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from PP_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'PR'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from PR_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from PR_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'SE'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from SE_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from SE_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'SO'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from SO_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from SO_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-		ELSE IF @instType = 'AB'
-		BEGIN
-		
-		select @opnBalance=AM_Opn_Bal from AB_Accounts where AM_Acc_Cd=@lgrCode
-
-		select @monthAmt=SUM(Lgr_Amt) from AB_Ledger where Lgr_Vch_Dt>= convert(varchar(50),@firstDate) and Lgr_Vch_Dt<= convert(varchar(50),@vchDate)
-							and Lgr_Acc_Cd= @lgrCode            
-
-		END
-
-		--if month is april,return opening balance+month calculation
-		If @processingMonth=4
-		Begin
-		set @balanceAdd=@monthAmt  
-
-		set @totalBalance=isnull(@opnBalance,0)+isnull(@balanceAdd,0)
-
-		End
-		Else
-		Begin
-		--any other month than april
-
-		declare @startCount as int
-		set @startCount=4
-
-		--while loop to calculate balance addition of previous months
-		While(@startCount<@processingMonth)
-		Begin
-			declare @strQuery as nvarchar(max)
-			declare @queryOut as money
-			declare @paddedString as varchar(2)
-		set @paddedString=right('0'+ rtrim(convert(varchar(5),@startCount)), 2)
-
-		IF @instType = 'CG'
-		BEGIN
-		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM CG_Accounts where AM_Acc_Cd=@lgrCode           
-
-		END
-		ELSE IF @instType = 'UR'
-		BEGIN
-		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM UR_Accounts where AM_Acc_Cd=@lgrCode            
-
-		END
-		ELSE IF @instType = 'UP'
-		BEGIN
-		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM UP_Accounts where AM_Acc_Cd=@lgrCode            
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM UP_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate      
 
 		END
 		ELSE IF @instType = 'JR'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM JR_Accounts where AM_Acc_Cd=@lgrCode           
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM JR_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM JR_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate         
 
 		END
 		ELSE IF @instType = 'PG'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM PG_Accounts where AM_Acc_Cd=@lgrCode            
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM PG_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM PG_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate               
 
 		END
 		ELSE IF @instType = 'VO'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM VO_Accounts where AM_Acc_Cd=@lgrCode 
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM VO_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM VO_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate             
+
 		END
 		ELSE IF @instType = 'PO'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM PO_Accounts where AM_Acc_Cd=@lgrCode            
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM PO_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM PO_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate              
 
 		END
 		ELSE IF @instType = 'EN'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM EN_Accounts where AM_Acc_Cd=@lgrCode          
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM EN_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM EN_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate            
 
 		END
 		ELSE IF @instType = 'PP'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM PP_Accounts where AM_Acc_Cd=@lgrCode           
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM PP_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM PP_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate          
 
 		END
 		ELSE IF @instType = 'PR'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM PR_Accounts where AM_Acc_Cd=@lgrCode            
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM PR_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM PR_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate            
 
 		END
 		ELSE IF @instType = 'SE'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM SE_Accounts where AM_Acc_Cd=@lgrCode           
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM SE_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM SE_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate            
 
 		END
 		ELSE IF @instType = 'SO'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM SO_Accounts where AM_Acc_Cd=@lgrCode         
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM SO_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM SO_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate             
 
 		END
 		ELSE IF @instType = 'AB'
 		BEGIN
 		
-		SELECT @queryOut = case 
-							when @paddedString = '01' then AM_Net_01
-							when @paddedString = '02' then AM_Net_02
-							when @paddedString = '03' then AM_Net_03
-							when @paddedString = '04' then AM_Net_04
-							when @paddedString = '05' then AM_Net_05
-							when @paddedString = '06' then AM_Net_06
-							when @paddedString = '07' then AM_Net_07
-							when @paddedString = '08' then AM_Net_08
-							when @paddedString = '09' then AM_Net_09
-							when @paddedString = '10' then AM_Net_10
-							when @paddedString = '11' then AM_Net_11
-							when @paddedString = '12' then AM_Net_12
-						end
-						FROM AB_Accounts where AM_Acc_Cd=@lgrCode 
+		SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) FROM AB_Accounts WHERE AM_Acc_Cd=@accCode
+
+		SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+								FROM AB_Ledger
+								WHERE Lgr_Acc_Cd=@accCode 
+								AND Lgr_Inst_Typ=@instType 
+								AND Lgr_Fin_Yr=@finYear
+								AND Lgr_Vch_Dt>=@FinYearStartDate
+								AND Lgr_Vch_Dt<@vchDate             
 
 		END
- 
-			set @balanceAdd=isnull(@balanceAdd,0)+ @queryOut
-			set @startCount=@startCount+1
-		End
-
-		--add current month amounts
-		set @balanceAdd=isnull(@balanceAdd,0)+isnull(@monthAmt,0) 
-
-                 
-		--calculate total balance by adding all calculations to opening balance
-		set @totalBalance=ISNULL(@opnBalance,0)+isnull(@balanceAdd,0)
-		End
-
-		SET @totalBalance= ISNULL(@totalBalance,0)
-
-RETURN @totalBalance
+		
+		SET @TotalBalance=ISNULL(@OpeningBalance,0)+ISNULL(@LedgerBalance,0);
+		RETURN @TotalBalance;
 END
-go
+GO
 
 print'----------------------------------------------------------------------------------------------'
-go
+GO
 ALTER PROCEDURE [dbo].[GetCashBankReportDetails]
 	-- Add the parameters for the stored procedure here
-	@instType varchar(2),
-	@Fromdate as datetime = NULL,-- vh confirm date
-	@ToDate as datetime = NULL,
-	@VH_Dbk_Cd char(4)
+	@instType NVARCHAR(2),
+	@Fromdate AS DATETIME = NULL,
+	@ToDate AS DATETIME = NULL,
+	@VH_Dbk_Cd NVARCHAR(4)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
-	declare @strQuery as nvarchar(max)
+	DECLARE @strQuery AS NVARCHAR(MAX)
 	
 
-	set @strQuery = 'SELECT 
+	SET @strQuery = 'SELECT 
 					VH.VH_acc_cd, 
-					dbo.OpeningBalanceValue(VH.VH_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,-1,@Fromdate),101)+''','''+@instType+''') as OpeningBalance,
+					dbo.OpeningBalanceValue(VH.VH_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,-1,@Fromdate),101)+''','''+@instType+''',VH.VH_Fin_Yr) as OpeningBalance,
 					VH.VH_Vch_No, 
 					VH.VH_Vch_Ref_No, 
 					VD.VD_Lgr_Cd, 
@@ -514,7 +277,7 @@ BEGIN
 					VD.VD_Amt,
 					VD.VD_Acc_Cd,
 					VH.VH_Vch_Dt,
-					dbo.OpeningBalanceValue(VH.VH_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''') as ClosingBalance
+					dbo.OpeningBalanceValue(VH.VH_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''',VH.VH_Fin_Yr) as ClosingBalance
 					FROM '+@instType+'_Voucher_Detail AS VD 
 	INNER JOIN		'+@instType+'_Voucher_Header AS VH 
 	ON				VD.VD_Vch_Ref_No = VH.VH_Vch_Ref_No 
@@ -523,30 +286,30 @@ BEGIN
 	WHERE			VH.VH_Dbk_Cd = '''+@VH_Dbk_Cd+''' AND VH.VH_Vch_No IS NOT NULL and VH.VH_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' and VH.VH_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+'''
 	ORDER BY		VD.VD_Lnk_No ASC'
 
-	exec(@strQuery)
+	EXEC(@strQuery)
 
 END
-go
+GO
 print'----------------------------------------------------------------------------------------------'
-go
+GO
 ALTER PROCEDURE [dbo].[GetGeneralLedgerReportDetails]
 	-- Add the parameters for the stored procedure here
-	@instType varchar(2),
-	@Fromdate as datetime,-- vh confirm date
-	@ToDate as datetime,
-	@IsCashBank as bit,
-	@AccountFrom as char(6),
-	@AccountTo as char(6)
+	@instType AS NVARCHAR(2),
+	@Fromdate AS DATETIME,
+	@ToDate AS DATETIME,
+	@IsCashBank AS BIT,
+	@AccountFrom AS NVARCHAR(6),
+	@AccountTo AS NVARCHAR(6)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	declare @strQuery as nvarchar(max)
+	DECLARE @strQuery AS NVARCHAR(MAX)
 
-	set @strQuery = 'SELECT		Acc.AM_ACC_Nm,
-								dbo.OpeningBalanceValue(Lgr.Lgr_Acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,-1,@Fromdate),101)+''','''+@instType+''') as OpeningBalance,
+	SET @strQuery = 'SELECT		Acc.AM_ACC_Nm,
+								dbo.OpeningBalanceValue(Lgr.Lgr_Acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,-1,@Fromdate),101)+''','''+@instType+''',Lgr.Lgr_Fin_Yr) as OpeningBalance,
 								Lgr.Lgr_VCH_Dt,
 								Lgr.Lgr_Vch_No,
 								Lgr.Lgr_Vch_Ref_No,
@@ -573,7 +336,7 @@ BEGIN
 								END as DebitCRDR
 								,(Select Top 1 sum(Lgr_Amt) from '+ @instType +'_Ledger Lgr
 								where Lgr_acc_cd= Acc.AM_Acc_Cd AND Lgr_vch_dt < getdate()) as RunningBalance								
-								,dbo.OpeningBalanceValue(Lgr.Lgr_Acc_Cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''') as ClosingBalance
+								,dbo.OpeningBalanceValue(Lgr.Lgr_Acc_Cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''',Lgr.Lgr_Fin_Yr) as ClosingBalance
 					FROM '+@instType+'_Accounts Acc
 					LEFT OUTER JOIN '+@instType+'_Ledger Lgr
 					ON Acc.AM_ACC_Cd=Lgr.Lgr_Acc_Cd
@@ -592,11 +355,13 @@ BEGIN
 
 	SET  @strQuery = @strQuery +' and Acc.AM_ACC_Cd between '''+@AccountFrom+''' and '''+@AccountTo+''''
 
-	exec(@strQuery)
+	EXEC(@strQuery)
 
 END
 
-go
+
+
+GO
 
 
 print'----------------------------------------------------------------------------------------------'
@@ -632,83 +397,54 @@ END
 go
 print'----------------------------------------------------------------------------------------------'
 go
-ALTER FUNCTION dbo.OpeningBalance
-	(
-	@lgrCode varchar(10),
-@vchDate datetime,
-@instType varchar(5)
-	)
-RETURNS money
+ALTER FUNCTION [dbo].[OpeningBalance]
+(
+@accCode AS NVARCHAR(6),
+@vchDate AS DATETIME,
+@instType AS VARCHAR(2),
+@finYear AS NVARCHAR(4)
+)
+RETURNS FLOAT
 AS
-	BEGIN
+BEGIN
+	
+DECLARE @FinYearStartDate DateTime;
+DECLARE @OpeningBalance FLOAT;
+DECLARE @TotalBalance FLOAT;
+DECLARE @LedgerBalance FLOAT;
+DECLARE @VoucherDateToConsider DateTime;
+DECLARE @FinYearStartDateString NVARCHAR(MAX);
 
-declare @firstDate as datetime
-set @firstDate=(SELECT CONVERT(VARCHAR(25),DATEADD(dd,-(DAY(@vchDate)-1),@vchDate),101))
-
-declare @processingMonth as int
-set @processingMonth=DATEPART(mm,@vchDate)
-
-declare @totalBalance as money
-declare @balanceAdd as money
-
-declare @opnBalance as money
-declare @opnQuery as nvarchar(max)
-
-set @opnQuery='select @obal=AM_Opn_Bal from '+@instType+'_Accounts where AM_Acc_Cd='''+@lgrCode+''''
-
-EXECUTE sp_executesql @opnQuery, N'@obal money OUTPUT', @obal=@opnBalance OUTPUT                  
-
-declare @monthAmt as money
-declare @monthQuery as nvarchar(max)
-set @monthQuery='select @mthAmt=SUM(Lgr_Amt) from '+@instType+'_Ledger where Lgr_Vch_Dt>='''+convert(varchar(50),@firstDate)+''' and Lgr_Vch_Dt<='''+convert(varchar(50),@vchDate)+'''
-                  and Lgr_Acc_Cd='''+@lgrCode+'''' 
-                  
-EXECUTE sp_executesql @monthQuery, N'@mthAmt money OUTPUT', @mthAmt=@monthAmt OUTPUT                  
+SET @FinYearStartDateString='01-04-'+@finYear
+SET @FinYearStartDate=CONVERT(DATETIME,@FinYearStartDateString ,105)
 
 
---if month is april,return opening balance+month calculation
-If @processingMonth=4
-Begin
-set @balanceAdd=@monthAmt  
+DECLARE @SQL NVARCHAR(MAX)
+DECLARE @TABLENAME NVARCHAR(MAX)
+SET @TABLENAME = @instType+'_Accounts'
+SET @SQL = 'SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) 
+			FROM '+@TABLENAME+' 
+			WHERE AM_Acc_Cd='''+@accCode+''' 
+			AND AM_Inst_Typ='''+@instType+''' 
+			AND AM_Fin_Yr='''+@finYear+''''
+			
+EXECUTE sp_executesql @SQL, N'@OpeningBalance FLOAT OUTPUT', @OpeningBalance=@OpeningBalance OUTPUT 
 
-set @totalBalance=isnull(@opnBalance,0)+isnull(@balanceAdd,0)
+SET @TABLENAME = @instType+'_Ledger'
+SET @SQL = 'SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+			FROM '+@TABLENAME+' 
+			WHERE Lgr_Acc_Cd='''+@accCode+''' 
+			AND Lgr_Inst_Typ='''+@instType+''' 
+			AND Lgr_Fin_Yr='''+@finYear+'''
+			AND Lgr_Vch_Dt>='''+CONVERT(VARCHAR(11),@FinYearStartDate,105)+'''
+			AND Lgr_Vch_Dt<'''+CONVERT(VARCHAR(11),@vchDate,105)+''''
+			
+EXECUTE sp_executesql @SQL, N'@LedgerBalance FLOAT OUTPUT', @LedgerBalance=@LedgerBalance OUTPUT 
 
-End
-Else
-Begin
---any other month than april
+SET @TotalBalance=ISNULL(@OpeningBalance,0)+ISNULL(@LedgerBalance,0);
+RETURN @TotalBalance;
 
-declare @startCount as int
-set @startCount=4
-
---while loop to calculate balance addition of previous months
-While(@startCount<@processingMonth)
-Begin
- declare @strQuery as nvarchar(max)
- declare @queryOut as money
- declare @paddedString as varchar(2)
-set @paddedString=right('0'+ rtrim(convert(varchar(5),@startCount)), 2)
-
- set @strQuery='select @bal=AM_Net_'+@paddedString+' from '+@instType+'_Accounts where AM_Acc_Cd='''+@lgrCode+''''
- EXECUTE sp_executesql @strQuery, N'@bal money OUTPUT', @bal=@queryOut OUTPUT
- 
- set @balanceAdd=isnull(@balanceAdd,0)+ @queryOut
- set @startCount=@startCount+1
-End
-
---add current month amounts
-set @balanceAdd=isnull(@balanceAdd,0)+isnull(@monthAmt,0) 
-
-                 
---calculate total balance by adding all calculations to opening balance
-set @totalBalance=ISNULL(@opnBalance,0)+isnull(@balanceAdd,0)
-End
-
-SET @totalBalance= ISNULL(@totalBalance,0)
-
-	RETURN @totalBalance
-	END
-	go
+END
 	
 print'--------------------------------------------------------------------------'
 go
@@ -883,34 +619,84 @@ END
 go
 
 print'-----------------------------------------------------------'
-go
+GO
 ALTER PROCEDURE [dbo].[GetTrialBalanceReportDetails] 
 	-- Add the parameters for the stored procedure here
-	@instType varchar(2),
-	@Fromdate as datetime,-- vh confirm date
-	@ToDate as datetime
+	@instType AS NVARCHAR(2),
+	@Fromdate AS DATETIME,
+	@ToDate AS DATETIME
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	declare @strQuery as nvarchar(max)
+	DECLARE @strQuery AS NVARCHAR(MAX)
 	
-set @strQuery = 'SELECT
-				AM_Acc_Nm
-				,dbo.OpeningBalanceValue(AM_Acc_Cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,-1,@Fromdate),101)+''','''+@instType+''') as OpeningBalance
-				,AM_Acc_Cd
-				,ISNULL((SELECT SUM(Lgr_ABS_Amt) FROM '+@instType+'_Ledger WHERE Lgr_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' 
-				and Lgr_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+''' AND Lgr_Acc_Cd=AM_Acc_Cd AND LOWER(Lgr_Cr_Dr)=''cr''),0) AS Credit
-				,ISNULL((SELECT SUM(Lgr_ABS_Amt) FROM '+@instType+'_Ledger WHERE Lgr_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' 
-				and Lgr_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+''' AND Lgr_Acc_Cd=AM_Acc_Cd AND LOWER(Lgr_Cr_Dr)=''dr''),0) AS Debit
-				,dbo.OpeningBalanceValue(AM_Acc_Cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''') as ClosingBalance
-			FROM '+@instType+'_Accounts'
+	SET @strQuery = 'SELECT
+					AM_Acc_Nm
+					,dbo.OpeningBalanceValue(AM_Acc_Cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,-1,@Fromdate),101)+''','''+@instType+''',AM_Fin_Yr) as OpeningBalance
+					,AM_Acc_Cd
+					,ISNULL((SELECT SUM(Lgr_ABS_Amt) FROM '+@instType+'_Ledger WHERE Lgr_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' 
+					and Lgr_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+''' AND Lgr_Acc_Cd=AM_Acc_Cd AND LOWER(Lgr_Cr_Dr)=''cr''),0) AS Credit
+					,ISNULL((SELECT SUM(Lgr_ABS_Amt) FROM '+@instType+'_Ledger WHERE Lgr_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' 
+					and Lgr_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+''' AND Lgr_Acc_Cd=AM_Acc_Cd AND LOWER(Lgr_Cr_Dr)=''dr''),0) AS Debit
+					,dbo.OpeningBalanceValue(AM_Acc_Cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''',AM_Fin_Yr) as ClosingBalance
+				FROM '+@instType+'_Accounts'
 
 
-	exec(@strQuery)
+	EXEC(@strQuery)
 
 END
 
-go
+GO
+
+print '---------------------------------------------------------------------------------------------------------'
+GO
+ALTER Procedure [dbo].[CalculateBalance] --'','A00001','02-06-2016','CG','2015'
+@lgrCode AS NVARCHAR(2),
+@accCode AS NVARCHAR(6),
+@vchDate AS DATETIME,
+@instType AS NVARCHAR(2),
+@finYear AS NVARCHAR(4)
+As
+Begin
+
+DECLARE @FinYearStartDate DateTime;
+DECLARE @OpeningBalance FLOAT;
+DECLARE @TotalBalance FLOAT;
+DECLARE @LedgerBalance FLOAT;
+DECLARE @VoucherDateToConsider DateTime;
+DECLARE @FinYearStartDateString NVARCHAR(MAX);
+
+SET @FinYearStartDateString='01-04-'+@finYear
+SET @FinYearStartDate=CONVERT(DATETIME,@FinYearStartDateString ,105)
+
+
+DECLARE @SQL NVARCHAR(MAX)
+DECLARE @TABLENAME NVARCHAR(MAX)
+SET @TABLENAME = @instType+'_Accounts'
+SET @SQL = 'SELECT @OpeningBalance=ISNULL(AM_Opn_Bal,0) 
+			FROM '+@TABLENAME+' 
+			WHERE AM_Acc_Cd='''+@accCode+''' 
+			AND AM_Inst_Typ='''+@instType+''' 
+			AND AM_Fin_Yr='''+@finYear+''''
+			
+EXECUTE sp_executesql @SQL, N'@OpeningBalance FLOAT OUTPUT', @OpeningBalance=@OpeningBalance OUTPUT 
+
+SET @TABLENAME = @instType+'_Ledger'
+SET @SQL = 'SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0)) 
+			FROM '+@TABLENAME+' 
+			WHERE Lgr_Acc_Cd='''+@accCode+''' 
+			AND Lgr_Inst_Typ='''+@instType+''' 
+			AND Lgr_Fin_Yr='''+@finYear+'''
+			AND Lgr_Vch_Dt>='''+CONVERT(VARCHAR(11),@FinYearStartDate,105)+'''
+			AND Lgr_Vch_Dt<'''+CONVERT(VARCHAR(11),@vchDate,105)+''''
+			
+EXECUTE sp_executesql @SQL, N'@LedgerBalance FLOAT OUTPUT', @LedgerBalance=@LedgerBalance OUTPUT 
+
+SET @TotalBalance=ISNULL(@OpeningBalance,0)+ISNULL(@LedgerBalance,0);
+
+SELECT ISNULL(@TotalBalance,0) AS 'Total Balance'
+END
+GO
