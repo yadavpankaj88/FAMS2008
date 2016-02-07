@@ -7,6 +7,7 @@ Public Class frmReports
     Private _toDate As DateTime
     Private _accountFrom As String
     Private _accountTo As String
+    Private _dbkName As String
 
     Private Sub frmReports_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         Dim frmMain As frmFAMSMain = DirectCast(Me.MdiParent, frmFAMSMain)
@@ -48,13 +49,14 @@ Public Class frmReports
         End Try
     End Sub
 
-    Public Sub SetControls(ByVal pMode As String, ByVal pDayBkCode As String, ByVal pfromDate As DateTime, ByVal ptoDate As DateTime, ByVal paccountFrom As String, ByVal paccountTo As String)
+    Public Sub SetControls(ByVal pMode As String, ByVal pDayBkCode As String, ByVal pfromDate As DateTime, ByVal ptoDate As DateTime, ByVal paccountFrom As String, ByVal paccountTo As String, ByVal pDBKName As String)
         _mode = pMode
         _dayBookCode = pDayBkCode
         _fromDate = pfromDate
         _toDate = ptoDate
         _accountFrom = paccountFrom
         _accountTo = paccountTo
+        _dbkName = pDBKName
     End Sub
 
     Private Sub ShowCashBookReport()
@@ -70,6 +72,7 @@ Public Class frmReports
         view.SetParameterValue("@ToDate", _toDate.ToShortDateString())
         view.SetParameterValue("@VH_Dbk_Cd", _dayBookCode)
         view.SetParameterValue("@instCode", InstitutionMasterData.XInstCode)
+        view.SetParameterValue("@DayBookName", _dbkName)
         crystalRptVwr.ReportSource = view
         crystalRptVwr.DisplayGroupTree = False
         crystalRptVwr.ShowRefreshButton = False

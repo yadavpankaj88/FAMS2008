@@ -33,7 +33,7 @@
                                 MessageBox.Show("Please select all neccessary parameters")
                             Else
                                 objCashReceipt = New frmReports
-                                objCashReceipt.SetControls(_mode, ddldaybookcode.SelectedValue, dtpfromdate.Value, dtptodate.Value, txtAccountFrom.Text, txtAccountTo.Text)
+                                objCashReceipt.SetControls(_mode, ddldaybookcode.SelectedValue, dtpfromdate.Value, dtptodate.Value, txtAccountFrom.Text, txtAccountTo.Text, ddldaybookcode.Text)
                                 Dim frmMain As frmFAMSMain = DirectCast(Me.MdiParent, frmFAMSMain)
                                 frmMain.ShowNewForm(objCashReceipt, Nothing)
                                 Me.Hide()
@@ -57,9 +57,9 @@
         Dim count As Integer = 0
         Select Case _mode
             Case "CashBook"
-                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue)
+                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue, ddldaybookcode.Text)
             Case "BankBook"
-                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue)
+                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue, ddldaybookcode.Text)
             Case "GeneralLedgerCASHBank"
                 count = reportCountHelper.GetLedgerReportCount(dtpfromdate.Value, dtptodate.Value, True, txtAccountFrom.Text, txtAccountTo.Text)
             Case "GeneralLedgerOther"

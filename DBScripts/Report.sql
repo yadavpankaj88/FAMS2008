@@ -227,7 +227,8 @@ ALTER PROCEDURE [dbo].[GetCashBankReportDetails]
 	@instType NVARCHAR(2),
 	@Fromdate AS DATETIME = NULL,
 	@ToDate AS DATETIME = NULL,
-	@VH_Dbk_Cd NVARCHAR(4)
+	@VH_Dbk_Cd NVARCHAR(4),
+	@DayBookName NVARCHAR(50)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -284,7 +285,7 @@ BEGIN
 	LEFT OUTER JOIN	'+@instType+'_Accounts AS Acc 
 	ON				VD.VD_Acc_Cd = Acc.AM_Acc_Cd
 	WHERE			VH.VH_Dbk_Cd = '''+@VH_Dbk_Cd+''' AND VH.VH_Vch_No IS NOT NULL and VH.VH_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' and VH.VH_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+'''
-	ORDER BY		VD.VD_Lnk_No ASC'
+	ORDER BY		VH.VH_Vch_Dt,VH.VH_Vch_Ref_No,VD.VD_Seq_No ASC'
 
 	EXEC(@strQuery)
 
