@@ -93,7 +93,8 @@
 
     Public Sub SetControls(ByVal pMode As String)
         _mode = pMode
-        datepickerVoucherConfirm.Value = InstitutionMasterData.XDate
+        datepickerVoucherConfirm.Format = DateTimePickerFormat.Custom
+        datepickerVoucherConfirm.CustomFormat = " "
         pnlConfirm.Enabled = False
 
         lblStatus.Text = ""
@@ -131,7 +132,7 @@
                 txtLinkVoucherNumber.Enabled = False
                 DatePickerVoucherDate.Value = InstitutionMasterData.XDate
                 CheckDaybookType(ComboBoxGoesOut.SelectedItem)
-
+                DatePickerVoucherDate.Enabled = True
             Else
                 MessageBox.Show("Please Select a Daybook!!!")
             End If
@@ -240,11 +241,15 @@
                     End Select
                     pnlConfirm.Visible = True
                     pnlConfirm.Enabled = False
+                    datepickerVoucherConfirm.Format = DateTimePickerFormat.Short
+                    datepickerVoucherConfirm.CustomFormat = "dd-mm-yyyy"
                     datepickerVoucherConfirm.Value = voucherHeader.VH_VCH_Dt
                     lblVoucherConfNo.Text = voucherHeader.VH_VCH_NO
                     lblStatus.Text = "Status: CONFIRMED"
                 Else
                     lblStatus.Text = "Status: UN-CONFIRMED"
+                    datepickerVoucherConfirm.Format = DateTimePickerFormat.Custom
+                    datepickerVoucherConfirm.CustomFormat = " "
                 End If
 
                 SplitContainer1.Panel2Collapsed = False
@@ -252,6 +257,8 @@
                 TextBoxChequeNo.Text = voucherHeader.VH_Chq_No
 
                 If (voucherHeader.VH_Chq_Dt.HasValue) Then
+                    datepickerChequeDate.Format = DateTimePickerFormat.Short
+                    datepickerChequeDate.CustomFormat = "dd-mm-yyyy"
                     datepickerChequeDate.Value = voucherHeader.VH_Chq_Dt
                 Else
                     datepickerChequeDate.Format = DateTimePickerFormat.Custom
@@ -580,6 +587,9 @@
                             frmParent.ToolStripButtonPrint.Enabled = False
 
                         Case "confirm"
+                            datepickerVoucherConfirm.Format = DateTimePickerFormat.Short
+                            datepickerVoucherConfirm.CustomFormat = "dd-mm-yyyy"
+                            datepickerVoucherConfirm.Value = InstitutionMasterData.XDate
                             Me.panelVoucherControls.Visible = True
                             Me.panelVoucherControls.Enabled = True
                             txtLinkVoucherNumber.Text = txtLinkVoucherNumber.Text.PadLeft(12, "0")

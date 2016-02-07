@@ -113,7 +113,9 @@
                                 frmMain.toolstripSave.Enabled = True
                                 frmMain.ToolStripButtonPrint.Enabled = False
                             Case "confirm"
-
+                                datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Short
+                                datepickerVoucherDateConfirm.CustomFormat = "dd-mm-yyyy"
+                                datepickerVoucherDateConfirm.Value = InstitutionMasterData.XDate
                                 Me.panelVoucherControls.Visible = True
                                 Me.panelVoucherControls.Enabled = False
                                 Me.dgvVoucherDetails.Visible = True
@@ -760,7 +762,8 @@
             SetChequeControlVisibility(False)
         End If
 
-        datepickerVoucherDateConfirm.Value = InstitutionMasterData.XDate
+        datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Custom
+        datepickerVoucherDateConfirm.CustomFormat = " "
 
         Me.pnlConfirm.Visible = False
         Select Case _mode
@@ -827,6 +830,9 @@
                 dgvVoucherDetails.Visible = True
                 DatePickerVoucherLinkDate.Value = InstitutionMasterData.XDate
                 DateTimeReferenceDate.Value = InstitutionMasterData.XDate
+                DatePickerVoucherLinkDate.Enabled = True
+                datepickerChequeDate.Format = DateTimePickerFormat.Short
+                datepickerChequeDate.CustomFormat = "dd-mm-yyyy"
                 datepickerChequeDate.Value = InstitutionMasterData.XDate
                 dgvVoucherDetails.Enabled = True
                 Me.pnlConfirm.Visible = True
@@ -893,6 +899,8 @@
                         Return flgEnable
                     End If
                     pnlConfirm.Enabled = False
+                    datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Short
+                    datepickerVoucherDateConfirm.CustomFormat = "dd-mm-yyyy"
                     datepickerVoucherDateConfirm.Value = voucherHeader.VH_VCH_Dt
                     datepickerVoucherDateConfirm.Enabled = False
                     lblConfirmNumber.Text = voucherHeader.VH_VCH_NO
@@ -902,6 +910,8 @@
                     lblConfirmedVoucherNumber.Visible = True
                 Else
                     lableVoucherStatus.Text = "Status: UN-CONFIRMED"
+                    datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Custom
+                    datepickerVoucherDateConfirm.CustomFormat = " "
                 End If
 
                 lblConfirmedVoucherNumber.Text = voucherHeader.VH_VCH_Ref_No.ToString()
@@ -914,6 +924,8 @@
                 TextBoxChequeNo.Text = voucherHeader.VH_Chq_No
 
                 If (voucherHeader.VH_Chq_Dt.HasValue) Then
+                    datepickerChequeDate.Format = DateTimePickerFormat.Short
+                    datepickerChequeDate.CustomFormat = "dd-mm-yyyy"
                     datepickerChequeDate.Value = voucherHeader.VH_Chq_Dt
                 Else
                     datepickerChequeDate.Format = DateTimePickerFormat.Custom

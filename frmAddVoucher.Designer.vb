@@ -22,53 +22,53 @@ Partial Class frmAddVoucher
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.LabelNarration = New System.Windows.Forms.Label()
-        Me.TextBoxNarration = New System.Windows.Forms.TextBox()
-        Me.LabelVoucherDate = New System.Windows.Forms.Label()
-        Me.DatePickerVoucherLinkDate = New System.Windows.Forms.DateTimePicker()
-        Me.txtLinkVoucherNumber = New System.Windows.Forms.TextBox()
-        Me.lblLinkVoucherNumber = New System.Windows.Forms.Label()
-        Me.panelVoucherControls = New System.Windows.Forms.Panel()
-        Me.dgvVoucherDetails = New System.Windows.Forms.DataGridView()
-        Me.SeqNo = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.LedgerAccount = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AccountName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.hiddenRowNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Amount = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DebitCr = New System.Windows.Forms.DataGridViewComboBoxColumn()
-        Me.RefNo = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.RefDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.VoucherDesc = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.LabelReferenceNo = New System.Windows.Forms.Label()
-        Me.txtRefNumber = New System.Windows.Forms.TextBox()
-        Me.TextBoxAmount = New System.Windows.Forms.TextBox()
-        Me.TextBoxNameOfPayee = New System.Windows.Forms.TextBox()
-        Me.TextBoxChequeNo = New System.Windows.Forms.TextBox()
-        Me.LabelReferenceDate = New System.Windows.Forms.Label()
-        Me.ComboBoxCreditDebit = New System.Windows.Forms.ComboBox()
-        Me.DateTimeReferenceDate = New System.Windows.Forms.DateTimePicker()
-        Me.LabelAmount = New System.Windows.Forms.Label()
-        Me.LabelNameOfPayee = New System.Windows.Forms.Label()
-        Me.datepickerChequeDate = New System.Windows.Forms.DateTimePicker()
-        Me.LabelChequeDate = New System.Windows.Forms.Label()
-        Me.LabelChequeNo = New System.Windows.Forms.Label()
-        Me.pnlConfirm = New System.Windows.Forms.Panel()
-        Me.lblConfirmNumber = New System.Windows.Forms.Label()
-        Me.lblConfirmedVoucherNumber = New System.Windows.Forms.Label()
-        Me.lblVoucherNo = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.datepickerVoucherDateConfirm = New System.Windows.Forms.DateTimePicker()
-        Me.ComboBoxDaybookSelect = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.lblDaybookName = New System.Windows.Forms.Label()
-        Me.lblDbkNm = New System.Windows.Forms.Label()
-        Me.txtNextCount = New System.Windows.Forms.TextBox()
-        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-        Me.lableVoucherStatus = New System.Windows.Forms.Label()
+        Me.components = New System.ComponentModel.Container
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Me.LabelNarration = New System.Windows.Forms.Label
+        Me.TextBoxNarration = New System.Windows.Forms.TextBox
+        Me.LabelVoucherDate = New System.Windows.Forms.Label
+        Me.DatePickerVoucherLinkDate = New System.Windows.Forms.DateTimePicker
+        Me.txtLinkVoucherNumber = New System.Windows.Forms.TextBox
+        Me.lblLinkVoucherNumber = New System.Windows.Forms.Label
+        Me.panelVoucherControls = New System.Windows.Forms.Panel
+        Me.dgvVoucherDetails = New System.Windows.Forms.DataGridView
+        Me.SeqNo = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.LedgerAccount = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.AccountName = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.hiddenRowNumber = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Amount = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DebitCr = New System.Windows.Forms.DataGridViewComboBoxColumn
+        Me.RefNo = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.RefDate = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.VoucherDesc = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.LabelReferenceNo = New System.Windows.Forms.Label
+        Me.txtRefNumber = New System.Windows.Forms.TextBox
+        Me.TextBoxAmount = New System.Windows.Forms.TextBox
+        Me.TextBoxNameOfPayee = New System.Windows.Forms.TextBox
+        Me.TextBoxChequeNo = New System.Windows.Forms.TextBox
+        Me.LabelReferenceDate = New System.Windows.Forms.Label
+        Me.ComboBoxCreditDebit = New System.Windows.Forms.ComboBox
+        Me.DateTimeReferenceDate = New System.Windows.Forms.DateTimePicker
+        Me.LabelAmount = New System.Windows.Forms.Label
+        Me.LabelNameOfPayee = New System.Windows.Forms.Label
+        Me.datepickerChequeDate = New System.Windows.Forms.DateTimePicker
+        Me.LabelChequeDate = New System.Windows.Forms.Label
+        Me.LabelChequeNo = New System.Windows.Forms.Label
+        Me.pnlConfirm = New System.Windows.Forms.Panel
+        Me.lblConfirmNumber = New System.Windows.Forms.Label
+        Me.lblConfirmedVoucherNumber = New System.Windows.Forms.Label
+        Me.lblVoucherNo = New System.Windows.Forms.Label
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.datepickerVoucherDateConfirm = New System.Windows.Forms.DateTimePicker
+        Me.ComboBoxDaybookSelect = New System.Windows.Forms.ComboBox
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.lblDaybookName = New System.Windows.Forms.Label
+        Me.lblDbkNm = New System.Windows.Forms.Label
+        Me.txtNextCount = New System.Windows.Forms.TextBox
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
+        Me.lableVoucherStatus = New System.Windows.Forms.Label
         Me.VoucherDetailsDeleteMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.panelVoucherControls.SuspendLayout()
         CType(Me.dgvVoucherDetails, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlConfirm.SuspendLayout()
@@ -199,9 +199,9 @@ Partial Class frmAddVoucher
         'Amount
         '
         Me.Amount.DataPropertyName = "Amount"
-        DataGridViewCellStyle3.Format = "N2"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Amount.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle1.Format = "N2"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Amount.DefaultCellStyle = DataGridViewCellStyle1
         Me.Amount.HeaderText = "Amount"
         Me.Amount.Name = "Amount"
         '
@@ -489,7 +489,7 @@ Partial Class frmAddVoucher
         'DeleteToolStripMenuItem
         '
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
         'frmAddVoucher
