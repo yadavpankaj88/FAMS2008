@@ -44,7 +44,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate
+								AND Lgr_Vch_Dt<=@vchDate
 		END
 		ELSE IF @instType = 'UR'
 		BEGIN
@@ -57,7 +57,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate       
+								AND Lgr_Vch_Dt<=@vchDate       
 
 		END
 		ELSE IF @instType = 'UP'
@@ -71,7 +71,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate      
+								AND Lgr_Vch_Dt<=@vchDate      
 
 		END
 		ELSE IF @instType = 'JR'
@@ -85,7 +85,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate         
+								AND Lgr_Vch_Dt<=@vchDate         
 
 		END
 		ELSE IF @instType = 'PG'
@@ -99,7 +99,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate               
+								AND Lgr_Vch_Dt<=@vchDate               
 
 		END
 		ELSE IF @instType = 'VO'
@@ -113,7 +113,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate             
+								AND Lgr_Vch_Dt<=@vchDate             
 
 		END
 		ELSE IF @instType = 'PO'
@@ -127,7 +127,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate              
+								AND Lgr_Vch_Dt<=@vchDate              
 
 		END
 		ELSE IF @instType = 'EN'
@@ -141,7 +141,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate            
+								AND Lgr_Vch_Dt<=@vchDate            
 
 		END
 		ELSE IF @instType = 'PP'
@@ -155,7 +155,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate          
+								AND Lgr_Vch_Dt<=@vchDate          
 
 		END
 		ELSE IF @instType = 'PR'
@@ -169,7 +169,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate            
+								AND Lgr_Vch_Dt<=@vchDate            
 
 		END
 		ELSE IF @instType = 'SE'
@@ -183,7 +183,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate            
+								AND Lgr_Vch_Dt<=@vchDate            
 
 		END
 		ELSE IF @instType = 'SO'
@@ -197,7 +197,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate             
+								AND Lgr_Vch_Dt<=@vchDate             
 
 		END
 		ELSE IF @instType = 'AB'
@@ -211,7 +211,7 @@ AS
 								AND Lgr_Inst_Typ=@instType 
 								AND Lgr_Fin_Yr=@finYear
 								AND Lgr_Vch_Dt>=@FinYearStartDate
-								AND Lgr_Vch_Dt<@vchDate             
+								AND Lgr_Vch_Dt<=@vchDate             
 
 		END
 		
@@ -654,6 +654,7 @@ GO
 
 print '---------------------------------------------------------------------------------------------------------'
 GO
+
 ALTER Procedure [dbo].[CalculateBalance] --'','A00001','02-06-2016','CG','2015'
 @lgrCode AS NVARCHAR(2),
 @accCode AS NVARCHAR(6),
@@ -673,7 +674,6 @@ DECLARE @FinYearStartDateString NVARCHAR(MAX);
 SET @FinYearStartDateString='01-04-'+@finYear
 SET @FinYearStartDate=CONVERT(DATETIME,@FinYearStartDateString ,105)
 
-
 DECLARE @SQL NVARCHAR(MAX)
 DECLARE @TABLENAME NVARCHAR(MAX)
 SET @TABLENAME = @instType+'_Accounts'
@@ -691,13 +691,14 @@ SET @SQL = 'SELECT @LedgerBalance=SUM(ISNULL(Lgr_Amt,0))
 			WHERE Lgr_Acc_Cd='''+@accCode+''' 
 			AND Lgr_Inst_Typ='''+@instType+''' 
 			AND Lgr_Fin_Yr='''+@finYear+'''
-			AND Lgr_Vch_Dt>='''+CONVERT(VARCHAR(11),@FinYearStartDate,105)+'''
-			AND Lgr_Vch_Dt<'''+CONVERT(VARCHAR(11),@vchDate,105)+''''
+			AND Lgr_Vch_Dt>='''+CONVERT(VARCHAR(50),@FinYearStartDate)+'''
+			AND Lgr_Vch_Dt<='''+CONVERT(VARCHAR(50),@vchDate)+''''
 			
 EXECUTE sp_executesql @SQL, N'@LedgerBalance FLOAT OUTPUT', @LedgerBalance=@LedgerBalance OUTPUT 
 
 SET @TotalBalance=ISNULL(@OpeningBalance,0)+ISNULL(@LedgerBalance,0);
 
 SELECT ISNULL(@TotalBalance,0) AS 'Total Balance'
+
 END
 GO
