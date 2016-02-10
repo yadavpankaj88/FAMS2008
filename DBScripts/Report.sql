@@ -514,13 +514,13 @@ declare @strQuery as nvarchar(max);
 							Inner Join ' + @instType + '_Accounts ac 
 							on vd.VD_Acc_Cd=ac.Am_Acc_Cd  
 							where [VD_Lnk_No]='''+@VH_Lnk_No+''' 
-							and [VD_Dbk_Cd]='''+@VH_Dbk_Cd+''' 
 							and [VD_Trn_Typ]='''+@VH_Trn_Typ+'''
 							and [VD_Fin_Yr]='''+@VH_Fin_Yr+''' 
 							ORDER BY [VD_Seq_No] Asc'
 								
 			exec(@strQuery)
 END
+
 go
 
 print'-----------------------------------------------------------'
