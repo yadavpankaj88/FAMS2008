@@ -323,6 +323,7 @@ BEGIN
 								Lgr.Lgr_Acc_Cd,
 								Lgr.Lgr_Cr_Dr,
 								Lgr.Lgr_Trn_Typ,
+								Lgr.Lgr_Dbk_Cd,
 								CASE 
 								WHEN LOWER(Lgr.Lgr_Cr_Dr)=''cr'' THEN Lgr.Lgr_ABS_Amt
 								END as Credit,
@@ -355,12 +356,13 @@ BEGIN
 	END
 
 	SET  @strQuery = @strQuery +' and Acc.AM_ACC_Cd between '''+@AccountFrom+''' and '''+@AccountTo+''''
+	SET  @strQuery = @strQuery +' ORDER BY Lgr.Lgr_VCH_Dt,Lgr.Lgr_Vch_Ref_No,Lgr.Lgr_Seq_No ASC'
+
+
 
 	EXEC(@strQuery)
 
 END
-
-
 
 GO
 
