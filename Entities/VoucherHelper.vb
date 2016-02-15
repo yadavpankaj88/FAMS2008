@@ -240,10 +240,14 @@ Public Class VoucherHelper
 
     Public Function GetNextVoucherNumber(ByVal voucherDate As DateTime, ByVal dbkCode As String) As DataTable
         Dim query As String = String.Empty
+
+        Dim month As Integer = InstitutionMasterData.XDate.Month
+        Dim day As Integer = InstitutionMasterData.XDate.Day
+
         query = "Declare @month as int; " & _
         "Declare @date as int; " & _
-        "set @month=MONTH('" + InstitutionMasterData.XDate + "'); " & _
-        "set @date=DAY('" + InstitutionMasterData.XDate + "'); " & _
+        "set @month=" + month.ToString() + " " & _
+        "set @date=" + day.ToString() + " " & _
         "declare @nextVoucherNumber as int; " & _
         "If EXISTS(select 1 from " + InstitutionMasterData.XInstType + "_Voucher_Header where VH_Dbk_Cd=@dbkCd AND VH_VCH_No LIKE REPLACE(STR(@month, 2), SPACE(1), '0')+REPLACE(STR(@date, 2), SPACE(1), '0')+'%')" & _
         "set @nextVoucherNumber=(SELECT REPLACE(STR(MAX(RIGHT(VH_Vch_No, 4)) + 1, 4), SPACE(1), '0')  from " + InstitutionMasterData.XInstType + "_Voucher_Header where VH_Dbk_Cd=@dbkCd AND VH_VCH_No LIKE REPLACE(STR(@month, 2), SPACE(1), '0')+REPLACE(STR(@date, 2), SPACE(1), '0')+'%') " & _
