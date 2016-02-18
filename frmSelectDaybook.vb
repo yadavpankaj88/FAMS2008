@@ -57,9 +57,9 @@
         Dim count As Integer = 0
         Select Case _mode
             Case "CashBook"
-                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue, ddldaybookcode.Text)
+                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue, ddldaybookcode.Text, "Cash")
             Case "BankBook"
-                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue, ddldaybookcode.Text)
+                count = reportCountHelper.GetCashBankBookReportCount(dtpfromdate.Value, dtptodate.Value, ddldaybookcode.SelectedValue, ddldaybookcode.Text, "Bank")
             Case "GeneralLedgerCASHBank"
                 count = reportCountHelper.GetLedgerReportCount(dtpfromdate.Value, dtptodate.Value, True, txtAccountFrom.Text, txtAccountTo.Text)
             Case "GeneralLedgerOther"

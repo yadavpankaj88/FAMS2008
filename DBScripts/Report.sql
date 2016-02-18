@@ -228,7 +228,8 @@ ALTER PROCEDURE [dbo].[GetCashBankReportDetails]
 	@Fromdate AS DATETIME = NULL,
 	@ToDate AS DATETIME = NULL,
 	@VH_Dbk_Cd NVARCHAR(4),
-	@DayBookName NVARCHAR(50)
+	@DayBookName NVARCHAR(50),
+	@DayBookType  NVARCHAR(50)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from

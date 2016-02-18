@@ -34,9 +34,9 @@ Public Class frmReports
             'ClearControls()
             Select Case _mode
                 Case "CashBook"
-                    ShowCashBookReport()
+                    ShowCashBookReport("Cash")
                 Case "BankBook"
-                    ShowCashBookReport()
+                    ShowCashBookReport("Bank")
                 Case "GeneralLedgerCASHBank"
                     ShowGeneralLedger(True)
                 Case "GeneralLedgerOther"
@@ -59,7 +59,7 @@ Public Class frmReports
         _dbkName = pDBKName
     End Sub
 
-    Private Sub ShowCashBookReport()
+    Private Sub ShowCashBookReport(ByVal Mode As String)
         Dim view As New rptCashBook2008
         Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
         Dim pwd As String = System.Configuration.ConfigurationSettings.AppSettings("Password")
@@ -73,6 +73,7 @@ Public Class frmReports
         view.SetParameterValue("@VH_Dbk_Cd", _dayBookCode)
         view.SetParameterValue("@instCode", InstitutionMasterData.XInstCode)
         view.SetParameterValue("@DayBookName", _dbkName)
+        view.SetParameterValue("@DayBookType", Mode)
         crystalRptVwr.ReportSource = view
         crystalRptVwr.DisplayGroupTree = False
         crystalRptVwr.ShowRefreshButton = False

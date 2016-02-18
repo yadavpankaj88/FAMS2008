@@ -27,7 +27,7 @@
         Return count
     End Function
 
-    Function GetCashBankBookReportCount(Optional ByVal Fromdate As DateTime = Nothing, Optional ByVal ToDate As DateTime = Nothing, Optional ByVal pDaybookcode As String = "", Optional ByVal pDaybookName As String = "") As Integer
+    Function GetCashBankBookReportCount(Optional ByVal Fromdate As DateTime = Nothing, Optional ByVal ToDate As DateTime = Nothing, Optional ByVal pDaybookcode As String = "", Optional ByVal pDaybookName As String = "", Optional ByVal ReportType As String = "") As Integer
         Dim query As String
         Dim count As Integer = 0
         Dim dtCount As DataTable
@@ -39,6 +39,7 @@
             parameters.Add("@ToDate", ToDate.ToString("MM-dd-yyyy"))
             parameters.Add("@VH_Dbk_Cd", pDaybookcode)
             parameters.Add("@DayBookName", pDaybookName)
+            parameters.Add("@DayBookType", ReportType)
             dtCount = dataHelper.ExecuteQuery(query, CommandType.StoredProcedure, parameters)
             If dtCount Is Nothing Then
             Else
