@@ -479,12 +479,13 @@ ALTER PROCEDURE [dbo].[GetVoucherHeaderReportDetails]
 		@VH_Lnk_No as varchar(12),
 		@VH_Dbk_Cd as varchar(4),
 		@VH_Trn_Typ as varchar(2),
-		@VH_Fin_Yr as varchar(4)
-
+		@VH_Fin_Yr as varchar(4),
+		@DayBookName NVARCHAR(50)
 AS
 BEGIN
 declare @strQuery as nvarchar(max);
             set @strQuery = 'Select LTRIM(RTRIM([VH_Vch_Ref_No])) AS [VH_Ref_No]
+									,[VH_Lnk_No]
 									,[VH_Lnk_Dt]
 									,[VH_Ref_Dt]
 									,[VH_VCH_Dt]
@@ -509,7 +510,6 @@ declare @strQuery as nvarchar(max);
 								exec(@strQuery)
 
 END
-
 	go
 	
 print'--------------------------------------------------------------------------'

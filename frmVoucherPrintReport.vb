@@ -4,20 +4,20 @@
     Private _VH_Lnk_No As String
     Private _Code As String
     Private _VH_Trn_Typ As String
+    Private _pDbkName As String
     Public parentForm As frmFAMSMain
 
-    Public Sub SetControls(ByVal pReportType As String, ByVal pLinkNumber As String, ByVal pCode As String, ByVal pTrnType As String)
+    Public Sub SetControls(ByVal pReportType As String, ByVal pLinkNumber As String, ByVal pCode As String, ByVal pTrnType As String, ByVal pDbkName As String)
         _reportType = pReportType
         _VH_Lnk_No = pLinkNumber
         _Code = pCode
         _VH_Trn_Typ = pTrnType
+        _pDbkName = pDbkName
         Me.parentForm.pnlNavigator.Visible = False
     End Sub
 
-
     Private Sub frmReports_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         LoadReport()
-        
     End Sub
 
     Private Sub LoadReport()
@@ -50,7 +50,7 @@
         view.SetParameterValue("@VH_Trn_Typ", _VH_Trn_Typ)
         view.SetParameterValue("@VH_Fin_Yr", InstitutionMasterData.XFinYr)
         view.SetParameterValue("@instCode", InstitutionMasterData.XInstCode)
-
+        view.SetParameterValue("@DayBookName", _pDbkName)
         crystalviewerVoucher.ReportSource = view
         crystalviewerVoucher.DisplayGroupTree = False
         crystalviewerVoucher.ShowRefreshButton = False

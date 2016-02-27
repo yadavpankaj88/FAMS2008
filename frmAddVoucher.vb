@@ -1016,7 +1016,7 @@
         Dim frmMain As frmFAMSMain = DirectCast(Me.MdiParent, frmFAMSMain)
         Dim objfrmVoucherPrintReport As New frmVoucherPrintReport
         objfrmVoucherPrintReport.parentForm = frmMain
-        objfrmVoucherPrintReport.SetControls("Voucher", txtLinkVoucherNumber.Text, ComboBoxDaybookSelect.SelectedValue, TransactionType)
+        objfrmVoucherPrintReport.SetControls("Voucher", txtLinkVoucherNumber.Text, ComboBoxDaybookSelect.SelectedValue, TransactionType, ComboBoxDaybookSelect.Text)
         frmMain.ShowNewForm(objfrmVoucherPrintReport, Nothing)
     End Sub
 
