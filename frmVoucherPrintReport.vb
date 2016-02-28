@@ -50,7 +50,6 @@
         view.SetParameterValue("@VH_Trn_Typ", _VH_Trn_Typ)
         view.SetParameterValue("@VH_Fin_Yr", InstitutionMasterData.XFinYr)
         view.SetParameterValue("@instCode", InstitutionMasterData.XInstCode)
-        view.SetParameterValue("@DayBookName", _pDbkName)
         crystalviewerVoucher.ReportSource = view
         crystalviewerVoucher.DisplayGroupTree = False
         crystalviewerVoucher.ShowRefreshButton = False

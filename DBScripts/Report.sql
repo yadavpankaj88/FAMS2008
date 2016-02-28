@@ -479,8 +479,7 @@ ALTER PROCEDURE [dbo].[GetVoucherHeaderReportDetails]
 		@VH_Lnk_No as varchar(12),
 		@VH_Dbk_Cd as varchar(4),
 		@VH_Trn_Typ as varchar(2),
-		@VH_Fin_Yr as varchar(4),
-		@DayBookName NVARCHAR(50)
+		@VH_Fin_Yr as varchar(4)
 AS
 BEGIN
 declare @strQuery as nvarchar(max);
@@ -497,11 +496,20 @@ declare @strQuery as nvarchar(max);
 									,LTRIM(RTRIM([VH_Pty_Nm])) AS [VH_Pty_Nm] 
 									,ISNULL(UM1.Usr_Nm,''-'') AS [EnteredBy]
 									,ISNULL(UM2.Usr_Nm,''-'') AS [ConfirmedBy]
+									,VH.VH_Dbk_Cd+'' - ''+AM_Acc_Nm AS [DaybookDetails]
+									,CASE VH_Trn_Typ WHEN ''CP'' THEN ''CASH PAYMENT''
+														WHEN ''CR'' THEN ''CASH RECEIPT''
+														WHEN ''BP'' THEN ''BANK PAYMENT''
+														WHEN ''BR'' THEN ''BANK RECEIPT''
+														WHEN ''CT'' THEN ''CONTRA VOUCHER''
+														END AS [TransactionType]
 								from  ' + @instType + '_Voucher_Header VH
 								LEFT OUTER JOIN User_Master UM1
 								ON UM1.Usr_Id=VH.VH_Ent_By
 								LEFT OUTER JOIN User_Master UM2
 								ON UM2.Usr_Id=VH.VH_Conf_By
+								LEFT OUTER JOIN ' + @instType + '_ACCOUNTS AM
+								ON VH.Vh_Acc_Cd=AM.AM_Acc_Cd
 								where [VH_Lnk_No]='''+@VH_Lnk_No+''' 
 								and [VH_Dbk_Cd]='''+@VH_Dbk_Cd+''' 
 								and [VH_Trn_Typ]='''+@VH_Trn_Typ+'''
@@ -510,7 +518,7 @@ declare @strQuery as nvarchar(max);
 								exec(@strQuery)
 
 END
-	go
+go
 	
 print'--------------------------------------------------------------------------'
 go

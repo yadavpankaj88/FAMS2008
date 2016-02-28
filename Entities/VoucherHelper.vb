@@ -273,7 +273,7 @@ Public Class VoucherHelper
 
         query = "Update " + InstitutionMasterData.XInstType + "_Voucher_Header set VH_Vch_No=@voucherNumber,VH_VCH_Dt=@vchDt,VH_Conf_Dt=GetDate(),VH_Conf_By=@CnfBy " & _
           "where VH_Lnk_No=@linkNo " & _
-          "Update " + InstitutionMasterData.XInstType + "_Voucher_Detail set VD_Vch_No=@voucherNumber,VD_Conf_Dt=GetDate(),VD_Conf_By=@CnfBy " & _
+          "Update " + InstitutionMasterData.XInstType + "_Voucher_Detail set VD_Vch_No=@voucherNumber,VD_VCH_Dt=@vchDt,VD_Conf_Dt=GetDate(),VD_Conf_By=@CnfBy " & _
           "where VD_Lnk_No=@linkNo "
 
 
