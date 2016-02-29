@@ -279,6 +279,8 @@ BEGIN
 					VD.VD_Amt,
 					VD.VD_Acc_Cd,
 					VH.VH_Vch_Dt,
+					VH.VH_chq_no,
+					VH.VH_chq_dt,
 					dbo.OpeningBalanceValue(VH.VH_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''',VH.VH_Fin_Yr) as ClosingBalance
 					FROM '+@instType+'_Voucher_Detail AS VD 
 	INNER JOIN		'+@instType+'_Voucher_Header AS VH 
@@ -330,6 +332,8 @@ BEGIN
 					VH_Amt AS VD_Amt,
 					VD_Acc_Cd,
 					VH_Vch_Dt,
+					VH.VH_chq_no,
+					VH.VH_chq_dt,
 					dbo.OpeningBalanceValue(VD_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''',VD_Fin_Yr) as ClosingBalance
 					FROM '+@instType+'_Voucher_Detail VD
 					INNER JOIN '+@instType+'_Voucher_Header VH
