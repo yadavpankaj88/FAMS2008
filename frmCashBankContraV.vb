@@ -95,6 +95,8 @@
         _mode = pMode
         datepickerVoucherConfirm.Format = DateTimePickerFormat.Custom
         datepickerVoucherConfirm.CustomFormat = " "
+
+        
         pnlConfirm.Enabled = False
 
         lblStatus.Text = ""
@@ -133,6 +135,14 @@
                 DatePickerVoucherDate.Value = InstitutionMasterData.XDate
                 CheckDaybookType(ComboBoxGoesOut.SelectedItem)
                 DatePickerVoucherDate.Enabled = True
+                If (datepickerChequeDate.Enabled) Then
+                    datepickerChequeDate.Format = DateTimePickerFormat.Short
+                    datepickerChequeDate.CustomFormat = "dd-mm-yyyy"
+                    datepickerChequeDate.Value = InstitutionMasterData.XDate
+                Else
+                    datepickerChequeDate.Format = DateTimePickerFormat.Custom
+                    datepickerChequeDate.CustomFormat = " "
+                End If
             Else
                 MessageBox.Show("Please Select a Daybook!!!")
             End If
