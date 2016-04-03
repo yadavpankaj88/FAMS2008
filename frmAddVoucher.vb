@@ -265,12 +265,19 @@
                                 lblConfirmNumber.ForeColor = Color.White
                                 txtNextCount.Text = dt.Rows(0)(1).ToString()
                             End If
-
                         End If
                     End If
+
+                    Dim instMaster As InstitutionMasterData = New InstitutionMasterData()
+                    Dim vchRefNo As Int64
+                    vchRefNo = instMaster.GetNextInstitutionVoucherReferenceNumber()
+
                     lblConfirmedVoucherNumber.Visible = True
+                    lblConfirmedVoucherNumber.Text = vchRefNo.ToString().PadLeft(6, "0")
+
                     If (lblConfirmNumber.Text.Trim() <> "-") Then
-                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, datepickerVoucherDateConfirm.Value.ToString(), lblConfirmNumber.Text.Trim())
+                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, datepickerVoucherDateConfirm.Value.ToString(), lblConfirmNumber.Text.Trim(), vchRefNo.ToString().PadLeft(6, "0"))
+                        instMaster.UpdateRefernceNumber(vchRefNo, InstitutionMasterData.XInstCode)
                     End If
 
                     Dim lgdr As Ledger = New Ledger()
@@ -300,7 +307,7 @@
 
                         End Select
                     End If
-                    MessageBox.Show("Voucher confirmed successfully." + Environment.NewLine + "Voucher Confirm Number: " + lblConfirmNumber.Text)
+                    MessageBox.Show("Voucher confirmed successfully." + Environment.NewLine + "Voucher Confirm Number: " + lblConfirmNumber.Text + Environment.NewLine + "Voucher Reference Number: " + lblConfirmedVoucherNumber.Text)
                 End If
             Else
                 MessageBox.Show("Insufficient Balance cannot confirm voucher !!!", "Insufficient Balance", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -462,18 +469,7 @@
                         header.VH_Acc_Cd = DirectCast(ComboBoxDaybookSelect.Items(ComboBoxDaybookSelect.SelectedIndex), DataRowView)("DM_Acc_Cd").ToString()
                         header.VH_Lgr_Cd = "00"
                         header.VH_Brn_Cd = "HO"
-                        Dim instMaster As InstitutionMasterData = New InstitutionMasterData()
-                        Dim vchRefNo As Int64
-                        If Me._mode.ToLower() = "add" Then
-                            vchRefNo = instMaster.GetNextInstitutionVoucherReferenceNumber()
-                        ElseIf Me._mode.ToLower() = "edit" Then
-                            vchRefNo = Convert.ToInt64(lblConfirmedVoucherNumber.Text.Trim())
-                        End If
-
-                        header.VH_VCH_Ref_No = vchRefNo.ToString().PadLeft(6, "0")
-
                         helper.SaveVoucherHeader(header)
-
 
                         Dim i As Integer = 0
                         If dgvVoucherDetails.Rows.Count > 0 Then
@@ -514,7 +510,6 @@
                                         voucherDetail.VD_Acc_Cd = ledgerAccount
                                         voucherDetail.VD_Brn_Cd = "HO"
                                         voucherDetail.VD_Ent_By = InstitutionMasterData.XUsrId
-                                        voucherDetail.VD_Vch_Ref_No = vchRefNo.ToString().PadLeft(6, "0")
                                         helper.SaveVoucherDetail(voucherDetail)
                                     End If
                                 Catch ex As Exception
@@ -526,9 +521,9 @@
                         End If
 
                         If (IsSuccessFull And i > 0) Then
-
                             If Me._mode = "add" Then
-                                instMaster.UpdateLinkNumber(txtLinkVoucherNumber.Text.Trim(), vchRefNo, InstitutionMasterData.XInstCode)
+                                Dim instMaster As InstitutionMasterData = New InstitutionMasterData()
+                                instMaster.UpdateLinkNumber(txtLinkVoucherNumber.Text.Trim(), InstitutionMasterData.XInstCode)
                             End If
                             MessageBox.Show("Voucher saved successfully.")
                         Else

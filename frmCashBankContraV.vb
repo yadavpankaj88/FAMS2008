@@ -279,8 +279,6 @@
                 TextBoxAmount.Text = voucherHeader.VH_ABS_Amt.ToString
                 lblConfirmedVoucherNumber.Text = voucherHeader.VH_VCH_Ref_No.ToString()
                 lblConfirmedVoucherNumber.BackColor = Color.Red
-
-                'ComboBoxCreditDebit.SelectedItem = voucherHeader.VH_Cr_Dr
                 flgEnable = True
             Else
                 MessageBox.Show("No matching Voucher Entry found")
@@ -350,10 +348,7 @@
                         End If
                     End If
                 End If
-
-
             End If
-
 
             If frmParent.lblBankBalance.Visible Then
                 If TextBoxChequeNo.Text = String.Empty Then
@@ -410,15 +405,6 @@
                 header.VH_Lgr_Cd = "00"
                 header.VH_Brn_Cd = "HO"
 
-                Dim vchRefNo As Int64
-                If Me._mode.ToLower() = "add" Then
-                    vchRefNo = instMaster.GetNextInstitutionVoucherReferenceNumber()
-                ElseIf Me._mode.ToLower() = "edit" Then
-                    vchRefNo = Convert.ToInt64(lblConfirmedVoucherNumber.Text.Trim())
-                End If
-
-                header.VH_VCH_Ref_No = vchRefNo.ToString().PadLeft(6, "0")
-
                 voucherHelper.SaveVoucherHeader(header)
                 Dim voucherDetail As VoucherDetails = New VoucherDetails()
                 voucherDetail.VD_Fin_Yr = InstitutionMasterData.XFinYr
@@ -436,11 +422,10 @@
                 voucherDetail.VD_Acc_Cd = DirectCast(ComboBoxGoesInto.Items(ComboBoxGoesInto.SelectedIndex), DataRowView)("DM_Acc_Cd").ToString()
                 voucherDetail.VD_Brn_Cd = "HO"
                 voucherDetail.VD_Ent_By = InstitutionMasterData.XUsrId
-                voucherDetail.VD_Vch_Ref_No = vchRefNo.ToString().PadLeft(6, "0")
                 voucherHelper.SaveVoucherDetail(voucherDetail)
 
                 If Me._mode = "add" Then
-                    instMaster.UpdateLinkNumber(txtLinkVoucherNumber.Text.Trim(), vchRefNo, InstitutionMasterData.XInstCode)
+                    instMaster.UpdateLinkNumber(txtLinkVoucherNumber.Text.Trim(), InstitutionMasterData.XInstCode)
                 End If
                 MessageBox.Show("Voucher saved successfully.")
                 Return True
@@ -483,15 +468,19 @@
                         If dt.Rows.Count > 0 Then
                             lblVoucherConfNo.Text = String.Format("{0}", dt.Rows(0)(0).ToString())
                             lblVoucherConfNo.BackColor = Color.Red
-                            'lblVchRefNo.Text = dt.Rows(0)(1).ToString()
-                            'lblVchRefNo.BackColor = Color.Red
-                            'lblVchRefNo.ForeColor = Color.DarkGray
                         End If
                     End If
 
+                    Dim instMaster As InstitutionMasterData = New InstitutionMasterData()
+                    Dim vchRefNo As Int64
+                    vchRefNo = instMaster.GetNextInstitutionVoucherReferenceNumber()
+
+                    lblConfirmedVoucherNumber.Text = vchRefNo.ToString().PadLeft(6, "0")
+
                     lblVoucherConfNo.Visible = True
                     If (lblVoucherConfNo.Text.Trim() <> "-") Then
-                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, Convert.ToDateTime(datepickerVoucherConfirm.Value.ToString()), lblVoucherConfNo.Text.Trim())
+                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, Convert.ToDateTime(datepickerVoucherConfirm.Value.ToString()), lblVoucherConfNo.Text.Trim(), vchRefNo.ToString().PadLeft(6, "0"))
+                        instMaster.UpdateRefernceNumber(vchRefNo, InstitutionMasterData.XInstCode)
                     End If
 
                     Dim lgdr As Ledger = New Ledger()
@@ -517,7 +506,7 @@
                         End If
                     End If
 
-                    MessageBox.Show("Voucher confirmed successfully." + Environment.NewLine + "Voucher Confirm Number: " + lblVoucherConfNo.Text)
+                    MessageBox.Show("Voucher confirmed successfully." + Environment.NewLine + "Voucher Confirm Number: " + lblVoucherConfNo.Text + Environment.NewLine + "Voucher Reference Number: " + lblConfirmedVoucherNumber.Text)
 
                 End If
             Else

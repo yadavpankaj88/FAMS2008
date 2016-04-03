@@ -25,11 +25,19 @@
     Public Shared XStartFinYr As DateTime
     Public Shared XEndFinYr As DateTime
 
-    Public Sub UpdateLinkNumber(ByVal linkNo As String, ByVal VCHRefNo As String, ByVal instCode As String)
-        Dim query As String = "Update Inst_Master Set Inst_Link_No=@LinkNo,Inst_Vch_Ref_No=@VchRefNo where Inst_Cd=@InstCd"
+    Public Sub UpdateLinkNumber(ByVal linkNo As String, ByVal instCode As String)
+        Dim query As String = "Update Inst_Master Set Inst_Link_No=@LinkNo where Inst_Cd=@InstCd"
         Dim helper As DataHelper = New DataHelper()
         Dim params As Dictionary(Of String, Object) = New Dictionary(Of String, Object)()
         params.Add("@LinkNo", linkNo)
+        params.Add("@InstCd", instCode)
+        helper.ExecuteNonQuery(query, CommandType.Text, params)
+    End Sub
+
+    Public Sub UpdateRefernceNumber(ByVal VCHRefNo As String, ByVal instCode As String)
+        Dim query As String = "Update Inst_Master Set Inst_Vch_Ref_No=@VchRefNo where Inst_Cd=@InstCd"
+        Dim helper As DataHelper = New DataHelper()
+        Dim params As Dictionary(Of String, Object) = New Dictionary(Of String, Object)()
         params.Add("@VchRefNo", VCHRefNo)
         params.Add("@InstCd", instCode)
         helper.ExecuteNonQuery(query, CommandType.Text, params)

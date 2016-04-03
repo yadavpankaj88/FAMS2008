@@ -59,7 +59,7 @@ Public Class VoucherHelper
         End If
 
         params.Add("@VH_Ref_No", voucherHead.VH_Ref_No)
-        params.Add("@VH_VCH_Ref_No", voucherHead.VH_VCH_Ref_No)
+        params.Add("@VH_VCH_Ref_No", DBNull.Value)
         If voucherHead.VH_Ref_Dt.HasValue Then
             params.Add("@VH_Ref_Dt", voucherHead.VH_Ref_Dt.Value.ToString("MM-dd-yyyy"))
         Else
@@ -153,7 +153,7 @@ Public Class VoucherHelper
         params.Add("@VD_Cr_Dr", voucherdetail.VD_Cr_Dr)
         params.Add("@VD_Abs_Amt", voucherdetail.VD_ABS_Amt)
         params.Add("@VD_Ent_By", InstitutionMasterData.XUsrId)
-        params.Add("@VD_VCH_Ref_No", voucherdetail.VD_Vch_Ref_No)
+        params.Add("@VD_VCH_Ref_No", DBNull.Value)
         params.Add("@VD_Upd_By", InstitutionMasterData.XUsrId)
 
         Dim datahelper As DataHelper = New DataHelper()
@@ -268,12 +268,12 @@ Public Class VoucherHelper
         Return dt
     End Function
 
-    Sub ConfirmVoucher(ByVal linkVoucherNo As String, ByVal voucherDate As DateTime, ByVal confirmVoucherNumber As String)
+    Sub ConfirmVoucher(ByVal linkVoucherNo As String, ByVal voucherDate As DateTime, ByVal confirmVoucherNumber As String, ByVal referenceNumber As String)
         Dim query As String = String.Empty
 
-        query = "Update " + InstitutionMasterData.XInstType + "_Voucher_Header set VH_Vch_No=@voucherNumber,VH_VCH_Dt=@vchDt,VH_Conf_Dt=GetDate(),VH_Conf_By=@CnfBy " & _
+        query = "Update " + InstitutionMasterData.XInstType + "_Voucher_Header set VH_Vch_No=@voucherNumber,VH_VCH_Dt=@vchDt,VH_Conf_Dt=GetDate(),VH_Conf_By=@CnfBy,VH_Vch_Ref_No=@referenceNumber " & _
           "where VH_Lnk_No=@linkNo " & _
-          "Update " + InstitutionMasterData.XInstType + "_Voucher_Detail set VD_Vch_No=@voucherNumber,VD_VCH_Dt=@vchDt,VD_Conf_Dt=GetDate(),VD_Conf_By=@CnfBy " & _
+          "Update " + InstitutionMasterData.XInstType + "_Voucher_Detail set VD_Vch_No=@voucherNumber,VD_VCH_Dt=@vchDt,VD_Conf_Dt=GetDate(),VD_Conf_By=@CnfBy,VD_Vch_Ref_No=@referenceNumber " & _
           "where VD_Lnk_No=@linkNo "
 
 
@@ -282,6 +282,7 @@ Public Class VoucherHelper
         params.Add("@linkNo", linkVoucherNo)
         params.Add("@CnfBy", InstitutionMasterData.XUsrId)
         params.Add("@vchDt", voucherDate.ToString("yyyy-MM-dd"))
+        params.Add("@referenceNumber", referenceNumber)
         Dim dataHelper As DataHelper = New DataHelper()
         dataHelper.ExecuteNonQuery(query, CommandType.Text, params)
     End Sub
