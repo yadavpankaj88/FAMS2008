@@ -254,16 +254,16 @@ BEGIN
 					VD.VD_Seq_No,
 					VH.VH_Trn_Typ,
 					CASE 
-					WHEN LOWER(VH.VH_Cr_Dr)=''dr'' THEN VD.VD_ABS_Amt
+					WHEN LOWER(VD.VD_Cr_Dr)=''cr'' THEN VD.VD_ABS_Amt
 					END as Receipt,
 					CASE 
-					WHEN LOWER(VH.VH_Cr_Dr)=''cr'' THEN VD.VD_ABS_Amt
+					WHEN LOWER(VD.VD_Cr_Dr)=''dr'' THEN VD.VD_ABS_Amt
 					END as Payment,
 					CASE 
-					WHEN LOWER(VH.VH_Cr_Dr)=''dr'' THEN VD.VD_Cr_Dr
+					WHEN LOWER(VD.VD_Cr_Dr)=''cr'' THEN VD.VD_Cr_Dr
 					END as ReceiptCRDR,
 					CASE 
-					WHEN LOWER(VH.VH_Cr_Dr)=''cr'' THEN VD.VD_Cr_Dr 
+					WHEN LOWER(VD.VD_Cr_Dr)=''dr'' THEN VD.VD_Cr_Dr 
 					END as PaymentCRDR,
 					CASE WHEN VH.VH_Chq_No > 0 THEN VH.VH_Chq_No
 					ELSE ''Cash''
@@ -307,16 +307,16 @@ BEGIN
 					VD_Seq_No,
 					VD_Trn_Typ AS VH_Trn_Typ,
 					CASE 
-					WHEN LOWER(VD_Cr_Dr)=''dr'' THEN VH_ABS_Amt
+					WHEN LOWER(VH_Cr_Dr)=''cr'' THEN VH_ABS_Amt
 					END as Receipt,
 					CASE 
-					WHEN LOWER(VD_Cr_Dr)=''cr'' THEN VH_ABS_Amt
+					WHEN LOWER(VH_Cr_Dr)=''dr'' THEN VH_ABS_Amt
 					END as Payment,
 					CASE 
-					WHEN LOWER(VD_Cr_Dr)=''dr'' THEN VH_Cr_Dr
+					WHEN LOWER(VH_Cr_Dr)=''cr'' THEN VH_Cr_Dr
 					END as ReceiptCRDR,
 					CASE 
-					WHEN LOWER(VD_Cr_Dr)=''cr'' THEN VH_Cr_Dr 
+					WHEN LOWER(VH_Cr_Dr)=''dr'' THEN VH_Cr_Dr 
 					END as PaymentCRDR,
 					CASE WHEN VH_Chq_No > 0 THEN VH_Chq_No
 					ELSE ''Cash''
@@ -330,7 +330,7 @@ BEGIN
 					END as PaymentSum,
 					VD_Amt AS VH_Amt,
 					VH_Amt AS VD_Amt,
-					VD_Acc_Cd,
+					VH_acc_cd AS VD_Acc_Cd,
 					VH_Vch_Dt,
 					VH.VH_chq_no,
 					VH.VH_chq_dt,
@@ -339,7 +339,7 @@ BEGIN
 					INNER JOIN '+@instType+'_Voucher_Header VH
 					ON VD.VD_Lnk_No=VH.VH_Lnk_No
 					LEFT OUTER JOIN '+@instType+'_Accounts AM
-					ON AM.AM_Acc_Cd=VD.VD_Acc_Cd
+					ON AM.AM_Acc_Cd=VH.VH_Acc_Cd
 					WHERE VD_Trn_Typ=''CT''
 					AND VD_Dbk_Cd='''+@VH_Dbk_Cd+''' AND VD_Vch_No IS NOT NULL and VH_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' and VH_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+'''
 					)dataset ORDER BY VH_Vch_Dt,VH_Vch_Ref_No, VD_Seq_No asc'

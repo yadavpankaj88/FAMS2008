@@ -24,7 +24,7 @@
     Private Sub ShowReport()
         Try
             If (Not String.IsNullOrEmpty(_mode) And Not String.IsNullOrEmpty(dtpfromdate.Value.ToString()) And Not String.IsNullOrEmpty(dtptodate.Value.ToString())) Then
-                If ((dtpfromdate.Value >= InstitutionMasterData.XStartFinYr And dtpfromdate.Value <= InstitutionMasterData.XEndFinYr) And (dtptodate.Value >= InstitutionMasterData.XStartFinYr And dtptodate.Value <= InstitutionMasterData.XEndFinYr)) Then
+                If ((dtpfromdate.Value.Date >= InstitutionMasterData.XStartFinYr And dtpfromdate.Value.Date <= InstitutionMasterData.XEndFinYr) And (dtptodate.Value.Date >= InstitutionMasterData.XStartFinYr And dtptodate.Value.Date <= InstitutionMasterData.XEndFinYr)) Then
                     If ((String.Equals(_mode, "GeneralLedgerCASHBank") Or String.Equals(_mode, "GeneralLedgerOther")) And String.IsNullOrEmpty(txtAccountFrom.Text) And String.IsNullOrEmpty(txtAccountTo.Text)) Then
                         MessageBox.Show("Please select all neccessary parameters")
                     Else
