@@ -776,3 +776,131 @@ BEGIN
 
 END
 GO
+
+CREATE PROCEDURE [dbo].[GetConsolidatedBankReportDetails]
+	-- Add the parameters for the stored procedure here
+	@instType NVARCHAR(2),
+	@Fromdate AS DATETIME = NULL,
+	@ToDate AS DATETIME = NULL
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	DECLARE @strQuery AS NVARCHAR(MAX)
+	
+
+	SET @strQuery = 'SELECT * FROM (SELECT 
+					VH.VH_acc_cd, 
+					dbo.OpeningBalanceValue(VH.VH_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,-1,@Fromdate),101)+''','''+@instType+''',VH.VH_Fin_Yr) as OpeningBalance,
+					VH.VH_Vch_No, 
+					VH.VH_Vch_Ref_No, 
+					VD.VD_Lgr_Cd, 
+					Acc.AM_Acc_Nm, 
+					VD.VD_Narr, 
+					VH.VH_Pty_Nm, 
+					CASE WHEN VH.VH_Chq_No > 0 THEN VH.VH_Chq_Dt
+					ELSE [VD_Ref_Dt] END AS [VD_Ref_Dt],
+					VD.VD_Fin_Yr,
+					VD.VD_Cr_Dr,
+					VD.VD_Seq_No,
+					VH.VH_Trn_Typ,
+					VH.VH_Dbk_Cd,
+					CASE 
+					WHEN LOWER(VD.VD_Cr_Dr)=''cr'' THEN VD.VD_ABS_Amt
+					END as Receipt,
+					CASE 
+					WHEN LOWER(VD.VD_Cr_Dr)=''dr'' THEN VD.VD_ABS_Amt
+					END as Payment,
+					CASE 
+					WHEN LOWER(VD.VD_Cr_Dr)=''cr'' THEN VD.VD_Cr_Dr
+					END as ReceiptCRDR,
+					CASE 
+					WHEN LOWER(VD.VD_Cr_Dr)=''dr'' THEN VD.VD_Cr_Dr 
+					END as PaymentCRDR,
+					CASE WHEN VH.VH_Chq_No > 0 THEN VH.VH_Chq_No
+					ELSE ''Cash''
+					END as TransactionType,
+					VH.VH_ABS_Amt,
+					CASE 
+					WHEN LOWER(VH.VH_Cr_Dr)=''dr'' THEN VH.VH_Amt
+					END as ReceiptSum,
+					CASE 
+					WHEN LOWER(VH.VH_Cr_Dr)=''cr'' THEN VH.VH_Amt
+					END as PaymentSum,
+					VH.VH_Amt,
+					VD.VD_Amt,
+					VD.VD_Acc_Cd,
+					VH.VH_Vch_Dt,
+					VH.VH_chq_no,
+					VH.VH_chq_dt,
+					dbo.OpeningBalanceValue(VH.VH_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''',VH.VH_Fin_Yr) as ClosingBalance
+					FROM '+@instType+'_Voucher_Detail AS VD 
+	INNER JOIN		'+@instType+'_Voucher_Header AS VH 
+	ON				VD.VD_Vch_Ref_No = VH.VH_Vch_Ref_No 
+	LEFT OUTER JOIN	'+@instType+'_Accounts AS Acc 
+	ON				VD.VD_Acc_Cd = Acc.AM_Acc_Cd
+	WHERE			VH.VH_Vch_No IS NOT NULL and VH.VH_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' and VH.VH_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+'''
+	
+	UNION ALL
+	
+					SELECT 
+					VD_acc_cd AS VH_acc_cd, 
+					dbo.OpeningBalanceValue(VD_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,-1,@Fromdate),101)+''','''+@instType+''',VD_Fin_Yr) as OpeningBalance,
+					VD_Vch_No AS VH_Vch_No, 
+					VD_Vch_Ref_No AS VH_Vch_Ref_No, 
+					VD_Lgr_Cd, 
+					AM_Acc_Nm, 
+					VH_Pty_Nm AS VD_Narr, 
+					VH_Pty_Nm AS VD_Narr, 
+					CASE WHEN VH_Chq_No > 0 THEN VH_Chq_Dt
+					ELSE NULL END AS [VD_Ref_Dt],
+					VD_Fin_Yr,
+					VH_Cr_Dr AS VD_Cr_Dr,
+					VD_Seq_No,
+					VD_Trn_Typ AS VH_Trn_Typ,
+					VH_Dbk_Cd,
+					CASE 
+					WHEN LOWER(VH_Cr_Dr)=''cr'' THEN VH_ABS_Amt
+					END as Receipt,
+					CASE 
+					WHEN LOWER(VH_Cr_Dr)=''dr'' THEN VH_ABS_Amt
+					END as Payment,
+					CASE 
+					WHEN LOWER(VH_Cr_Dr)=''cr'' THEN VH_Cr_Dr
+					END as ReceiptCRDR,
+					CASE 
+					WHEN LOWER(VH_Cr_Dr)=''dr'' THEN VH_Cr_Dr 
+					END as PaymentCRDR,
+					CASE WHEN VH_Chq_No > 0 THEN VH_Chq_No
+					ELSE ''Cash''
+					END as TransactionType,
+					VD_ABS_Amt AS VH_ABS_Amt,
+					CASE 
+					WHEN LOWER(VD_Cr_Dr)=''dr'' THEN VD_Amt
+					END as ReceiptSum,
+					CASE 
+					WHEN LOWER(VD_Cr_Dr)=''cr'' THEN VD_Amt
+					END as PaymentSum,
+					VD_Amt AS VH_Amt,
+					VH_Amt AS VD_Amt,
+					VD_Acc_Cd,
+					VH_Vch_Dt,
+					VH.VH_chq_no,
+					VH.VH_chq_dt,
+					dbo.OpeningBalanceValue(VD_acc_cd,'''+CONVERT(VARCHAR(25),DATEADD(DAY,0,@ToDate),101)+''','''+@instType+''',VD_Fin_Yr) as ClosingBalance
+					FROM '+@instType+'_Voucher_Detail VD
+					INNER JOIN '+@instType+'_Voucher_Header VH
+					ON VD.VD_Lnk_No=VH.VH_Lnk_No
+					LEFT OUTER JOIN '+@instType+'_Accounts AM
+					ON AM.AM_Acc_Cd=VD.VD_Acc_Cd
+					WHERE VD_Trn_Typ=''CT''
+					AND VD_Vch_No IS NOT NULL and VH_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' and VH_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+'''
+					)dataset ORDER BY VH_Dbk_Cd,VH_Vch_Dt,VH_Vch_Ref_No, VD_Seq_No asc'
+	
+--print @strQuery
+	EXEC(@strQuery)
+
+END
+
+GO

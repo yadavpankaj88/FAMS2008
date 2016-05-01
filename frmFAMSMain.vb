@@ -759,7 +759,7 @@ Public Class frmFAMSMain
     End Sub
 
     Private Sub mnuConsolidatedBankBookRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuConsolidatedBankBookRpt.Click
-        LoadDayBookSelection("ConsolidatedBankBook")
+        'LoadDayBookSelection("ConsolidatedBankBook")
     End Sub
 
     Private Sub mnuCombinedCashBankBookRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCombinedCashBankBookRpt.Click
