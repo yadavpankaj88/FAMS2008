@@ -740,3 +740,39 @@ SELECT ISNULL(@TotalBalance,0) AS 'Total Balance'
 
 END
 GO
+
+CREATE PROCEDURE [dbo].[GetCashBankContraRegister] 
+	-- Add the parameters for the stored procedure here
+	@instType AS NVARCHAR(2),
+	@Fromdate AS DATETIME,
+	@ToDate AS DATETIME
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DECLARE @strQuery AS NVARCHAR(MAX)
+	
+	SET @strQuery = 'SELECT VH_Vch_Dt
+					,VH_Dbk_Cd
+					,VH_Vch_No
+					,VH_Vch_Ref_No
+					,VH_Pty_Nm
+					,VH_Chq_No
+					,VH_ABS_Amt
+					,VD_Dbk_Cd
+					FROM '+@instType+'_Voucher_Header VH
+					INNER JOIN '+@instType+'_Voucher_Detail VD
+					ON VH.VH_Vch_Ref_No = VD.VD_Vch_Ref_No
+					WHERE VH_Trn_Typ=''CT''
+					AND VH.VH_Vch_No IS NOT NULL 
+					AND VH.VH_Vch_Dt >= '''+CONVERT(VARCHAR(10),@Fromdate,110)+''' 
+					AND VH.VH_Vch_Dt <= '''+CONVERT(VARCHAR(10),@ToDate,110)+'''
+					ORDER BY VD_Vch_Dt, VD_Vch_Ref_No, VD_Seq_No'
+
+
+	EXEC(@strQuery)
+
+END
+GO

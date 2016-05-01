@@ -66,6 +66,8 @@
                 count = reportCountHelper.GetLedgerReportCount(dtpfromdate.Value, dtptodate.Value, False, txtAccountFrom.Text, txtAccountTo.Text)
             Case "TrialBalance"
                 count = reportCountHelper.GetTrialBalanceReportCount(dtpfromdate.Value, dtptodate.Value)
+            Case "CashBankContraRegister"
+                count = reportCountHelper.GetCashBankContraRegisterReportCount(dtpfromdate.Value, dtptodate.Value)
         End Select
         Return count
     End Function
@@ -111,6 +113,7 @@
                 showDayBookOption = False
                 showAccountCodeOption = True
             Case "TrialBalance"
+            Case "CashBankContraRegister"
                 showDayBookOption = False
                 showAccountCodeOption = False
         End Select

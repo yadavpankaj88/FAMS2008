@@ -830,4 +830,8 @@ Public Class frmFAMSMain
 
         End Try
     End Sub
+
+    Private Sub mnu_CashBankContra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnu_CashBankContra.Click
+        LoadDayBookSelection("CashBankContraRegister")
+    End Sub
 End Class

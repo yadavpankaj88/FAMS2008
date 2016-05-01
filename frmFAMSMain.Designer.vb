@@ -105,6 +105,9 @@ Partial Class frmFAMSMain
         Me.mnuBanlcRrt = New System.Windows.Forms.ToolStripMenuItem
         Me.mnu_MonthVNo = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuUtilities = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnu_PrcessingDate = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnu_ChangeInstitution = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnu_ChangeUser = New System.Windows.Forms.ToolStripMenuItem
         Me.mnu_ChngPassword = New System.Windows.Forms.ToolStripMenuItem
         Me.mnu_UnlockUser = New System.Windows.Forms.ToolStripMenuItem
         Me.mnu_EUSDEF = New System.Windows.Forms.ToolStripMenuItem
@@ -113,9 +116,6 @@ Partial Class frmFAMSMain
         Me.mnu_TBNFY = New System.Windows.Forms.ToolStripMenuItem
         Me.mnu_CloseFinancialYear = New System.Windows.Forms.ToolStripMenuItem
         Me.pnlNavigator = New System.Windows.Forms.Panel
-        Me.mnu_PrcessingDate = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnu_ChangeInstitution = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnu_ChangeUser = New System.Windows.Forms.ToolStripMenuItem
         CType(Me.mainBindingNavigator, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.mainBindingNavigator.SuspendLayout()
         Me.pnlDetails.SuspendLayout()
@@ -722,6 +722,24 @@ Partial Class frmFAMSMain
         Me.mnuUtilities.Size = New System.Drawing.Size(62, 20)
         Me.mnuUtilities.Text = "Utilities"
         '
+        'mnu_PrcessingDate
+        '
+        Me.mnu_PrcessingDate.Name = "mnu_PrcessingDate"
+        Me.mnu_PrcessingDate.Size = New System.Drawing.Size(301, 22)
+        Me.mnu_PrcessingDate.Text = "Change Processing Date"
+        '
+        'mnu_ChangeInstitution
+        '
+        Me.mnu_ChangeInstitution.Name = "mnu_ChangeInstitution"
+        Me.mnu_ChangeInstitution.Size = New System.Drawing.Size(301, 22)
+        Me.mnu_ChangeInstitution.Text = "Change Institution"
+        '
+        'mnu_ChangeUser
+        '
+        Me.mnu_ChangeUser.Name = "mnu_ChangeUser"
+        Me.mnu_ChangeUser.Size = New System.Drawing.Size(301, 22)
+        Me.mnu_ChangeUser.Text = "Change User"
+        '
         'mnu_ChngPassword
         '
         Me.mnu_ChngPassword.Name = "mnu_ChngPassword"
@@ -773,24 +791,6 @@ Partial Class frmFAMSMain
         Me.pnlNavigator.Size = New System.Drawing.Size(1173, 27)
         Me.pnlNavigator.TabIndex = 17
         Me.pnlNavigator.Visible = False
-        '
-        'mnu_PrcessingDate
-        '
-        Me.mnu_PrcessingDate.Name = "mnu_PrcessingDate"
-        Me.mnu_PrcessingDate.Size = New System.Drawing.Size(301, 22)
-        Me.mnu_PrcessingDate.Text = "Change Processing Date"
-        '
-        'mnu_ChangeInstitution
-        '
-        Me.mnu_ChangeInstitution.Name = "mnu_ChangeInstitution"
-        Me.mnu_ChangeInstitution.Size = New System.Drawing.Size(301, 22)
-        Me.mnu_ChangeInstitution.Text = "Change Institution"
-        '
-        'mnu_ChangeUser
-        '
-        Me.mnu_ChangeUser.Name = "mnu_ChangeUser"
-        Me.mnu_ChangeUser.Size = New System.Drawing.Size(301, 22)
-        Me.mnu_ChangeUser.Text = "Change User"
         '
         'frmFAMSMain
         '
