@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -75,10 +75,12 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Enterprise.Framework, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Enterprise.InfoStore, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -107,6 +109,12 @@
   <ItemGroup>
     <Compile Include="BusinessEntities\CommonFunctions.vb" />
     <Compile Include="BusinessEntities\ValidateClass.vb" />
+    <Compile Include="frmAddJournalVoucher.Designer.vb">
+      <DependentUpon>frmAddJournalVoucher.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddJournalVoucher.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Entities\Accounts.vb" />
     <Compile Include="Entities\BaseEntity.vb" />
     <Compile Include="Entities\ComboBoxHelper.vb" />
@@ -119,6 +127,7 @@
     <Compile Include="Entities\Ledger.vb" />
     <Compile Include="Entities\LedgerAccountHelper.vb" />
     <Compile Include="Entities\LedgerHelper.vb" />
+    <Compile Include="Entities\ReportHelper.vb" />
     <Compile Include="Entities\User.vb" />
     <Compile Include="Entities\UserHelper.vb" />
     <Compile Include="Entities\VoucherDetails.vb" />
@@ -257,6 +266,12 @@
     <Compile Include="frmUserMaster.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmVoucherPrintReport.Designer.vb">
+      <DependentUpon>frmVoucherPrintReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmVoucherPrintReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -278,15 +293,17 @@
     <Compile Include="popupHelper.vb">
       <SubType>Form</SubType>
     </Compile>
-<<<<<<< HEAD
-    <Compile Include="Images\Reports\rptCashBook.vb">
-=======
-    <Compile Include="Reports\rptBankBook.vb">
->>>>>>> 0c58d10fc56cfb2aad8aa2860cd38318ac3b9163
+    <Compile Include="Reports\rptCashBankContraRegister.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>rptBankBook.rpt</DependentUpon>
+      <DependentUpon>rptCashBankContraRegister.rpt</DependentUpon>
       <SubType>Component</SubType>
+       </Compile>
+    <Compile Include="Reports\rptConsolidatedBook2008.vb">
+      <DependentUpon>rptConsolidatedBook2008.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Reports\rptCashBook.vb">
       <DependentUpon>rptCashBook.rpt</DependentUpon>
@@ -294,16 +311,52 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Reports\rptCashBook2008.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptCashBook2008.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\rptGeneralLedger.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptGeneralLedger.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\rptGeneralLedger2008.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptGeneralLedger2008.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\rptPrintAccount.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptPrintAccount.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\rptPrintDaybook.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptPrintDaybook.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\rptPrintVoucher.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptPrintVoucher.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\rptTrialBalance.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptTrialBalance.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\rptTrialBalance2008.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptTrialBalance2008.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SelectDaybookVoucher.Designer.vb">
@@ -320,6 +373,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmAddJournalVoucher.resx">
+      <DependentUpon>frmAddJournalVoucher.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAddVoucher.resx">
       <DependentUpon>frmAddVoucher.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -350,12 +407,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmFillDaybookCode.resx">
       <DependentUpon>frmFillDaybookCode.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmFillUserName.resx">
       <DependentUpon>frmFillUserName.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmReports.resx">
       <DependentUpon>frmReports.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCashRecV.resx">
       <DependentUpon>frmCashRecV.vb</DependentUpon>
@@ -371,6 +431,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmFillAccCode.resx">
       <DependentUpon>frmFillAccCode.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmInstitutionSelection.resx">
       <DependentUpon>frmInstitutionSelection.vb</DependentUpon>
@@ -394,9 +455,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSelectDaybook.resx">
       <DependentUpon>frmSelectDaybook.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUserMaster.resx">
       <DependentUpon>frmUserMaster.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVoucherPrintReport.resx">
+      <DependentUpon>frmVoucherPrintReport.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -408,25 +475,55 @@
       <DependentUpon>popupHelper.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-<<<<<<< HEAD
-    <EmbeddedResource Include="Images\Reports\rptCashBook.rpt">
-=======
-    <EmbeddedResource Include="Reports\rptBankBook.rpt">
+    <EmbeddedResource Include="Reports\rptCashBankContraRegister.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>rptBankBook.vb</LastGenOutput>
+            <LastGenOutput>rptCashBankContraRegister.vb</LastGenOutput>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Reports\rptConsolidatedBook2008.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptConsolidatedBook2008.vb</LastGenOutput>
+    </EmbeddedResource>
+
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+
+
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rptCashBook.rpt">
->>>>>>> 0c58d10fc56cfb2aad8aa2860cd38318ac3b9163
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptCashBook.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rptCashBook2008.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptCashBook2008.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rptGeneralLedger.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptGeneralLedger.vb</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rptGeneralLedger2008.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptGeneralLedger2008.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rptPrintAccount.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptPrintAccount.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rptPrintDaybook.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptPrintDaybook.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rptPrintVoucher.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptPrintVoucher.vb</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\rptTrialBalance.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptTrialBalance.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rptTrialBalance2008.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptTrialBalance2008.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectDaybookVoucher.resx">
       <DependentUpon>SelectDaybookVoucher.vb</DependentUpon>
@@ -434,15 +531,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserLogin.resx">
       <DependentUpon>UserLogin.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <None Include="Entities\app.config" />
-=======
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
->>>>>>> 0c58d10fc56cfb2aad8aa2860cd38318ac3b9163
     <None Include="Images\edit" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -455,9 +549,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DBScripts\FAMS2015.sql" />
+    <None Include="Docs\Changes_in_FAMS_Phase_I.xls" />
     <None Include="Images\view.jpg" />
     <None Include="Images\save.jpg" />
     <None Include="Images\clear.jpg" />
@@ -465,11 +562,11 @@
     <None Include="Images\search.jpg" />
     <None Include="Images\delete.jpg" />
     <Content Include="DBScripts\FAMS.sql" />
-    <Content Include="FAMS.vbproj.vspscc" />
+    <Content Include="DBScripts\Report.sql" />
+    <Content Include="DBScripts\Tables.sql" />
     <Content Include="FAM_SchemaData_Script27012014.sql" />
     <Content Include="Images\searchIcon.png" />
   </ItemGroup>
-<<<<<<< HEAD
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
@@ -487,9 +584,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-=======
   <ItemGroup />
->>>>>>> 0c58d10fc56cfb2aad8aa2860cd38318ac3b9163
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
