@@ -68,6 +68,8 @@
                 count = reportCountHelper.GetTrialBalanceReportCount(dtpfromdate.Value, dtptodate.Value)
             Case "CashBankContraRegister"
                 count = reportCountHelper.GetCashBankContraRegisterReportCount(dtpfromdate.Value, dtptodate.Value)
+            Case "ConsolidatedBankBook"
+                count = reportCountHelper.GetConsolidatedBankBookReportCount(dtpfromdate.Value, dtptodate.Value)
         End Select
         Return count
     End Function
@@ -114,6 +116,9 @@
                 showAccountCodeOption = True
             Case "TrialBalance"
             Case "CashBankContraRegister"
+                showDayBookOption = False
+                showAccountCodeOption = False
+            Case "ConsolidatedBankBook"
                 showDayBookOption = False
                 showAccountCodeOption = False
         End Select

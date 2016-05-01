@@ -479,7 +479,7 @@
 
                     lblVoucherConfNo.Visible = True
                     If (lblVoucherConfNo.Text.Trim() <> "-") Then
-                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, Convert.ToDateTime(datepickerVoucherConfirm.Value.ToString()), lblVoucherConfNo.Text.Trim(), vchRefNo.ToString().PadLeft(6, "0"))
+                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, Convert.ToDateTime(datepickerVoucherConfirm.Value.ToString()), lblVoucherConfNo.Text.Trim(), vchRefNo.ToString().PadLeft(6, "0"), "")
                         instMaster.UpdateRefernceNumber(vchRefNo, InstitutionMasterData.XInstCode)
                     End If
 
@@ -616,7 +616,7 @@
                     'Me.dgvVoucherDetails.Enabled = False
                 End If
             Case Keys.F2
-                Dim helper As popupHelper = New popupHelper(1)
+                Dim helper As popupHelper = New popupHelper(1, "")
                 helper.TransType = "CT"
                 helper.dbkCode = ComboBoxGoesOut.SelectedValue.ToString()
                 helper.currentMode = Me._mode

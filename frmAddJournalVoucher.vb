@@ -1,4 +1,4 @@
-﻿Public Class frmAddVoucher
+﻿Public Class frmAddJournalVoucher
 #Region "Private variables"
     Private _Voucher_Type As String
     Private _PayeeReceipt As String
@@ -276,7 +276,7 @@
                     lblConfirmedVoucherNumber.Text = vchRefNo.ToString().PadLeft(6, "0")
 
                     If (lblConfirmNumber.Text.Trim() <> "-") Then
-                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, datepickerVoucherDateConfirm.Value.ToString(), lblConfirmNumber.Text.Trim(), vchRefNo.ToString().PadLeft(6, "0"),VoucherType)
+                        helper.ConfirmVoucher(txtLinkVoucherNumber.Text, datepickerVoucherDateConfirm.Value.ToString(), lblConfirmNumber.Text.Trim(), vchRefNo.ToString().PadLeft(6, "0"), VoucherType)
                         instMaster.UpdateRefernceNumber(vchRefNo, InstitutionMasterData.XInstCode)
                     End If
 

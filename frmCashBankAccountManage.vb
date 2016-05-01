@@ -144,7 +144,7 @@
                 frmMain.toolstripedit.Enabled = False
                 frmMain.toolstripDeleteItem.Enabled = False
                 frmMain.toolstripAdd.Enabled = False
-                
+
         End Select
 
     End Sub
@@ -166,6 +166,11 @@
             .Text = "Voucher", _
            .Value = "V" _
       })
+
+        DayBookTypes.Add(New ComboBoxHelper() With { _
+           .Text = "Journal", _
+          .Value = "J" _
+     })
 
         ComboBoxDaybookType.DataSource = DayBookTypes
         ComboBoxDaybookType.DisplayMember = "Text"
@@ -413,7 +418,7 @@
                 If (ComboBoxDaybookType.SelectedValue = Nothing) Then
                     ComboBoxDaybookType.SelectedValue = dt.Rows(0)("DM_Dbk_Typ").ToString()
                 End If
-                
+
             End If
             If (IsAccountLinked()) Then
                 If (ComboBoxLedgerAccountCode.SelectedValue = Nothing) Then
@@ -446,7 +451,7 @@
                     Me.Close()
                 End If
             End If
-            
+
         Else
 
             If (TextBoxDayBookCode.Text = "true" Or TextBoxDayBookCode.Text = "" Or TextBoxDaybookName.Text = "") Then

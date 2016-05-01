@@ -11,6 +11,7 @@ Public Class frmFAMSMain
     Dim objJournal As frmJournalV
     Dim objUserMaster As frmUserMaster
     Dim objVoucherAdd As frmAddVoucher
+    Dim objJournalVoucherAdd As frmAddJournalVoucher
     Private _institutionDetails As InstitutionMasterData
     Dim legerAcc As LedgerAccountHelper
 
@@ -257,12 +258,12 @@ Public Class frmFAMSMain
     End Sub
 
     Private Sub mnuJournalV_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuJournalV.Click
-        objVoucherAdd = New frmAddVoucher()
-        objVoucherAdd.Text = "Journal voucher"
-        objVoucherAdd.MDIForm = Me
-        objVoucherAdd.VoucherType = "J"
-        objVoucherAdd.TransactionType = "JV"
-        ShowNewForm(objVoucherAdd, Nothing)
+        objJournalVoucherAdd = New frmAddJournalVoucher()
+        objJournalVoucherAdd.Text = "Journal voucher"
+        objJournalVoucherAdd.MDIForm = Me
+        objJournalVoucherAdd.VoucherType = "J"
+        objJournalVoucherAdd.TransactionType = "JV"
+        ShowNewForm(objJournalVoucherAdd, Nothing)
 
     End Sub
 
@@ -282,6 +283,12 @@ Public Class frmFAMSMain
                     'CashBankAccountManage.Close()
                 Case "frmAddVoucher"
                     If DirectCast(Me.ActiveMdiChild, frmAddVoucher).SaveVoucher() Then
+                        Call ToolStripButtonClear_Click(ToolStripButtonClear, Nothing)
+                    Else
+                        Return
+                    End If
+                Case "frmAddJournalVoucher"
+                    If DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).SaveVoucher() Then
                         Call ToolStripButtonClear_Click(ToolStripButtonClear, Nothing)
                     Else
                         Return
@@ -330,6 +337,12 @@ Public Class frmFAMSMain
                     frmAddVoucher.SetOperationMode("delete")
                     EnableToolStripForVouchers("delete")
                     frmAddVoucher.SetControls("delete")
+
+                Case "frmAddJournalVoucher"
+                    Dim frmAddJournalVoucher As frmAddJournalVoucher = DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher)
+                    frmAddJournalVoucher.SetOperationMode("delete")
+                    EnableToolStripForVouchers("delete")
+                    frmAddJournalVoucher.SetControls("delete")
 
                 Case "frmCashBankContraV"
                     Dim cashbankContra As frmCashBankContraV = DirectCast(activeForm, frmCashBankContraV)
@@ -382,6 +395,11 @@ Public Class frmFAMSMain
                     DirectCast(Me.ActiveMdiChild, frmAddVoucher).SetOperationMode("edit")
                     DirectCast(Me.ActiveMdiChild, frmAddVoucher).ClearControls()
                     DirectCast(Me.ActiveMdiChild, frmAddVoucher).SetControls("edit")
+                Case "frmAddJournalVoucher"
+                    EnableToolStripForVouchers("edit")
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).SetOperationMode("edit")
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).ClearControls()
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).SetControls("edit")
                 Case "frmCashBankContraV"
                     Dim cashbankContra As frmCashBankContraV = DirectCast(activeForm, frmCashBankContraV)
                     cashbankContra.SetControls("edit")
@@ -413,6 +431,11 @@ Public Class frmFAMSMain
                     DirectCast(Me.ActiveMdiChild, frmAddVoucher).SetOperationMode("add")
                     DirectCast(Me.ActiveMdiChild, frmAddVoucher).ClearControls()
                     DirectCast(Me.ActiveMdiChild, frmAddVoucher).SetControls("add")
+                Case "frmAddJournalVoucher"
+                    EnableToolStripForVouchers("add")
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).SetOperationMode("add")
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).ClearControls()
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).SetControls("add")
                 Case "frmCashBankContraV"
                     Dim cashbankContra As frmCashBankContraV = DirectCast(activeForm, frmCashBankContraV)
                     cashbankContra.SetControls("add")
@@ -449,6 +472,12 @@ Public Class frmFAMSMain
                     DirectCast(Me.ActiveMdiChild, frmAddVoucher).SetControls("clear")
 
                     EnableToolStripForVouchers("clear")
+                Case "frmAddJournalVoucher"
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).ClearControls()
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).SetOperationMode("clear")
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).SetControls("clear")
+
+                    EnableToolStripForVouchers("clear")
                 Case "frmCashBankContraV"
                     Dim cashbankContra As frmCashBankContraV = DirectCast(activeForm, frmCashBankContraV)
                     cashbankContra.SetControls("clear")
@@ -481,6 +510,13 @@ Public Class frmFAMSMain
                 frmAddVoucher.ClearControls()
 
                 frmAddVoucher.SetControls("view")
+
+            ElseIf activeForm.GetType().Name = "frmAddJournalVoucher" Then
+                Dim frmAddJournalVoucher As frmAddJournalVoucher = DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher)
+                frmAddJournalVoucher.SetOperationMode("view")
+                frmAddJournalVoucher.ClearControls()
+
+                frmAddJournalVoucher.SetControls("view")
             End If
 
             If activeForm.GetType().Name = "frmCashBankContraV" Then
@@ -539,6 +575,11 @@ Public Class frmFAMSMain
                     If frmAddVoucher IsNot Nothing Then
                         frmAddVoucher.ComboBoxDaybookSelect.Enabled = True
                         'frmAddVoucher.ButtonNext.Enabled = True
+                    End If
+                ElseIf TypeOf Me.ActiveMdiChild Is frmAddJournalVoucher Then
+                    Dim frmAddJournalVoucher As frmAddJournalVoucher = DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher)
+                    If frmAddJournalVoucher IsNot Nothing Then
+                        frmAddJournalVoucher.ComboBoxDaybookSelect.Enabled = True
                     End If
                 End If
             Case "add"
@@ -690,6 +731,12 @@ Public Class frmFAMSMain
                 EnableToolStripForVouchers("confirm")
                 frmAddVoucher.SetControls("confirm")
             End If
+            If activeForm.GetType().Name = "frmAddJournalVoucher" Then
+                Dim frmAddJournalVoucher As frmAddJournalVoucher = DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher)
+                frmAddJournalVoucher.SetOperationMode("confirm")
+                EnableToolStripForVouchers("confirm")
+                frmAddJournalVoucher.SetControls("confirm")
+            End If
             If activeForm.GetType().Name = "frmCashBankContraV" Then
                 Dim cashbankContra As frmCashBankContraV = DirectCast(activeForm, frmCashBankContraV)
                 cashbankContra.SetControls("confirm")
@@ -712,7 +759,7 @@ Public Class frmFAMSMain
     End Sub
 
     Private Sub mnuConsolidatedBankBookRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuConsolidatedBankBookRpt.Click
-
+        LoadDayBookSelection("ConsolidatedBankBook")
     End Sub
 
     Private Sub mnuCombinedCashBankBookRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCombinedCashBankBookRpt.Click
@@ -749,6 +796,8 @@ Public Class frmFAMSMain
                     MessageBox.Show("This feature is not available yet.")
                 Case "frmAddVoucher"
                     DirectCast(Me.ActiveMdiChild, frmAddVoucher).PrintVoucher()
+                Case "frmAddJournalVoucher"
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).PrintVoucher()
                 Case "frmCashBankContraV"
                     DirectCast(Me.ActiveMdiChild, frmCashBankContraV).PrintVoucher()
                 Case "frmUserMaster"

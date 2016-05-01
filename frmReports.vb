@@ -45,6 +45,8 @@ Public Class frmReports
                     ShowTrialBalance()
                 Case "CashBankContraRegister"
                     ShowCashBankContraRegister()
+                Case "ConsolidatedBankBook"
+                    ShowConsolidatedBookReport()
             End Select
         Catch ex As Exception
             MessageBox.Show("Error Occurred !!!")
@@ -76,6 +78,24 @@ Public Class frmReports
         view.SetParameterValue("@instCode", InstitutionMasterData.XInstCode)
         view.SetParameterValue("@DayBookName", _dbkName)
         view.SetParameterValue("@DayBookType", Mode)
+        crystalRptVwr.ReportSource = view
+        crystalRptVwr.DisplayGroupTree = False
+        crystalRptVwr.ShowRefreshButton = False
+
+    End Sub
+
+    Private Sub ShowConsolidatedBookReport()
+        Dim view As New rptConsolidatedBook2008
+        Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
+        Dim pwd As String = System.Configuration.ConfigurationSettings.AppSettings("Password")
+        Dim Server As String = System.Configuration.ConfigurationSettings.AppSettings("Server")
+        Dim Database As String = System.Configuration.ConfigurationSettings.AppSettings("Database") + InstitutionMasterData.XFinYr
+        view.DataSourceConnections(0).SetConnection(Server, Database, user, pwd)
+        view.SetDatabaseLogon(user, pwd, Server, Database)
+        view.SetParameterValue("@instType", InstitutionMasterData.XInstType)
+        view.SetParameterValue("@Fromdate", _fromDate.ToShortDateString())
+        view.SetParameterValue("@ToDate", _toDate.ToShortDateString())
+        view.SetParameterValue("@instCode", InstitutionMasterData.XInstCode)
         crystalRptVwr.ReportSource = view
         crystalRptVwr.DisplayGroupTree = False
         crystalRptVwr.ShowRefreshButton = False

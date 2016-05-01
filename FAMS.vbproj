@@ -109,6 +109,12 @@
   <ItemGroup>
     <Compile Include="BusinessEntities\CommonFunctions.vb" />
     <Compile Include="BusinessEntities\ValidateClass.vb" />
+    <Compile Include="frmAddJournalVoucher.Designer.vb">
+      <DependentUpon>frmAddJournalVoucher.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddJournalVoucher.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Entities\Accounts.vb" />
     <Compile Include="Entities\BaseEntity.vb" />
     <Compile Include="Entities\ComboBoxHelper.vb" />
@@ -292,6 +298,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>rptCashBankContraRegister.rpt</DependentUpon>
       <SubType>Component</SubType>
+       </Compile>
+    <Compile Include="Reports\rptConsolidatedBook2008.vb">
+      <DependentUpon>rptConsolidatedBook2008.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Reports\rptCashBook.vb">
       <DependentUpon>rptCashBook.rpt</DependentUpon>
@@ -361,6 +373,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmAddJournalVoucher.resx">
+      <DependentUpon>frmAddJournalVoucher.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAddVoucher.resx">
       <DependentUpon>frmAddVoucher.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -461,8 +477,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rptCashBankContraRegister.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>rptCashBankContraRegister.vb</LastGenOutput>
+            <LastGenOutput>rptCashBankContraRegister.vb</LastGenOutput>
     </EmbeddedResource>
+
+    <EmbeddedResource Include="Reports\rptConsolidatedBook2008.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptConsolidatedBook2008.vb</LastGenOutput>
+    </EmbeddedResource>
+
     <EmbeddedResource Include="Reports\rptCashBook.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptCashBook.vb</LastGenOutput>
