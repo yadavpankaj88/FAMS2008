@@ -215,16 +215,26 @@ Public Class VoucherHelper
         End Try
     End Sub
 
-    Function GetVoucherList(ByVal currentMode As String, ByVal transType As String, ByVal daybookCode As String) As DataTable
+    Function GetVoucherList(ByVal currentMode As String, ByVal transType As String, ByVal daybookCode As String, ByVal voucherType As String) As DataTable
         Dim query As String = String.Empty
         Dim dtVoucherList As DataTable = Nothing
         Try
-            If currentMode.ToLower() = "view" Then
-                query = String.Format("select LTrim(RTrim(VH_Lnk_No)) AS [VH_Lnk_No] ,VH_Lnk_Dt,LTrim(RTrim(VH_Pty_Nm)) AS [VH_Pty_Nm],VH_ABS_Amt from " + InstitutionMasterData.XInstType + "_Voucher_Header " & _
-                    " where VH_Trn_Typ='{0}' and VH_Inst_Cd='{1}' and VH_Inst_Typ='{2}' and VH_Dbk_Cd='{3}' ORDER BY VH_Lnk_Dt,VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
+            If voucherType = "J" Then
+                If currentMode.ToLower() = "view" Then
+                    query = String.Format("select Distinct LTrim(RTrim(VD_Lnk_No)) AS [VH_Lnk_No], LTrim(RTrim(VD_Narr)) AS [VH_Pty_Nm], VD_ABS_Amt AS [VH_ABS_Amt] from " + InstitutionMasterData.XInstType + "_Voucher_Detail " & _
+                        " where VD_Trn_Typ='{0}' and VD_Inst_Cd='{1}' and VD_Inst_Typ='{2}' and VD_Dbk_Cd='{3}' ORDER BY VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
+                Else
+                    query = String.Format("select Distinct LTrim(RTrim(VD_Lnk_No)) AS [VH_Lnk_No],LTRIM(RTRIM(VD_Narr)) AS [VH_Pty_Nm],VD_ABS_Amt AS [VH_ABS_Amt] from " + InstitutionMasterData.XInstType + "_Voucher_Detail " & _
+                        " where VD_Trn_Typ='{0}' and VD_Inst_Cd='{1}' and VD_Inst_Typ='{2}' and VD_Dbk_Cd='{3}' and VD_Conf_Dt is null and VD_Conf_By is null ORDER BY VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
+                End If
             Else
-                query = String.Format("select LTrim(RTrim(VH_Lnk_No)) AS [VH_Lnk_No],VH_Lnk_Dt,LTRIM(RTRIM(VH_Pty_Nm)) AS [VH_Pty_Nm],VH_ABS_Amt from " + InstitutionMasterData.XInstType + "_Voucher_Header " & _
-                    " where VH_Trn_Typ='{0}' and VH_Inst_Cd='{1}' and VH_Inst_Typ='{2}' and VH_Dbk_Cd='{3}' and VH_Conf_Dt is null and VH_Conf_By is null ORDER BY VH_Lnk_Dt,VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
+                If currentMode.ToLower() = "view" Then
+                    query = String.Format("select LTrim(RTrim(VH_Lnk_No)) AS [VH_Lnk_No] ,VH_Lnk_Dt,LTrim(RTrim(VH_Pty_Nm)) AS [VH_Pty_Nm],VH_ABS_Amt from " + InstitutionMasterData.XInstType + "_Voucher_Header " & _
+                        " where VH_Trn_Typ='{0}' and VH_Inst_Cd='{1}' and VH_Inst_Typ='{2}' and VH_Dbk_Cd='{3}' ORDER BY VH_Lnk_Dt,VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
+                Else
+                    query = String.Format("select LTrim(RTrim(VH_Lnk_No)) AS [VH_Lnk_No],VH_Lnk_Dt,LTRIM(RTRIM(VH_Pty_Nm)) AS [VH_Pty_Nm],VH_ABS_Amt from " + InstitutionMasterData.XInstType + "_Voucher_Header " & _
+                        " where VH_Trn_Typ='{0}' and VH_Inst_Cd='{1}' and VH_Inst_Typ='{2}' and VH_Dbk_Cd='{3}' and VH_Conf_Dt is null and VH_Conf_By is null ORDER BY VH_Lnk_Dt,VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
+                End If
             End If
 
             Dim dataHelper As DataHelper = New DataHelper()
@@ -268,14 +278,17 @@ Public Class VoucherHelper
         Return dt
     End Function
 
-    Sub ConfirmVoucher(ByVal linkVoucherNo As String, ByVal voucherDate As DateTime, ByVal confirmVoucherNumber As String, ByVal referenceNumber As String)
+    Sub ConfirmVoucher(ByVal linkVoucherNo As String, ByVal voucherDate As DateTime, ByVal confirmVoucherNumber As String, ByVal referenceNumber As String, ByVal voucherType As String)
         Dim query As String = String.Empty
-
-        query = "Update " + InstitutionMasterData.XInstType + "_Voucher_Header set VH_Vch_No=@voucherNumber,VH_VCH_Dt=@vchDt,VH_Conf_Dt=GetDate(),VH_Conf_By=@CnfBy,VH_Vch_Ref_No=@referenceNumber " & _
+        If voucherType = "J" Then
+            query = "Update " + InstitutionMasterData.XInstType + "_Voucher_Detail set VD_Vch_No=@voucherNumber,VD_VCH_Dt=@vchDt,VD_Conf_Dt=GetDate(),VD_Conf_By=@CnfBy,VD_Vch_Ref_No=@referenceNumber " & _
+          "where VD_Lnk_No=@linkNo "
+        Else
+            query = "Update " + InstitutionMasterData.XInstType + "_Voucher_Header set VH_Vch_No=@voucherNumber,VH_VCH_Dt=@vchDt,VH_Conf_Dt=GetDate(),VH_Conf_By=@CnfBy,VH_Vch_Ref_No=@referenceNumber " & _
           "where VH_Lnk_No=@linkNo " & _
           "Update " + InstitutionMasterData.XInstType + "_Voucher_Detail set VD_Vch_No=@voucherNumber,VD_VCH_Dt=@vchDt,VD_Conf_Dt=GetDate(),VD_Conf_By=@CnfBy,VD_Vch_Ref_No=@referenceNumber " & _
           "where VD_Lnk_No=@linkNo "
-
+        End If
 
         Dim params As Dictionary(Of String, Object) = New Dictionary(Of String, Object)()
         params.Add("@voucherNumber", confirmVoucherNumber)

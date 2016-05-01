@@ -27,6 +27,27 @@
         Return count
     End Function
 
+    Function GetConsolidatedBankBookReportCount(Optional ByVal Fromdate As DateTime = Nothing, Optional ByVal ToDate As DateTime = Nothing) As Integer
+        Dim query As String
+        Dim count As Integer = 0
+        Dim dtCount As DataTable
+        Dim parameters As New Dictionary(Of String, Object)()
+        Try
+            query = "GetConsolidatedBankReportDetails"
+            parameters.Add("@instType", InstitutionMasterData.XInstType)
+            parameters.Add("@Fromdate", Fromdate.ToString("MM-dd-yyyy"))
+            parameters.Add("@ToDate", ToDate.ToString("MM-dd-yyyy"))
+            dtCount = dataHelper.ExecuteQuery(query, CommandType.StoredProcedure, parameters)
+            If dtCount Is Nothing Then
+            Else
+                count = dtCount.Rows.Count
+            End If
+        Catch ex As Exception
+            Throw
+        End Try
+        Return count
+    End Function
+
     Function GetCashBankBookReportCount(Optional ByVal Fromdate As DateTime = Nothing, Optional ByVal ToDate As DateTime = Nothing, Optional ByVal pDaybookcode As String = "", Optional ByVal pDaybookName As String = "", Optional ByVal ReportType As String = "") As Integer
         Dim query As String
         Dim count As Integer = 0

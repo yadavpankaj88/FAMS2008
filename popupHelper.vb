@@ -9,14 +9,16 @@
     Public selectedIndex As String
 
     Private _mode As Integer
+    Private _voucherType As String
 
-    Sub New(pMode As Integer)
+    Sub New(ByVal pMode As Integer, ByVal pvoucherType As String)
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         _mode = pMode
+        _voucherType = pvoucherType
     End Sub
 
     Private Sub popupHelper_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -35,7 +37,7 @@
                 Dim voucherHelper As New VoucherHelper
                 VoucherSelectionGrid.Columns("LedgerCode").Visible = False
                 VoucherSelectionGrid.Columns("AccountName").Visible = False
-                dt = voucherHelper.GetVoucherList(currentMode, TransType, dbkCode)
+                dt = voucherHelper.GetVoucherList(currentMode, TransType, dbkCode, _voucherType)
         End Select
 
 
