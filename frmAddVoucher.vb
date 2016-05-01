@@ -223,7 +223,7 @@
             End If
         End If
         If VoucherType = "J" Then
-            'ComboBoxCreditDebit.SelectedIndex = 0
+            ComboBoxCreditDebit.SelectedIndex = 0
         End If
 
         SetOperationMode(String.Empty)
@@ -541,91 +541,6 @@
                     End If
                 End If
             End If
-
-
-            If VoucherType = "J" Then
-                Dim IsSuccessFull As Boolean = True
-                Dim InValidLedgerCode As Boolean = False
-                Dim instMaster As InstitutionMasterData = New InstitutionMasterData()
-                Dim vchRefNo As Int64
-                If Me._mode.ToLower() = "add" Then
-                    vchRefNo = instMaster.GetNextInstitutionVoucherReferenceNumber()
-                ElseIf Me._mode.ToLower() = "edit" Then
-                    vchRefNo = Convert.ToInt64(lblConfirmedVoucherNumber.Text.Trim())
-                End If
-
-                Dim i As Integer = 0
-                If dgvVoucherDetails.Rows.Count > 0 Then
-                    For Each dgRows As DataGridViewRow In dgvVoucherDetails.Rows
-                        Try
-                            If Not dgRows.Cells("DebitCr").Value = String.Empty And Not dgRows.Cells("Amount").EditedFormattedValue = String.Empty And dgRows.Cells("LedgerAccount").Value IsNot DBNull.Value And Not dgRows.Cells("LedgerAccount").Value = String.Empty And Not dgRows.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgRows.Cells("RefNo").EditedFormattedValue = String.Empty Then
-                                i = i + 1
-                                Dim drcr As String = dgRows.Cells("DebitCr").EditedFormattedValue.ToString()
-                                Dim amount As String = dgRows.Cells("Amount").EditedFormattedValue
-                                Dim ledgerAccount As String = dgRows.Cells("LedgerAccount").EditedFormattedValue
-                                Dim seqNo As String = dgRows.Cells("SeqNo").EditedFormattedValue
-
-                                Dim lgrHelper As LedgerAccountHelper = New LedgerAccountHelper()
-                                Dim dt As DataTable = lgrHelper.GetAccountDetails(ledgerAccount)
-                                If dt IsNot Nothing Then
-                                    If dt.Rows.Count < 1 Then
-                                        IsSuccessFull = False
-                                        InValidLedgerCode = True
-                                        Exit For
-                                    End If
-                                End If
-
-                                Dim voucherDetail As VoucherDetails = New VoucherDetails()
-                                voucherDetail.VD_Fin_Yr = InstitutionMasterData.XFinYr
-                                voucherDetail.VD_Inst_Cd = InstitutionMasterData.XInstCode
-                                voucherDetail.VD_Inst_Typ = InstitutionMasterData.XInstType
-                                voucherDetail.VD_Dbk_Cd = ComboBoxDaybookSelect.SelectedValue
-                                voucherDetail.VD_Trn_Typ = TransactionType
-                                voucherDetail.VD_Lgr_Cd = "00"
-                                voucherDetail.VD_Lnk_No = txtLinkVoucherNumber.Text
-                                voucherDetail.VD_Narr = dgRows.Cells("VoucherDesc").EditedFormattedValue
-                                voucherDetail.VD_Cr_Dr = drcr
-                                voucherDetail.VD_ABS_Amt = amount
-                                voucherDetail.VD_Amt = IIf(drcr = "Dr", Decimal.Parse(amount), Decimal.Parse(amount) * -1)
-                                voucherDetail.VD_Ref_No = dgRows.Cells("RefNo").EditedFormattedValue
-                                voucherDetail.VD_Ref_Dt = Convert.ToDateTime(dgRows.Cells("RefDate").EditedFormattedValue)
-                                voucherDetail.VD_Seq_No = seqNo
-                                voucherDetail.VD_Acc_Cd = ledgerAccount
-                                voucherDetail.VD_Brn_Cd = "HO"
-                                voucherDetail.VD_Ent_By = InstitutionMasterData.XUsrId
-                                voucherDetail.VD_Vch_Ref_No = vchRefNo.ToString().PadLeft(6, "0")
-                                helper.SaveVoucherDetail(voucherDetail)
-                            End If
-                        Catch ex As Exception
-                            IsSuccessFull = False
-                        End Try
-                    Next
-                Else
-                    IsSuccessFull = False
-                End If
-
-                If (IsSuccessFull And i > 0) Then
-
-                    If Me._mode = "add" Then
-                        instMaster.UpdateLinkNumber(txtLinkVoucherNumber.Text.Trim(), InstitutionMasterData.XInstCode)
-                    End If
-                    MessageBox.Show("Voucher saved successfully.")
-                Else
-                    If InValidLedgerCode Then
-                        MessageBox.Show("Invalid ledger code for one of the voucher details entry")
-                    ElseIf Not IsSuccessFull Then
-                        MessageBox.Show("Error occured while saving voucher details")
-                    ElseIf i <= 0 Then
-                        MessageBox.Show("Please enter atleast one valid voucher details entry")
-                    End If
-                    Return False
-                End If
-            Else
-                Return False
-            End If
-
-
-
             ClearControls()
             Return True
         Catch ex As Exception
@@ -736,7 +651,7 @@
     Private Sub dataGridViewTextBox_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
 
         If e.KeyCode = Keys.F2 And Not e.Handled Then
-            Dim helper As popupHelper = New popupHelper(0, VoucherType)
+            Dim helper As popupHelper = New popupHelper(0,VoucherType)
             helper.ShowDialog()
 
             Dim tb As DataGridViewTextBoxEditingControl = DirectCast(sender, DataGridViewTextBoxEditingControl)
@@ -968,71 +883,61 @@
             voucherHeader = Nothing
             helper.GetVoucherHeader(TransactionType, dayBookCode, txtLinkVoucherNumber.Text.Trim.PadLeft(12, "0"), voucherHeader, dtVoucherDetails)
 
-            If VoucherType = "J" Then
-                If dtVoucherDetails IsNot Nothing Then
+            If voucherHeader IsNot Nothing Then
 
-                    'Validation for delete edit mode. 
-
-                    dgvVoucherDetails.DataSource = dtVoucherDetails
+                If (voucherHeader.VH_VCH_Dt IsNot Nothing And voucherHeader.VH_VCH_NO IsNot Nothing) Then
+                    If (_mode = "delete" Or _mode = "edit") Then
+                        flgEnable = "Voucher is confirmed , modification/deletion not allowed"
+                        Return flgEnable
+                    ElseIf (_mode = "confirm") Then
+                        flgEnable = "Voucher is already confirmed"
+                        Return flgEnable
+                    End If
+                    pnlConfirm.Enabled = False
+                    datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Short
+                    datepickerVoucherDateConfirm.CustomFormat = "dd-mm-yyyy"
+                    datepickerVoucherDateConfirm.Value = voucherHeader.VH_VCH_Dt
+                    datepickerVoucherDateConfirm.Enabled = False
+                    lblConfirmNumber.Text = voucherHeader.VH_VCH_NO
+                    lblConfirmNumber.BackColor = Color.Red
+                    lblConfirmNumber.ForeColor = Color.White
+                    lableVoucherStatus.Text = "Status: CONFIRMED"
+                    lblConfirmedVoucherNumber.Visible = True
                 Else
-                    flgEnable = "No matching Voucher Entry found"
+                    lableVoucherStatus.Text = "Status: UN-CONFIRMED"
+                    datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Custom
+                    datepickerVoucherDateConfirm.CustomFormat = " "
+                End If
+
+                lblConfirmedVoucherNumber.Text = voucherHeader.VH_VCH_Ref_No.ToString()
+                lblConfirmedVoucherNumber.BackColor = Color.Red
+                lblConfirmedVoucherNumber.ForeColor = Color.White
+
+                txtRefNumber.Text = voucherHeader.VH_Ref_No
+                DatePickerVoucherLinkDate.Value = voucherHeader.VH_Lnk_Dt
+                DateTimeReferenceDate.Value = voucherHeader.VH_Ref_Dt
+                TextBoxChequeNo.Text = voucherHeader.VH_Chq_No
+
+                If (voucherHeader.VH_Chq_Dt.HasValue) Then
+                    datepickerChequeDate.Format = DateTimePickerFormat.Short
+                    datepickerChequeDate.CustomFormat = "dd-mm-yyyy"
+                    datepickerChequeDate.Value = voucherHeader.VH_Chq_Dt
+                Else
+                    datepickerChequeDate.Format = DateTimePickerFormat.Custom
+                    datepickerChequeDate.CustomFormat = " "
+                End If
+
+                TextBoxNameOfPayee.Text = voucherHeader.VH_Pty_Nm
+                TextBoxAmount.Text = voucherHeader.VH_ABS_Amt.ToString
+                ComboBoxCreditDebit.SelectedItem = voucherHeader.VH_Cr_Dr
+                flgEnable = String.Empty
+
+                If dtVoucherDetails IsNot Nothing Then
+                    dgvVoucherDetails.DataSource = dtVoucherDetails
+
                 End If
             Else
-                If voucherHeader IsNot Nothing Then
-
-                    If (voucherHeader.VH_VCH_Dt IsNot Nothing And voucherHeader.VH_VCH_NO IsNot Nothing) Then
-                        If (_mode = "delete" Or _mode = "edit") Then
-                            flgEnable = "Voucher is confirmed , modification/deletion not allowed"
-                            Return flgEnable
-                        ElseIf (_mode = "confirm") Then
-                            flgEnable = "Voucher is already confirmed"
-                            Return flgEnable
-                        End If
-                        pnlConfirm.Enabled = False
-                        datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Short
-                        datepickerVoucherDateConfirm.CustomFormat = "dd-mm-yyyy"
-                        datepickerVoucherDateConfirm.Value = voucherHeader.VH_VCH_Dt
-                        datepickerVoucherDateConfirm.Enabled = False
-                        lblConfirmNumber.Text = voucherHeader.VH_VCH_NO
-                        lblConfirmNumber.BackColor = Color.Red
-                        lblConfirmNumber.ForeColor = Color.White
-                        lableVoucherStatus.Text = "Status: CONFIRMED"
-                        lblConfirmedVoucherNumber.Visible = True
-                    Else
-                        lableVoucherStatus.Text = "Status: UN-CONFIRMED"
-                        datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Custom
-                        datepickerVoucherDateConfirm.CustomFormat = " "
-                    End If
-
-                    lblConfirmedVoucherNumber.Text = voucherHeader.VH_VCH_Ref_No.ToString()
-                    lblConfirmedVoucherNumber.BackColor = Color.Red
-                    lblConfirmedVoucherNumber.ForeColor = Color.White
-
-                    txtRefNumber.Text = voucherHeader.VH_Ref_No
-                    DatePickerVoucherLinkDate.Value = voucherHeader.VH_Lnk_Dt
-                    DateTimeReferenceDate.Value = voucherHeader.VH_Ref_Dt
-                    TextBoxChequeNo.Text = voucherHeader.VH_Chq_No
-
-                    If (voucherHeader.VH_Chq_Dt.HasValue) Then
-                        datepickerChequeDate.Format = DateTimePickerFormat.Short
-                        datepickerChequeDate.CustomFormat = "dd-mm-yyyy"
-                        datepickerChequeDate.Value = voucherHeader.VH_Chq_Dt
-                    Else
-                        datepickerChequeDate.Format = DateTimePickerFormat.Custom
-                        datepickerChequeDate.CustomFormat = " "
-                    End If
-
-                    TextBoxNameOfPayee.Text = voucherHeader.VH_Pty_Nm
-                    TextBoxAmount.Text = voucherHeader.VH_ABS_Amt.ToString
-                    ComboBoxCreditDebit.SelectedItem = voucherHeader.VH_Cr_Dr
-                    flgEnable = String.Empty
-
-                    If dtVoucherDetails IsNot Nothing Then
-                        dgvVoucherDetails.DataSource = dtVoucherDetails
-                    End If
-                Else
-                    flgEnable = "No matching Voucher Entry found"
-                End If
+                flgEnable = "No matching Voucher Entry found"
             End If
         Catch ex As Exception
             Throw ex
