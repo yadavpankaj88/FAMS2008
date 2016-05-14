@@ -23,7 +23,7 @@ Partial Class frmAddJournalVoucher
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.LabelNarration = New System.Windows.Forms.Label
         Me.TextBoxNarration = New System.Windows.Forms.TextBox
         Me.LabelVoucherDate = New System.Windows.Forms.Label
@@ -41,19 +41,6 @@ Partial Class frmAddJournalVoucher
         Me.RefNo = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.RefDate = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.VoucherDesc = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.LabelReferenceNo = New System.Windows.Forms.Label
-        Me.txtRefNumber = New System.Windows.Forms.TextBox
-        Me.TextBoxAmount = New System.Windows.Forms.TextBox
-        Me.TextBoxNameOfPayee = New System.Windows.Forms.TextBox
-        Me.TextBoxChequeNo = New System.Windows.Forms.TextBox
-        Me.LabelReferenceDate = New System.Windows.Forms.Label
-        Me.ComboBoxCreditDebit = New System.Windows.Forms.ComboBox
-        Me.DateTimeReferenceDate = New System.Windows.Forms.DateTimePicker
-        Me.LabelAmount = New System.Windows.Forms.Label
-        Me.LabelNameOfPayee = New System.Windows.Forms.Label
-        Me.datepickerChequeDate = New System.Windows.Forms.DateTimePicker
-        Me.LabelChequeDate = New System.Windows.Forms.Label
-        Me.LabelChequeNo = New System.Windows.Forms.Label
         Me.pnlConfirm = New System.Windows.Forms.Panel
         Me.lblConfirmNumber = New System.Windows.Forms.Label
         Me.lblConfirmedVoucherNumber = New System.Windows.Forms.Label
@@ -135,19 +122,6 @@ Partial Class frmAddJournalVoucher
         'panelVoucherControls
         '
         Me.panelVoucherControls.Controls.Add(Me.dgvVoucherDetails)
-        Me.panelVoucherControls.Controls.Add(Me.LabelReferenceNo)
-        Me.panelVoucherControls.Controls.Add(Me.txtRefNumber)
-        Me.panelVoucherControls.Controls.Add(Me.TextBoxAmount)
-        Me.panelVoucherControls.Controls.Add(Me.TextBoxNameOfPayee)
-        Me.panelVoucherControls.Controls.Add(Me.TextBoxChequeNo)
-        Me.panelVoucherControls.Controls.Add(Me.LabelReferenceDate)
-        Me.panelVoucherControls.Controls.Add(Me.ComboBoxCreditDebit)
-        Me.panelVoucherControls.Controls.Add(Me.DateTimeReferenceDate)
-        Me.panelVoucherControls.Controls.Add(Me.LabelAmount)
-        Me.panelVoucherControls.Controls.Add(Me.LabelNameOfPayee)
-        Me.panelVoucherControls.Controls.Add(Me.datepickerChequeDate)
-        Me.panelVoucherControls.Controls.Add(Me.LabelChequeDate)
-        Me.panelVoucherControls.Controls.Add(Me.LabelChequeNo)
         Me.panelVoucherControls.Location = New System.Drawing.Point(10, 92)
         Me.panelVoucherControls.Name = "panelVoucherControls"
         Me.panelVoucherControls.Size = New System.Drawing.Size(923, 342)
@@ -160,10 +134,10 @@ Partial Class frmAddJournalVoucher
         Me.dgvVoucherDetails.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.SeqNo, Me.LedgerAccount, Me.AccountName, Me.hiddenRowNumber, Me.Amount, Me.DebitCr, Me.RefNo, Me.RefDate, Me.VoucherDesc})
         Me.dgvVoucherDetails.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.dgvVoucherDetails.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
-        Me.dgvVoucherDetails.Location = New System.Drawing.Point(0, 160)
+        Me.dgvVoucherDetails.Location = New System.Drawing.Point(0, 3)
         Me.dgvVoucherDetails.Name = "dgvVoucherDetails"
         Me.dgvVoucherDetails.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvVoucherDetails.Size = New System.Drawing.Size(923, 182)
+        Me.dgvVoucherDetails.Size = New System.Drawing.Size(923, 339)
         Me.dgvVoucherDetails.TabIndex = 17
         '
         'SeqNo
@@ -199,9 +173,9 @@ Partial Class frmAddJournalVoucher
         'Amount
         '
         Me.Amount.DataPropertyName = "Amount"
-        DataGridViewCellStyle1.Format = "N2"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Amount.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.Format = "N2"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Amount.DefaultCellStyle = DataGridViewCellStyle2
         Me.Amount.HeaderText = "Amount"
         Me.Amount.Name = "Amount"
         '
@@ -232,119 +206,6 @@ Partial Class frmAddJournalVoucher
         Me.VoucherDesc.DataPropertyName = "VoucherDesc"
         Me.VoucherDesc.HeaderText = "Voucher Description"
         Me.VoucherDesc.Name = "VoucherDesc"
-        '
-        'LabelReferenceNo
-        '
-        Me.LabelReferenceNo.AutoSize = True
-        Me.LabelReferenceNo.Location = New System.Drawing.Point(11, 14)
-        Me.LabelReferenceNo.Name = "LabelReferenceNo"
-        Me.LabelReferenceNo.Size = New System.Drawing.Size(78, 15)
-        Me.LabelReferenceNo.TabIndex = 10
-        Me.LabelReferenceNo.Text = "Reference No"
-        '
-        'txtRefNumber
-        '
-        Me.txtRefNumber.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.txtRefNumber.Location = New System.Drawing.Point(156, 14)
-        Me.txtRefNumber.MaxLength = 40
-        Me.txtRefNumber.Name = "txtRefNumber"
-        Me.txtRefNumber.Size = New System.Drawing.Size(116, 23)
-        Me.txtRefNumber.TabIndex = 0
-        '
-        'TextBoxAmount
-        '
-        Me.TextBoxAmount.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.TextBoxAmount.Location = New System.Drawing.Point(156, 125)
-        Me.TextBoxAmount.Name = "TextBoxAmount"
-        Me.TextBoxAmount.Size = New System.Drawing.Size(116, 23)
-        Me.TextBoxAmount.TabIndex = 5
-        '
-        'TextBoxNameOfPayee
-        '
-        Me.TextBoxNameOfPayee.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.TextBoxNameOfPayee.Location = New System.Drawing.Point(156, 88)
-        Me.TextBoxNameOfPayee.Name = "TextBoxNameOfPayee"
-        Me.TextBoxNameOfPayee.Size = New System.Drawing.Size(280, 23)
-        Me.TextBoxNameOfPayee.TabIndex = 4
-        '
-        'TextBoxChequeNo
-        '
-        Me.TextBoxChequeNo.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.TextBoxChequeNo.Location = New System.Drawing.Point(156, 51)
-        Me.TextBoxChequeNo.MaxLength = 6
-        Me.TextBoxChequeNo.Name = "TextBoxChequeNo"
-        Me.TextBoxChequeNo.Size = New System.Drawing.Size(278, 23)
-        Me.TextBoxChequeNo.TabIndex = 2
-        '
-        'LabelReferenceDate
-        '
-        Me.LabelReferenceDate.AutoSize = True
-        Me.LabelReferenceDate.Location = New System.Drawing.Point(467, 17)
-        Me.LabelReferenceDate.Name = "LabelReferenceDate"
-        Me.LabelReferenceDate.Size = New System.Drawing.Size(88, 15)
-        Me.LabelReferenceDate.TabIndex = 12
-        Me.LabelReferenceDate.Text = "Reference Date"
-        '
-        'ComboBoxCreditDebit
-        '
-        Me.ComboBoxCreditDebit.Enabled = False
-        Me.ComboBoxCreditDebit.FormattingEnabled = True
-        Me.ComboBoxCreditDebit.Location = New System.Drawing.Point(288, 126)
-        Me.ComboBoxCreditDebit.Name = "ComboBoxCreditDebit"
-        Me.ComboBoxCreditDebit.Size = New System.Drawing.Size(41, 23)
-        Me.ComboBoxCreditDebit.TabIndex = 6
-        '
-        'DateTimeReferenceDate
-        '
-        Me.DateTimeReferenceDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DateTimeReferenceDate.Location = New System.Drawing.Point(623, 14)
-        Me.DateTimeReferenceDate.Name = "DateTimeReferenceDate"
-        Me.DateTimeReferenceDate.Size = New System.Drawing.Size(114, 23)
-        Me.DateTimeReferenceDate.TabIndex = 1
-        '
-        'LabelAmount
-        '
-        Me.LabelAmount.AutoSize = True
-        Me.LabelAmount.Location = New System.Drawing.Point(11, 125)
-        Me.LabelAmount.Name = "LabelAmount"
-        Me.LabelAmount.Size = New System.Drawing.Size(49, 15)
-        Me.LabelAmount.TabIndex = 16
-        Me.LabelAmount.Text = "Amount"
-        '
-        'LabelNameOfPayee
-        '
-        Me.LabelNameOfPayee.AutoSize = True
-        Me.LabelNameOfPayee.Location = New System.Drawing.Point(11, 88)
-        Me.LabelNameOfPayee.Name = "LabelNameOfPayee"
-        Me.LabelNameOfPayee.Size = New System.Drawing.Size(87, 15)
-        Me.LabelNameOfPayee.TabIndex = 4
-        Me.LabelNameOfPayee.Text = "Name of Payee"
-        '
-        'datepickerChequeDate
-        '
-        Me.datepickerChequeDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.datepickerChequeDate.Location = New System.Drawing.Point(623, 57)
-        Me.datepickerChequeDate.Name = "datepickerChequeDate"
-        Me.datepickerChequeDate.Size = New System.Drawing.Size(114, 23)
-        Me.datepickerChequeDate.TabIndex = 3
-        '
-        'LabelChequeDate
-        '
-        Me.LabelChequeDate.AutoSize = True
-        Me.LabelChequeDate.Location = New System.Drawing.Point(467, 59)
-        Me.LabelChequeDate.Name = "LabelChequeDate"
-        Me.LabelChequeDate.Size = New System.Drawing.Size(74, 15)
-        Me.LabelChequeDate.TabIndex = 9
-        Me.LabelChequeDate.Text = "Cheque date"
-        '
-        'LabelChequeNo
-        '
-        Me.LabelChequeNo.AutoSize = True
-        Me.LabelChequeNo.Location = New System.Drawing.Point(11, 51)
-        Me.LabelChequeNo.Name = "LabelChequeNo"
-        Me.LabelChequeNo.Size = New System.Drawing.Size(64, 15)
-        Me.LabelChequeNo.TabIndex = 6
-        Me.LabelChequeNo.Text = "Cheque no"
         '
         'pnlConfirm
         '
@@ -492,7 +353,7 @@ Partial Class frmAddJournalVoucher
         Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
-        'frmAddVoucher
+        'frmAddJournalVoucher
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -502,10 +363,9 @@ Partial Class frmAddJournalVoucher
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmAddVoucher"
+        Me.Name = "frmAddJournalVoucher"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.panelVoucherControls.ResumeLayout(False)
-        Me.panelVoucherControls.PerformLayout()
         CType(Me.dgvVoucherDetails, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlConfirm.ResumeLayout(False)
         Me.pnlConfirm.PerformLayout()
@@ -526,19 +386,6 @@ Partial Class frmAddJournalVoucher
     Friend WithEvents lblLinkVoucherNumber As System.Windows.Forms.Label
     Friend WithEvents panelVoucherControls As System.Windows.Forms.Panel
     Friend WithEvents dgvVoucherDetails As System.Windows.Forms.DataGridView
-    Friend WithEvents LabelReferenceNo As System.Windows.Forms.Label
-    Friend WithEvents txtRefNumber As System.Windows.Forms.TextBox
-    Friend WithEvents TextBoxAmount As System.Windows.Forms.TextBox
-    Friend WithEvents TextBoxNameOfPayee As System.Windows.Forms.TextBox
-    Friend WithEvents TextBoxChequeNo As System.Windows.Forms.TextBox
-    Friend WithEvents LabelReferenceDate As System.Windows.Forms.Label
-    Friend WithEvents ComboBoxCreditDebit As System.Windows.Forms.ComboBox
-    Friend WithEvents DateTimeReferenceDate As System.Windows.Forms.DateTimePicker
-    Friend WithEvents LabelAmount As System.Windows.Forms.Label
-    Friend WithEvents LabelNameOfPayee As System.Windows.Forms.Label
-    Friend WithEvents datepickerChequeDate As System.Windows.Forms.DateTimePicker
-    Friend WithEvents LabelChequeDate As System.Windows.Forms.Label
-    Friend WithEvents LabelChequeNo As System.Windows.Forms.Label
     Friend WithEvents pnlConfirm As System.Windows.Forms.Panel
     Friend WithEvents lblConfirmNumber As System.Windows.Forms.Label
     Friend WithEvents lblConfirmedVoucherNumber As System.Windows.Forms.Label

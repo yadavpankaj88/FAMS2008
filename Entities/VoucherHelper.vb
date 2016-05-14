@@ -221,10 +221,10 @@ Public Class VoucherHelper
         Try
             If voucherType = "J" Then
                 If currentMode.ToLower() = "view" Then
-                    query = String.Format("select Distinct LTrim(RTrim(VD_Lnk_No)) AS [VH_Lnk_No], LTrim(RTrim(VD_Narr)) AS [VH_Pty_Nm], VD_ABS_Amt AS [VH_ABS_Amt] from " + InstitutionMasterData.XInstType + "_Voucher_Detail " & _
+                    query = String.Format("select Distinct LTrim(RTrim(VD_Lnk_No)) AS [VH_Lnk_No], LTrim(RTrim(VD_Narr)) AS [VH_Pty_Nm], VD_ABS_Amt AS [VH_ABS_Amt], VD_Vch_Dt from " + InstitutionMasterData.XInstType + "_Voucher_Detail " & _
                         " where VD_Trn_Typ='{0}' and VD_Inst_Cd='{1}' and VD_Inst_Typ='{2}' and VD_Dbk_Cd='{3}' ORDER BY VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
                 Else
-                    query = String.Format("select Distinct LTrim(RTrim(VD_Lnk_No)) AS [VH_Lnk_No],LTRIM(RTRIM(VD_Narr)) AS [VH_Pty_Nm],VD_ABS_Amt AS [VH_ABS_Amt] from " + InstitutionMasterData.XInstType + "_Voucher_Detail " & _
+                    query = String.Format("select Distinct LTrim(RTrim(VD_Lnk_No)) AS [VH_Lnk_No],LTRIM(RTRIM(VD_Narr)) AS [VH_Pty_Nm],VD_ABS_Amt AS [VH_ABS_Amt], VD_Vch_Dt from " + InstitutionMasterData.XInstType + "_Voucher_Detail " & _
                         " where VD_Trn_Typ='{0}' and VD_Inst_Cd='{1}' and VD_Inst_Typ='{2}' and VD_Dbk_Cd='{3}' and VD_Conf_Dt is null and VD_Conf_By is null ORDER BY VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
                 End If
             Else

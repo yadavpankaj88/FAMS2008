@@ -491,7 +491,7 @@
                     Dim ledgercount As Integer = lgdrhelper.GetCountFromLedger(str)
                     If ledgercount = 0 Then
                         lgdrhelper.AddLedger(str)
-                        lgdrhelper.AddLedgerDetail(str)
+                        lgdrhelper.AddLedgerDetail(str, String.Empty)
                     Else
                         MessageBox.Show("Data is already in Ledger")
                     End If

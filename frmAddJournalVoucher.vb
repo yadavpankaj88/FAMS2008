@@ -170,10 +170,6 @@
 
     Public Sub ClearControls()
         txtLinkVoucherNumber.Text = String.Empty
-        txtRefNumber.Text = String.Empty
-        TextBoxChequeNo.Text = String.Empty
-        TextBoxNameOfPayee.Text = String.Empty
-        TextBoxAmount.Text = String.Empty
         lblConfirmedVoucherNumber.Text = String.Empty
         pnlConfirm.Enabled = False
         panelVoucherControls.Visible = False
@@ -211,17 +207,7 @@
             PupulateDaybookCombo()
         End If
 
-        If Not String.IsNullOrEmpty(PaymentReceipt) Then
-            If PaymentReceipt = "P" Then
-                LabelNameOfPayee.Text = "Name of Payee"
-                ComboBoxCreditDebit.Items.Add("Cr")
-                ComboBoxCreditDebit.SelectedIndex = 0
-            ElseIf PaymentReceipt = "R" Then
-                LabelNameOfPayee.Text = "Received from"
-                ComboBoxCreditDebit.Items.Add("Dr")
-                ComboBoxCreditDebit.SelectedIndex = 0
-            End If
-        End If
+        
         If VoucherType = "J" Then
             'ComboBoxCreditDebit.SelectedIndex = 0
         End If
@@ -250,7 +236,7 @@
         Dim calculateDiff As Boolean = True
         Try
             If _TrnType.Equals("BP") Or _TrnType.Equals("CP") Then
-                calculateDiff = ValidateClass.CheckBalance(ledgerAccBalance, Double.Parse(TextBoxAmount.Text))
+                'calculateDiff = ValidateClass.CheckBalance(ledgerAccBalance, Double.Parse(TextBoxAmount.Text))
             End If
             If calculateDiff Then
                 If (Not String.IsNullOrEmpty(ComboBoxDaybookSelect.SelectedValue) And Not String.IsNullOrEmpty(txtLinkVoucherNumber.Text)) Then
@@ -288,7 +274,7 @@
                     Dim ledgercount As Integer = lgdrhelper.GetCountFromLedger(str)
                     If ledgercount = 0 Then
                         lgdrhelper.AddLedger(str)
-                        lgdrhelper.AddLedgerDetail(str)
+                        lgdrhelper.AddLedgerDetail(str, VoucherType)
                     Else
                         MessageBox.Show("Data is already in Ledger")
                     End If
@@ -327,43 +313,19 @@
     Public Function ValidateForm() As String
         Dim mandatoryFields As String = String.Empty
 
-        If txtRefNumber.Text = String.Empty Then
-            mandatoryFields = "Reference Number"
-        End If
+        
 
-        If DateTimeReferenceDate.Value.ToString() = String.Empty Then
-            mandatoryFields += ", Reference Date"
-        End If
+       
 
-        If VoucherType = "B" Then
-            If TextBoxChequeNo.Text = String.Empty Then
-                mandatoryFields += ", Cheque Number"
-            End If
-            If datepickerChequeDate.Value.ToString() = String.Empty Then
-                mandatoryFields += ", Cheque date"
-            End If
-
-        End If
-
-        If TextBoxAmount.Text = String.Empty Then
-            mandatoryFields += ", Amount"
-        End If
-
+        
         Dim crdr As Boolean = False
 
-        If Not ComboBoxCreditDebit.SelectedItem = Nothing Then
-            If Not ComboBoxCreditDebit.SelectedItem = String.Empty Then
-                crdr = True
-            End If
-        End If
-
+       
         If Not crdr Then
             mandatoryFields += ", Credit/Debit"
         End If
 
-        If TextBoxNameOfPayee.Text = String.Empty Then
-            mandatoryFields += ", " + LabelNameOfPayee.Text
-        End If
+      
 
         If (mandatoryFields.StartsWith(",")) Then
             mandatoryFields = mandatoryFields.Substring(1)
@@ -382,17 +344,17 @@
             messageToShow += Environment.NewLine + "- " + voucherlinkDateValidation
         End If
 
-        If (DateTimeReferenceDate.Enabled And Not ValidateClass.CheckReferenceDate(DateTimeReferenceDate.Value.Date, referenceDateValidation, DatePickerVoucherLinkDate.Value.Date)) Then
-            messageToShow += Environment.NewLine + "- " + referenceDateValidation
-        End If
+        'If (DateTimeReferenceDate.Enabled And Not ValidateClass.CheckReferenceDate(DateTimeReferenceDate.Value.Date, referenceDateValidation, DatePickerVoucherLinkDate.Value.Date)) Then
+        '    messageToShow += Environment.NewLine + "- " + referenceDateValidation
+        'End If
 
         If (datepickerVoucherDateConfirm.Enabled And Not ValidateClass.CheckConfirmationdate(datepickerVoucherDateConfirm.Value.Date, voucherConfirmationDateValidation, DatePickerVoucherLinkDate.Value.Date)) Then
             messageToShow += Environment.NewLine + "- " + voucherConfirmationDateValidation
         End If
 
-        If (datepickerChequeDate.Enabled And datepickerChequeDate.Value.Date.CompareTo(InstitutionMasterData.XDate) > 0) Then
-            messageToShow += Environment.NewLine + "- " + "Cheque date cannot be greater that processing date"
-        End If
+        'If (datepickerChequeDate.Enabled And datepickerChequeDate.Value.Date.CompareTo(InstitutionMasterData.XDate) > 0) Then
+        '    messageToShow += Environment.NewLine + "- " + "Cheque date cannot be greater that processing date"
+        'End If
         Return messageToShow
     End Function
 
@@ -434,113 +396,7 @@
 
             mandatoryFields = ValidateForm()
 
-            If VoucherType = "B" Or VoucherType = "C" Then
-                If Not mandatoryFields = String.Empty Then
-                    MessageBox.Show(mandatoryFields + " are compulsory for saving voucher")
-                    Return False
-                ElseIf Not dateValidationMessage = String.Empty Then
-                    MessageBox.Show("Please correct below errors: " + dateValidationMessage)
-                    Return False
-                Else
-                    Dim IsSuccessFull As Boolean = True
-                    Dim InValidLedgerCode As Boolean = False
-                    header.VH_Cr_Dr = ComboBoxCreditDebit.SelectedItem.ToString()
-                    If BalanceValidation(header.VH_Cr_Dr) Then
-
-                        header.VH_Inst_Cd = InstitutionMasterData.XInstCode
-                        header.VH_Inst_Typ = InstitutionMasterData.XInstType
-                        header.VH_Fin_Yr = InstitutionMasterData.XFinYr
-                        header.VH_Lnk_No = txtLinkVoucherNumber.Text
-                        header.VH_Lnk_Dt = DatePickerVoucherLinkDate.Value
-                        header.VH_Pty_Nm = TextBoxNameOfPayee.Text
-                        header.VH_Ref_No = txtRefNumber.Text
-                        header.VH_Ref_Dt = DateTimeReferenceDate.Value
-                        header.VH_Cr_Dr = ComboBoxCreditDebit.SelectedItem.ToString()
-                        header.VH_ABS_Amt = Decimal.Parse(TextBoxAmount.Text)
-                        header.VH_Amt = IIf(ComboBoxCreditDebit.SelectedItem = "Dr", Decimal.Parse(TextBoxAmount.Text), Decimal.Parse(TextBoxAmount.Text) * -1)
-                        header.VH_Dbk_Cd = ComboBoxDaybookSelect.SelectedValue
-                        header.VH_Trn_Typ = TransactionType
-
-                        If datepickerChequeDate.Visible Then
-                            header.VH_Chq_No = TextBoxChequeNo.Text
-                            header.VH_Chq_Dt = datepickerChequeDate.Value
-                        End If
-
-                        header.VH_Acc_Cd = DirectCast(ComboBoxDaybookSelect.Items(ComboBoxDaybookSelect.SelectedIndex), DataRowView)("DM_Acc_Cd").ToString()
-                        header.VH_Lgr_Cd = "00"
-                        header.VH_Brn_Cd = "HO"
-                        helper.SaveVoucherHeader(header)
-
-                        Dim i As Integer = 0
-                        If dgvVoucherDetails.Rows.Count > 0 Then
-                            For Each dgRows As DataGridViewRow In dgvVoucherDetails.Rows
-                                Try
-                                    If Not dgRows.Cells("DebitCr").Value = String.Empty And Not dgRows.Cells("Amount").EditedFormattedValue = String.Empty And dgRows.Cells("LedgerAccount").Value IsNot DBNull.Value And Not dgRows.Cells("LedgerAccount").Value = String.Empty And Not dgRows.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgRows.Cells("RefNo").EditedFormattedValue = String.Empty Then
-                                        i = i + 1
-                                        Dim drcr As String = dgRows.Cells("DebitCr").EditedFormattedValue.ToString()
-                                        Dim amount As String = dgRows.Cells("Amount").EditedFormattedValue
-                                        Dim ledgerAccount As String = dgRows.Cells("LedgerAccount").EditedFormattedValue
-                                        Dim seqNo As String = dgRows.Cells("SeqNo").EditedFormattedValue
-
-                                        Dim lgrHelper As LedgerAccountHelper = New LedgerAccountHelper()
-                                        Dim dt As DataTable = lgrHelper.GetAccountDetails(ledgerAccount)
-                                        If dt IsNot Nothing Then
-                                            If dt.Rows.Count < 1 Then
-                                                IsSuccessFull = False
-                                                InValidLedgerCode = True
-                                                Exit For
-                                            End If
-                                        End If
-
-                                        Dim voucherDetail As VoucherDetails = New VoucherDetails()
-                                        voucherDetail.VD_Fin_Yr = InstitutionMasterData.XFinYr
-                                        voucherDetail.VD_Inst_Cd = InstitutionMasterData.XInstCode
-                                        voucherDetail.VD_Inst_Typ = InstitutionMasterData.XInstType
-                                        voucherDetail.VD_Dbk_Cd = ComboBoxDaybookSelect.SelectedValue
-                                        voucherDetail.VD_Trn_Typ = TransactionType
-                                        voucherDetail.VD_Lgr_Cd = "00"
-                                        voucherDetail.VD_Lnk_No = txtLinkVoucherNumber.Text
-                                        voucherDetail.VD_Narr = dgRows.Cells("VoucherDesc").EditedFormattedValue
-                                        voucherDetail.VD_Cr_Dr = drcr
-                                        voucherDetail.VD_ABS_Amt = amount
-                                        voucherDetail.VD_Amt = IIf(drcr = "Dr", Decimal.Parse(amount), Decimal.Parse(amount) * -1)
-                                        voucherDetail.VD_Ref_No = dgRows.Cells("RefNo").EditedFormattedValue
-                                        voucherDetail.VD_Ref_Dt = Convert.ToDateTime(dgRows.Cells("RefDate").EditedFormattedValue)
-                                        voucherDetail.VD_Seq_No = seqNo
-                                        voucherDetail.VD_Acc_Cd = ledgerAccount
-                                        voucherDetail.VD_Brn_Cd = "HO"
-                                        voucherDetail.VD_Ent_By = InstitutionMasterData.XUsrId
-                                        helper.SaveVoucherDetail(voucherDetail)
-                                    End If
-                                Catch ex As Exception
-                                    IsSuccessFull = False
-                                End Try
-                            Next
-                        Else
-                            IsSuccessFull = False
-                        End If
-
-                        If (IsSuccessFull And i > 0) Then
-                            If Me._mode = "add" Then
-                                Dim instMaster As InstitutionMasterData = New InstitutionMasterData()
-                                instMaster.UpdateLinkNumber(txtLinkVoucherNumber.Text.Trim(), InstitutionMasterData.XInstCode)
-                            End If
-                            MessageBox.Show("Voucher saved successfully.")
-                        Else
-                            If InValidLedgerCode Then
-                                MessageBox.Show("Invalid ledger code for one of the voucher details entry")
-                            ElseIf Not IsSuccessFull Then
-                                MessageBox.Show("Error occured while saving voucher details")
-                            ElseIf i <= 0 Then
-                                MessageBox.Show("Please enter atleast one valid voucher details entry")
-                            End If
-                            Return False
-                        End If
-                    Else
-                        Return False
-                    End If
-                End If
-            End If
+            
 
 
             If VoucherType = "J" Then
@@ -634,64 +490,6 @@
 
     End Function
 
-    Private Function BalanceValidation(ByVal str1 As String) As Boolean
-        Dim headerValue As Decimal
-        Dim calculateDiff As Boolean = True
-        Dim detailv As Decimal
-        headerValue = Decimal.Parse(TextBoxAmount.Text)
-
-        If _TrnType.Equals("BP") Or _TrnType.Equals("CP") Then
-            calculateDiff = ValidateClass.CheckBalance(ledgerAccBalance, headerValue)
-        End If
-
-        If calculateDiff Then
-            If str1 = "Cr" Then
-                headerValue = headerValue * -1
-            End If
-
-            Dim detailValues As Decimal
-
-            For Each dgvrow As DataGridViewRow In dgvVoucherDetails.Rows
-
-                Dim ledgerAccount As String = dgvrow.Cells("LedgerAccount").EditedFormattedValue
-                Dim InValidLedgerCode As Boolean = False
-                Dim lgrHelper As LedgerAccountHelper = New LedgerAccountHelper()
-                Dim dt As DataTable = lgrHelper.GetAccountDetails(ledgerAccount)
-                If dt IsNot Nothing Then
-                    If dt.Rows.Count < 1 Then
-                        InValidLedgerCode = True
-                        Exit For
-                    End If
-                End If
-
-                If Not InValidLedgerCode And Not str1 = String.Empty And Not dgvrow.Cells("Amount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("LedgerAccount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefNo").EditedFormattedValue = String.Empty Then
-                    Dim rowDecimal As Decimal
-                    rowDecimal = Decimal.Parse(dgvrow.Cells("Amount").EditedFormattedValue)
-                    Dim drcr As String = dgvrow.Cells("DebitCr").EditedFormattedValue.ToString()
-                    If drcr = "Cr" Then
-                        rowDecimal = rowDecimal * -1
-                    End If
-                    detailv = detailv + rowDecimal
-                    detailValues += rowDecimal
-
-                End If
-
-            Next
-            If detailv + headerValue = 0 Then
-                Return True
-            ElseIf detailv > headerValue Then
-                MessageBox.Show("Voucher header and details amount must match", "Incorrect Amount")
-                Return False
-            Else
-                MessageBox.Show("Amount is not balanced")
-                Return False
-            End If
-        Else
-            MessageBox.Show("Insufficient balance, cannot add the voucher!!", "Insufficient Balance", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Return False
-        End If
-    End Function
-
     Private Sub dgvVoucherDetails_EditingControlShowing(ByVal sender As Object, ByVal e As DataGridViewEditingControlShowingEventArgs) Handles dgvVoucherDetails.EditingControlShowing
         If dgvVoucherDetails.Columns(dgvVoucherDetails.CurrentCell.ColumnIndex).Name = "LedgerAccount" Then
             Dim tb As DataGridViewTextBoxEditingControl = DirectCast(e.Control, DataGridViewTextBoxEditingControl)
@@ -760,8 +558,8 @@
     End Sub
 
     Private Sub dgvVoucherDetails_RowEnter(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvVoucherDetails.RowEnter
-        dgvVoucherDetails.Rows(e.RowIndex).Cells("RefNo").Value = txtRefNumber.Text
-        dgvVoucherDetails.Rows(e.RowIndex).Cells("RefDate").Value = DateTimeReferenceDate.Value.ToShortDateString()
+        'dgvVoucherDetails.Rows(e.RowIndex).Cells("RefNo").Value = txtRefNumber.Text
+        'dgvVoucherDetails.Rows(e.RowIndex).Cells("RefDate").Value = DateTimeReferenceDate.Value.ToShortDateString()
 
         If (String.IsNullOrEmpty(dgvVoucherDetails.Rows(e.RowIndex).Cells("SeqNo").Value)) Then
             Dim newSeqNo As Integer = 0
@@ -809,13 +607,6 @@
         Return checkDecimal
     End Function
 
-    Private Sub TextBoxAmount_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles TextBoxAmount.KeyPress
-        If IsDecimal(e, TextBoxAmount) Then
-            Return
-        End If
-        e.Handled = True
-    End Sub
-
     Private Sub Amount_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs)
         If dgvVoucherDetails.Columns(dgvVoucherDetails.CurrentCell.ColumnIndex).Name = "Amount" And Not e.Handled Then
             If IsDecimal(e, sender) Then
@@ -834,13 +625,6 @@
 
     Sub SetControls(ByVal pMode As String)
         lableVoucherStatus.Text = ""
-        If VoucherType = "B" Then
-            SetChequeControlVisibility(True)
-        ElseIf VoucherType = "J" Then
-            SetChequeControlVisibility(False)
-        Else
-            SetChequeControlVisibility(False)
-        End If
 
         datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Custom
         datepickerVoucherDateConfirm.CustomFormat = " "
@@ -897,9 +681,6 @@
                 txtLinkVoucherNumber.Enabled = False
 
                 If VoucherType = "J" Then
-                    TextBoxNameOfPayee.Enabled = False
-                    ComboBoxCreditDebit.Enabled = False
-                    TextBoxAmount.Enabled = False
                     TextBoxNarration.Enabled = False
                 End If
                 SplitContainer1.Panel2Collapsed = False
@@ -909,11 +690,7 @@
                 ComboBoxDaybookSelect.Enabled = False
                 dgvVoucherDetails.Visible = True
                 DatePickerVoucherLinkDate.Value = InstitutionMasterData.XDate
-                DateTimeReferenceDate.Value = InstitutionMasterData.XDate
                 DatePickerVoucherLinkDate.Enabled = True
-                datepickerChequeDate.Format = DateTimePickerFormat.Short
-                datepickerChequeDate.CustomFormat = "dd-mm-yyyy"
-                datepickerChequeDate.Value = InstitutionMasterData.XDate
                 dgvVoucherDetails.Enabled = True
                 Me.pnlConfirm.Visible = True
 
@@ -923,8 +700,6 @@
                 txtLinkVoucherNumber.Enabled = True
 
                 If VoucherType = "J" Then
-                    TextBoxAmount.Enabled = False
-                    DateTimeReferenceDate.Enabled = False
                     TextBoxNarration.Enabled = False
                 End If
                 SplitContainer1.Panel2Collapsed = False
@@ -943,13 +718,6 @@
             Case "clear"
                 Me.Text = Me.Text.Split("(")(0).Trim() + " (Please select operation to be performed)"
         End Select
-    End Sub
-
-    Sub SetChequeControlVisibility(ByVal Visibility As Boolean)
-        TextBoxChequeNo.Enabled = Visibility
-        datepickerChequeDate.Enabled = Visibility
-        LabelChequeNo.Enabled = Visibility
-        LabelChequeDate.Enabled = Visibility
     End Sub
 
     Sub SetOperationMode(ByVal pMode As String)
@@ -1008,23 +776,9 @@
                     lblConfirmedVoucherNumber.BackColor = Color.Red
                     lblConfirmedVoucherNumber.ForeColor = Color.White
 
-                    txtRefNumber.Text = voucherHeader.VH_Ref_No
+
                     DatePickerVoucherLinkDate.Value = voucherHeader.VH_Lnk_Dt
-                    DateTimeReferenceDate.Value = voucherHeader.VH_Ref_Dt
-                    TextBoxChequeNo.Text = voucherHeader.VH_Chq_No
 
-                    If (voucherHeader.VH_Chq_Dt.HasValue) Then
-                        datepickerChequeDate.Format = DateTimePickerFormat.Short
-                        datepickerChequeDate.CustomFormat = "dd-mm-yyyy"
-                        datepickerChequeDate.Value = voucherHeader.VH_Chq_Dt
-                    Else
-                        datepickerChequeDate.Format = DateTimePickerFormat.Custom
-                        datepickerChequeDate.CustomFormat = " "
-                    End If
-
-                    TextBoxNameOfPayee.Text = voucherHeader.VH_Pty_Nm
-                    TextBoxAmount.Text = voucherHeader.VH_ABS_Amt.ToString
-                    ComboBoxCreditDebit.SelectedItem = voucherHeader.VH_Cr_Dr
                     flgEnable = String.Empty
 
                     If dtVoucherDetails IsNot Nothing Then
@@ -1066,25 +820,6 @@
         End If
     End Sub
 
-    Private Sub TextBoxAmount_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles TextBoxAmount.Validating
-        Dim calculateDiff As Boolean = True
-        If _mode IsNot Nothing Then
-
-            If _mode.ToLower() = "add" Or _mode.ToLower() = "edit" Then
-                If _TrnType.Equals("BP") Or _TrnType.Equals("CP") Then
-
-                    If TextBoxAmount.Text <> String.Empty Then
-                        calculateDiff = ValidateClass.CheckBalance(ledgerAccBalance, Double.Parse(TextBoxAmount.Text))
-                        If Not calculateDiff Then
-                            MessageBox.Show("Insufficient Balance cannot save voucher !!!", "Insufficient Balance", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        End If
-                    End If
-
-                End If
-            End If
-        End If
-
-    End Sub
     Private rowIndex As Integer = 0
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
         If Not dgvVoucherDetails.Rows(Me.rowIndex).IsNewRow Then

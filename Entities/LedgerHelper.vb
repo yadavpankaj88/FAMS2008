@@ -13,43 +13,79 @@ Public Class LedgerHelper
         dataHelp.ExecuteNonQuery(detailSaveQuery, CommandType.Text)
 
     End Sub
-    Public Sub AddLedgerDetail(ByVal VoucherLinkNo As String)
+    Public Sub AddLedgerDetail(ByVal VoucherLinkNo As String, ByVal VoucherType As String)
 
-        Dim saveQuery = "INSERT INTO " + InstitutionMasterData.XInstType + "_Ledger(" & _
-                            "[Lgr_vch_dt]" & _
-                            ",[Lgr_lnk_dt]" & _
-                            ",[Lgr_Fin_Yr]" & _
-                            ",[Lgr_Seq_No]" & _
-                            ",[Lgr_Inst_Cd]" & _
-                            ",[Lgr_Inst_Typ]" & _
-                            ",[Lgr_Brn_Cd ]" & _
-                            ",[Lgr_Lnk_No]" & _
-                            ",[Lgr_Dbk_Cd]" & _
-                            ",[Lgr_Trn_Typ]" & _
-                            ",[Lgr_Vch_No]" & _
-                            ",[Lgr_Vch_Ref_No]" & _
-                            ",[Lgr_Narr]" & _
-                            ",[Lgr_Ref_No]" & _
-                            ",[Lgr_Ref_Dt]" & _
-                            ",[Lgr_Acc_Cd]" & _
-                            ",[Lgr_Amt]" & _
-                            ",[Lgr_Cr_Dr]" & _
-                            ",[Lgr_ABS_Amt]" & _
-                            ",[Lgr_Ent_By]" & _
-                            ",[Lgr_Ent_Dt]" & _
-                            ",[Lgr_Upd_By]" & _
-                            ",[Lgr_Upd_Dt]" & _
-                            ",[Lgr_Conf_By]" & _
-                            ",[Lgr_Conf_Dt])" + _
-                            " SELECT " + _
-                            "vh.VH_Vch_Dt" + _
-                            ",vh.VH_Lnk_Dt" + _
-                            ",VD_Fin_Yr,VD_Seq_No,VD_Inst_Cd,VD_Inst_Typ,VD_Brn_Cd,VD_Lnk_No,VD_Dbk_Cd,VD_Trn_Typ ,VD_Vch_No ,VD_Vch_Ref_No ,VD_Narr,VD_Ref_No,VD_Ref_Dt,VD_Acc_Cd,VD_Amt,VD_Cr_Dr,VD_ABS_Amt,'" + InstitutionMasterData.XUsrId + "',GETDATE(),'" + InstitutionMasterData.XUsrId + "',GETDATE(),'" + InstitutionMasterData.XUsrId + "',GETDATE() " + _
-                            "from dbo." + InstitutionMasterData.XInstType + "_Voucher_Detail VD " + _
-                            "INNER JOIN " + InstitutionMasterData.XInstType + "_Voucher_Header VH " + _
-                            "ON VD.VD_Lnk_No=vh.VH_Lnk_No " + _
-                            "where VD_Lnk_No='" + VoucherLinkNo + "'"
+        Dim saveQuery = String.Empty
 
+        If VoucherType = "J" Then
+            saveQuery = "INSERT INTO " + InstitutionMasterData.XInstType + "_Ledger(" & _
+                                "[Lgr_vch_dt]" & _
+                                ",[Lgr_lnk_dt]" & _
+                                ",[Lgr_Fin_Yr]" & _
+                                ",[Lgr_Seq_No]" & _
+                                ",[Lgr_Inst_Cd]" & _
+                                ",[Lgr_Inst_Typ]" & _
+                                ",[Lgr_Brn_Cd ]" & _
+                                ",[Lgr_Lnk_No]" & _
+                                ",[Lgr_Dbk_Cd]" & _
+                                ",[Lgr_Trn_Typ]" & _
+                                ",[Lgr_Vch_No]" & _
+                                ",[Lgr_Vch_Ref_No]" & _
+                                ",[Lgr_Narr]" & _
+                                ",[Lgr_Ref_No]" & _
+                                ",[Lgr_Ref_Dt]" & _
+                                ",[Lgr_Acc_Cd]" & _
+                                ",[Lgr_Amt]" & _
+                                ",[Lgr_Cr_Dr]" & _
+                                ",[Lgr_ABS_Amt]" & _
+                                ",[Lgr_Ent_By]" & _
+                                ",[Lgr_Ent_Dt]" & _
+                                ",[Lgr_Upd_By]" & _
+                                ",[Lgr_Upd_Dt]" & _
+                                ",[Lgr_Conf_By]" & _
+                                ",[Lgr_Conf_Dt])" + _
+                                " SELECT " + _
+                                "VD_Vch_Dt" + _
+                                ",NULL" + _
+                                ",VD_Fin_Yr,VD_Seq_No,VD_Inst_Cd,VD_Inst_Typ,VD_Brn_Cd,VD_Lnk_No,VD_Dbk_Cd,VD_Trn_Typ ,VD_Vch_No ,VD_Vch_Ref_No ,VD_Narr,VD_Ref_No,VD_Ref_Dt,VD_Acc_Cd,VD_Amt,VD_Cr_Dr,VD_ABS_Amt,'" + InstitutionMasterData.XUsrId + "',GETDATE(),'" + InstitutionMasterData.XUsrId + "',GETDATE(),'" + InstitutionMasterData.XUsrId + "',GETDATE() " + _
+                                "from dbo." + InstitutionMasterData.XInstType + "_Voucher_Detail VD " + _
+                                "where VD_Lnk_No='" + VoucherLinkNo + "'"
+        Else
+            saveQuery = "INSERT INTO " + InstitutionMasterData.XInstType + "_Ledger(" & _
+                                "[Lgr_vch_dt]" & _
+                                ",[Lgr_lnk_dt]" & _
+                                ",[Lgr_Fin_Yr]" & _
+                                ",[Lgr_Seq_No]" & _
+                                ",[Lgr_Inst_Cd]" & _
+                                ",[Lgr_Inst_Typ]" & _
+                                ",[Lgr_Brn_Cd ]" & _
+                                ",[Lgr_Lnk_No]" & _
+                                ",[Lgr_Dbk_Cd]" & _
+                                ",[Lgr_Trn_Typ]" & _
+                                ",[Lgr_Vch_No]" & _
+                                ",[Lgr_Vch_Ref_No]" & _
+                                ",[Lgr_Narr]" & _
+                                ",[Lgr_Ref_No]" & _
+                                ",[Lgr_Ref_Dt]" & _
+                                ",[Lgr_Acc_Cd]" & _
+                                ",[Lgr_Amt]" & _
+                                ",[Lgr_Cr_Dr]" & _
+                                ",[Lgr_ABS_Amt]" & _
+                                ",[Lgr_Ent_By]" & _
+                                ",[Lgr_Ent_Dt]" & _
+                                ",[Lgr_Upd_By]" & _
+                                ",[Lgr_Upd_Dt]" & _
+                                ",[Lgr_Conf_By]" & _
+                                ",[Lgr_Conf_Dt])" + _
+                                " SELECT " + _
+                                "vh.VH_Vch_Dt" + _
+                                ",vh.VH_Lnk_Dt" + _
+                                ",VD_Fin_Yr,VD_Seq_No,VD_Inst_Cd,VD_Inst_Typ,VD_Brn_Cd,VD_Lnk_No,VD_Dbk_Cd,VD_Trn_Typ ,VD_Vch_No ,VD_Vch_Ref_No ,VD_Narr,VD_Ref_No,VD_Ref_Dt,VD_Acc_Cd,VD_Amt,VD_Cr_Dr,VD_ABS_Amt,'" + InstitutionMasterData.XUsrId + "',GETDATE(),'" + InstitutionMasterData.XUsrId + "',GETDATE(),'" + InstitutionMasterData.XUsrId + "',GETDATE() " + _
+                                "from dbo." + InstitutionMasterData.XInstType + "_Voucher_Detail VD " + _
+                                "INNER JOIN " + InstitutionMasterData.XInstType + "_Voucher_Header VH " + _
+                                "ON VD.VD_Lnk_No=vh.VH_Lnk_No " + _
+                                "where VD_Lnk_No='" + VoucherLinkNo + "'"
+        End If
         dataHelp.ExecuteNonQuery(saveQuery, CommandType.Text)
     End Sub
 
