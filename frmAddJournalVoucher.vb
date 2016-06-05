@@ -207,7 +207,7 @@
             PupulateDaybookCombo()
         End If
 
-        
+
         If VoucherType = "J" Then
             'ComboBoxCreditDebit.SelectedIndex = 0
         End If
@@ -313,19 +313,19 @@
     Public Function ValidateForm() As String
         Dim mandatoryFields As String = String.Empty
 
-        
 
-       
 
-        
+
+
+
         Dim crdr As Boolean = False
 
-       
+
         If Not crdr Then
             mandatoryFields += ", Credit/Debit"
         End If
 
-      
+
 
         If (mandatoryFields.StartsWith(",")) Then
             mandatoryFields = mandatoryFields.Substring(1)
@@ -396,7 +396,7 @@
 
             mandatoryFields = ValidateForm()
 
-            
+
 
 
             If VoucherType = "J" Then
@@ -411,11 +411,19 @@
                 End If
 
                 Dim i As Integer = 0
+
                 If dgvVoucherDetails.Rows.Count > 0 Then
+                    For Each dgRows As DataGridViewRow In dgvVoucherDetails.Rows
+                        If Not dgRows.Cells("DebitCr").Value = String.Empty And Not dgRows.Cells("Amount").EditedFormattedValue = String.Empty And dgRows.Cells("LedgerAccount").Value IsNot DBNull.Value And Not dgRows.Cells("LedgerAccount").Value = String.Empty And Not dgRows.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgRows.Cells("RefNo").EditedFormattedValue = String.Empty Then
+                            i = i + 1
+                        End If
+                    Next
+                End If
+
+                If dgvVoucherDetails.Rows.Count > 0 And (i > 0 And i = (dgvVoucherDetails.Rows.Count - 1)) Then
                     For Each dgRows As DataGridViewRow In dgvVoucherDetails.Rows
                         Try
                             If Not dgRows.Cells("DebitCr").Value = String.Empty And Not dgRows.Cells("Amount").EditedFormattedValue = String.Empty And dgRows.Cells("LedgerAccount").Value IsNot DBNull.Value And Not dgRows.Cells("LedgerAccount").Value = String.Empty And Not dgRows.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgRows.Cells("RefNo").EditedFormattedValue = String.Empty Then
-                                i = i + 1
                                 Dim drcr As String = dgRows.Cells("DebitCr").EditedFormattedValue.ToString()
                                 Dim amount As String = dgRows.Cells("Amount").EditedFormattedValue
                                 Dim ledgerAccount As String = dgRows.Cells("LedgerAccount").EditedFormattedValue
@@ -450,18 +458,18 @@
                                 voucherDetail.VD_Brn_Cd = "HO"
                                 voucherDetail.VD_Ent_By = InstitutionMasterData.XUsrId
                                 voucherDetail.VD_Vch_Ref_No = vchRefNo.ToString().PadLeft(6, "0")
+                                voucherDetail.VD_Lnk_Dt = DatePickerVoucherLinkDate.Value
                                 helper.SaveVoucherDetail(voucherDetail)
                             End If
                         Catch ex As Exception
                             IsSuccessFull = False
                         End Try
                     Next
-                Else
-                    IsSuccessFull = False
+                    'Else
+                    '    IsSuccessFull = False
                 End If
 
-                If (IsSuccessFull And i > 0) Then
-
+                If (IsSuccessFull And (i > 0 And i = (dgvVoucherDetails.Rows.Count - 1))) Then
                     If Me._mode = "add" Then
                         instMaster.UpdateLinkNumber(txtLinkVoucherNumber.Text.Trim(), InstitutionMasterData.XInstCode)
                     End If
@@ -471,7 +479,7 @@
                         MessageBox.Show("Invalid ledger code for one of the voucher details entry")
                     ElseIf Not IsSuccessFull Then
                         MessageBox.Show("Error occured while saving voucher details")
-                    ElseIf i <= 0 Then
+                    ElseIf i <= 0 Or Not i = (dgvVoucherDetails.Rows.Count - 1) Then
                         MessageBox.Show("Please enter atleast one valid voucher details entry")
                     End If
                     Return False
@@ -488,6 +496,59 @@
             Throw
         End Try
 
+    End Function
+
+    Private Function BalanceValidation(ByVal str1 As String) As Boolean
+        Dim calculateDiff As Boolean = True
+        Dim detailv As Decimal
+
+        'If _TrnType.Equals("BP") Or _TrnType.Equals("CP") Then
+        '    calculateDiff = ValidateClass.CheckBalance(ledgerAccBalance, headerValue)
+        'End If
+
+        If calculateDiff Then
+            Dim detailValues As Decimal
+
+            For Each dgvrow As DataGridViewRow In dgvVoucherDetails.Rows
+
+                Dim ledgerAccount As String = dgvrow.Cells("LedgerAccount").EditedFormattedValue
+                Dim InValidLedgerCode As Boolean = False
+                Dim lgrHelper As LedgerAccountHelper = New LedgerAccountHelper()
+                Dim dt As DataTable = lgrHelper.GetAccountDetails(ledgerAccount)
+                If dt IsNot Nothing Then
+                    If dt.Rows.Count < 1 Then
+                        InValidLedgerCode = True
+                        Exit For
+                    End If
+                End If
+
+                If Not InValidLedgerCode And Not str1 = String.Empty And Not dgvrow.Cells("Amount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("LedgerAccount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefNo").EditedFormattedValue = String.Empty Then
+                    Dim rowDecimal As Decimal
+                    rowDecimal = Decimal.Parse(dgvrow.Cells("Amount").EditedFormattedValue)
+                    Dim drcr As String = dgvrow.Cells("DebitCr").EditedFormattedValue.ToString()
+                    If drcr = "Cr" Then
+                        rowDecimal = rowDecimal * -1
+                    End If
+                    detailv = detailv + rowDecimal
+                    detailValues += rowDecimal
+
+                End If
+
+            Next
+            'If detailv + headerValue = 0 Then
+            '    Return True
+            'Else
+            If detailv < 0 Then
+                MessageBox.Show("Voucher header and details amount must match", "Incorrect Amount")
+                Return False
+            Else
+                MessageBox.Show("Amount is not balanced")
+                Return False
+            End If
+        Else
+            MessageBox.Show("Insufficient balance, cannot add the voucher!!", "Insufficient Balance", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return False
+        End If
     End Function
 
     Private Sub dgvVoucherDetails_EditingControlShowing(ByVal sender As Object, ByVal e As DataGridViewEditingControlShowingEventArgs) Handles dgvVoucherDetails.EditingControlShowing
@@ -742,6 +803,11 @@
                     'Validation for delete edit mode. 
 
                     dgvVoucherDetails.DataSource = dtVoucherDetails
+
+                    If dtVoucherDetails IsNot Nothing And dtVoucherDetails.Rows.Count > 0 Then
+                        Dim dr As DataRow = dtVoucherDetails.Rows(0)
+
+                    End If
                 Else
                     flgEnable = "No matching Voucher Entry found"
                 End If

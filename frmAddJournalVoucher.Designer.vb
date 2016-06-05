@@ -23,7 +23,7 @@ Partial Class frmAddJournalVoucher
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.LabelNarration = New System.Windows.Forms.Label
         Me.TextBoxNarration = New System.Windows.Forms.TextBox
         Me.LabelVoucherDate = New System.Windows.Forms.Label
@@ -173,9 +173,9 @@ Partial Class frmAddJournalVoucher
         'Amount
         '
         Me.Amount.DataPropertyName = "Amount"
-        DataGridViewCellStyle2.Format = "N2"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Amount.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.Format = "N2"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Amount.DefaultCellStyle = DataGridViewCellStyle1
         Me.Amount.HeaderText = "Amount"
         Me.Amount.Name = "Amount"
         '

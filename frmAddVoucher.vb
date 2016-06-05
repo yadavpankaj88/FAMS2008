@@ -510,6 +510,7 @@
                                         voucherDetail.VD_Acc_Cd = ledgerAccount
                                         voucherDetail.VD_Brn_Cd = "HO"
                                         voucherDetail.VD_Ent_By = InstitutionMasterData.XUsrId
+                                        voucherDetail.VD_Lnk_Dt = DatePickerVoucherLinkDate.Value
                                         helper.SaveVoucherDetail(voucherDetail)
                                     End If
                                 Catch ex As Exception

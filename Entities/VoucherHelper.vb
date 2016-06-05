@@ -127,8 +127,8 @@ Public Class VoucherHelper
         '                        "@VD_Abs_Amt,@VD_Ent_By,GETDATE())"
 
         Dim detailSaveQuery = "Insert into " + InstitutionMasterData.XInstType + "_Voucher_Detail(VD_Fin_Yr,VD_Inst_Cd,VD_Inst_Typ,VD_Brn_Cd,VD_Lnk_No,VD_Dbk_Cd,VD_Trn_Typ,VD_Seq_No,VD_Ref_No,VD_VCH_Ref_No,VD_Ref_Dt,VD_Narr,VD_Lgr_Cd,VD_Acc_Cd,VD_Amt,VD_Cr_Dr," & _
-                       "VD_ABS_Amt,VD_Ent_By,VD_Ent_Dt,VD_Upd_By,VD_Upd_Dt)values(@VD_Fin_Yr,@VD_Inst_Cd,@VD_Inst_Typ,@VD_Brn_Cd,@VD_Lnk_No,@VD_Dbk_Cd,@VD_Trn_Typ,@VD_Seq_No,@VD_Ref_No,@VD_VCH_Ref_No,@VD_Ref_Dt,@VD_Narr,@VD_Lgr_Cd,@VD_Acc_Cd,@VD_Amt,@VD_Cr_Dr," & _
-                        "@VD_Abs_Amt,@VD_Ent_By,GETDATE(),@VD_Upd_By,GetDate())"
+                       "VD_ABS_Amt,VD_Ent_By,VD_Ent_Dt,VD_Upd_By,VD_Upd_Dt,VD_Lnk_Dt)values(@VD_Fin_Yr,@VD_Inst_Cd,@VD_Inst_Typ,@VD_Brn_Cd,@VD_Lnk_No,@VD_Dbk_Cd,@VD_Trn_Typ,@VD_Seq_No,@VD_Ref_No,@VD_VCH_Ref_No,@VD_Ref_Dt,@VD_Narr,@VD_Lgr_Cd,@VD_Acc_Cd,@VD_Amt,@VD_Cr_Dr," & _
+                        "@VD_Abs_Amt,@VD_Ent_By,GETDATE(),@VD_Upd_By,GetDate(),@VD_Lnk_Dt)"
 
         Dim params As Dictionary(Of String, Object) = New Dictionary(Of String, Object)()
         params.Add("@VD_Fin_Yr", voucherdetail.VD_Fin_Yr)
@@ -155,6 +155,7 @@ Public Class VoucherHelper
         params.Add("@VD_Ent_By", InstitutionMasterData.XUsrId)
         params.Add("@VD_VCH_Ref_No", DBNull.Value)
         params.Add("@VD_Upd_By", InstitutionMasterData.XUsrId)
+        params.Add("@VD_Lnk_Dt", voucherdetail.VD_Lnk_Dt)
 
         Dim datahelper As DataHelper = New DataHelper()
         datahelper.ExecuteNonQuery(detailSaveQuery, CommandType.Text, params)
@@ -222,10 +223,10 @@ Public Class VoucherHelper
             If voucherType = "J" Then
                 If currentMode.ToLower() = "view" Then
                     query = String.Format("select Distinct LTrim(RTrim(VD_Lnk_No)) AS [VH_Lnk_No], LTrim(RTrim(VD_Narr)) AS [VH_Pty_Nm], VD_ABS_Amt AS [VH_ABS_Amt], VD_Vch_Dt from " + InstitutionMasterData.XInstType + "_Voucher_Detail " & _
-                        " where VD_Trn_Typ='{0}' and VD_Inst_Cd='{1}' and VD_Inst_Typ='{2}' and VD_Dbk_Cd='{3}' ORDER BY VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
+                       " where VD_Trn_Typ='{0}' and VD_Inst_Cd='{1}' and VD_Inst_Typ='{2}' and VD_Dbk_Cd='{3}' and VD_Seq_No = '001' ORDER BY VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
                 Else
                     query = String.Format("select Distinct LTrim(RTrim(VD_Lnk_No)) AS [VH_Lnk_No],LTRIM(RTRIM(VD_Narr)) AS [VH_Pty_Nm],VD_ABS_Amt AS [VH_ABS_Amt], VD_Vch_Dt from " + InstitutionMasterData.XInstType + "_Voucher_Detail " & _
-                        " where VD_Trn_Typ='{0}' and VD_Inst_Cd='{1}' and VD_Inst_Typ='{2}' and VD_Dbk_Cd='{3}' and VD_Conf_Dt is null and VD_Conf_By is null ORDER BY VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
+                        " where VD_Trn_Typ='{0}' and VD_Inst_Cd='{1}' and VD_Inst_Typ='{2}' and VD_Dbk_Cd='{3}' and VD_Conf_Dt is null and VD_Conf_By is null and VD_Seq_No = '001' ORDER BY VH_Lnk_No", transType, InstitutionMasterData.XInstCode, InstitutionMasterData.XInstType, daybookCode)
                 End If
             Else
                 If currentMode.ToLower() = "view" Then
