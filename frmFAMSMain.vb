@@ -797,7 +797,7 @@ Public Class frmFAMSMain
                 Case "frmAddVoucher"
                     DirectCast(Me.ActiveMdiChild, frmAddVoucher).PrintVoucher()
                 Case "frmAddJournalVoucher"
-                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).PrintVoucher()
+                    DirectCast(Me.ActiveMdiChild, frmAddJournalVoucher).PrintJournalVoucher()
                 Case "frmCashBankContraV"
                     DirectCast(Me.ActiveMdiChild, frmCashBankContraV).PrintVoucher()
                 Case "frmUserMaster"

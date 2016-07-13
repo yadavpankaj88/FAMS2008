@@ -24,8 +24,10 @@
 
         Try
             Select Case _reportType
+                Case "JournalVoucher"
+                    ShowVoucherReport(True)
                 Case "Voucher"
-                    ShowVoucherReport()
+                    ShowVoucherReport(False)
                 Case "Account"
                     ShowAccountReport()
                 Case "Daybook"
@@ -36,8 +38,13 @@
         End Try
     End Sub
 
-    Private Sub ShowVoucherReport()
-        Dim view As New rptPrintVoucher
+    Private Sub ShowVoucherReport(ByVal isJournal As Boolean)
+        Dim view As Object = Nothing
+        If isJournal Then
+            view = New rptPrintJournalVoucher
+        Else
+            view = New rptPrintVoucher
+        End If
         Dim user As String = System.Configuration.ConfigurationSettings.AppSettings("Username")
         Dim pwd As String = System.Configuration.ConfigurationSettings.AppSettings("Password")
         Dim Server As String = System.Configuration.ConfigurationSettings.AppSettings("Server")
