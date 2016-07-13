@@ -61,7 +61,7 @@
 
         ' This call is required by the designer.
         InitializeComponent()
-
+        dgvVoucherDetails.AutoGenerateColumns = False
         ' Add any initialization after the InitializeComponent() call.
         ledgerAcc = New LedgerAccountHelper
 
@@ -421,52 +421,54 @@
                 End If
 
                 If dgvVoucherDetails.Rows.Count > 0 And (i > 0 And i = (dgvVoucherDetails.Rows.Count - 1)) Then
-                    For Each dgRows As DataGridViewRow In dgvVoucherDetails.Rows
-                        Try
-                            If Not dgRows.Cells("DebitCr").Value = String.Empty And Not dgRows.Cells("Amount").EditedFormattedValue = String.Empty And dgRows.Cells("LedgerAccount").Value IsNot DBNull.Value And Not dgRows.Cells("LedgerAccount").Value = String.Empty And Not dgRows.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgRows.Cells("RefNo").EditedFormattedValue = String.Empty Then
-                                Dim drcr As String = dgRows.Cells("DebitCr").EditedFormattedValue.ToString()
-                                Dim amount As String = dgRows.Cells("Amount").EditedFormattedValue
-                                Dim ledgerAccount As String = dgRows.Cells("LedgerAccount").EditedFormattedValue
-                                Dim seqNo As String = dgRows.Cells("SeqNo").EditedFormattedValue
+                    If BalanceValidation() Then
+                        For Each dgRows As DataGridViewRow In dgvVoucherDetails.Rows
+                            Try
+                                If Not dgRows.Cells("DebitCr").Value = String.Empty And Not dgRows.Cells("Amount").EditedFormattedValue = String.Empty And dgRows.Cells("LedgerAccount").Value IsNot DBNull.Value And Not dgRows.Cells("LedgerAccount").Value = String.Empty And Not dgRows.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgRows.Cells("RefNo").EditedFormattedValue = String.Empty Then
+                                    Dim drcr As String = dgRows.Cells("DebitCr").EditedFormattedValue.ToString()
+                                    Dim amount As String = dgRows.Cells("Amount").EditedFormattedValue
+                                    Dim ledgerAccount As String = dgRows.Cells("LedgerAccount").EditedFormattedValue
+                                    Dim seqNo As String = dgRows.Cells("SeqNo").EditedFormattedValue
 
-                                Dim lgrHelper As LedgerAccountHelper = New LedgerAccountHelper()
-                                Dim dt As DataTable = lgrHelper.GetAccountDetails(ledgerAccount)
-                                If dt IsNot Nothing Then
-                                    If dt.Rows.Count < 1 Then
-                                        IsSuccessFull = False
-                                        InValidLedgerCode = True
-                                        Exit For
+                                    Dim lgrHelper As LedgerAccountHelper = New LedgerAccountHelper()
+                                    Dim dt As DataTable = lgrHelper.GetAccountDetails(ledgerAccount)
+                                    If dt IsNot Nothing Then
+                                        If dt.Rows.Count < 1 Then
+                                            IsSuccessFull = False
+                                            InValidLedgerCode = True
+                                            Exit For
+                                        End If
                                     End If
-                                End If
 
-                                Dim voucherDetail As VoucherDetails = New VoucherDetails()
-                                voucherDetail.VD_Fin_Yr = InstitutionMasterData.XFinYr
-                                voucherDetail.VD_Inst_Cd = InstitutionMasterData.XInstCode
-                                voucherDetail.VD_Inst_Typ = InstitutionMasterData.XInstType
-                                voucherDetail.VD_Dbk_Cd = ComboBoxDaybookSelect.SelectedValue
-                                voucherDetail.VD_Trn_Typ = TransactionType
-                                voucherDetail.VD_Lgr_Cd = "00"
-                                voucherDetail.VD_Lnk_No = txtLinkVoucherNumber.Text
-                                voucherDetail.VD_Narr = dgRows.Cells("VoucherDesc").EditedFormattedValue
-                                voucherDetail.VD_Cr_Dr = drcr
-                                voucherDetail.VD_ABS_Amt = amount
-                                voucherDetail.VD_Amt = IIf(drcr = "Dr", Decimal.Parse(amount), Decimal.Parse(amount) * -1)
-                                voucherDetail.VD_Ref_No = dgRows.Cells("RefNo").EditedFormattedValue
-                                voucherDetail.VD_Ref_Dt = Convert.ToDateTime(dgRows.Cells("RefDate").EditedFormattedValue)
-                                voucherDetail.VD_Seq_No = seqNo
-                                voucherDetail.VD_Acc_Cd = ledgerAccount
-                                voucherDetail.VD_Brn_Cd = "HO"
-                                voucherDetail.VD_Ent_By = InstitutionMasterData.XUsrId
-                                voucherDetail.VD_Vch_Ref_No = vchRefNo.ToString().PadLeft(6, "0")
-                                voucherDetail.VD_Lnk_Dt = DatePickerVoucherLinkDate.Value
-                                helper.SaveVoucherDetail(voucherDetail)
-                            End If
-                        Catch ex As Exception
-                            IsSuccessFull = False
-                        End Try
-                    Next
-                    'Else
-                    '    IsSuccessFull = False
+                                    Dim voucherDetail As VoucherDetails = New VoucherDetails()
+                                    voucherDetail.VD_Fin_Yr = InstitutionMasterData.XFinYr
+                                    voucherDetail.VD_Inst_Cd = InstitutionMasterData.XInstCode
+                                    voucherDetail.VD_Inst_Typ = InstitutionMasterData.XInstType
+                                    voucherDetail.VD_Dbk_Cd = ComboBoxDaybookSelect.SelectedValue
+                                    voucherDetail.VD_Trn_Typ = TransactionType
+                                    voucherDetail.VD_Lgr_Cd = "00"
+                                    voucherDetail.VD_Lnk_No = txtLinkVoucherNumber.Text
+                                    voucherDetail.VD_Narr = dgRows.Cells("VoucherDesc").EditedFormattedValue
+                                    voucherDetail.VD_Cr_Dr = drcr
+                                    voucherDetail.VD_ABS_Amt = amount
+                                    voucherDetail.VD_Amt = IIf(drcr = "Dr", Decimal.Parse(amount), Decimal.Parse(amount) * -1)
+                                    voucherDetail.VD_Ref_No = dgRows.Cells("RefNo").EditedFormattedValue
+                                    voucherDetail.VD_Ref_Dt = Convert.ToDateTime(dgRows.Cells("RefDate").EditedFormattedValue)
+                                    voucherDetail.VD_Seq_No = seqNo
+                                    voucherDetail.VD_Acc_Cd = ledgerAccount
+                                    voucherDetail.VD_Brn_Cd = "HO"
+                                    voucherDetail.VD_Ent_By = InstitutionMasterData.XUsrId
+                                    voucherDetail.VD_Vch_Ref_No = vchRefNo.ToString().PadLeft(6, "0")
+                                    voucherDetail.VD_Lnk_Dt = DatePickerVoucherLinkDate.Value
+                                    helper.SaveVoucherDetail(voucherDetail)
+                                End If
+                            Catch ex As Exception
+                                IsSuccessFull = False
+                            End Try
+                        Next
+                    Else
+                        Return False
+                    End If
                 End If
 
                 If (IsSuccessFull And (i > 0 And i = (dgvVoucherDetails.Rows.Count - 1))) Then
@@ -498,56 +500,42 @@
 
     End Function
 
-    Private Function BalanceValidation(ByVal str1 As String) As Boolean
-        Dim calculateDiff As Boolean = True
-        Dim detailv As Decimal
+    Private Function BalanceValidation() As Boolean
 
-        'If _TrnType.Equals("BP") Or _TrnType.Equals("CP") Then
-        '    calculateDiff = ValidateClass.CheckBalance(ledgerAccBalance, headerValue)
-        'End If
+        Dim crAmount As Integer = 0
+        Dim drAmount As Integer = 0
 
-        If calculateDiff Then
-            Dim detailValues As Decimal
+        For Each dgvrow As DataGridViewRow In dgvVoucherDetails.Rows
 
-            For Each dgvrow As DataGridViewRow In dgvVoucherDetails.Rows
-
-                Dim ledgerAccount As String = dgvrow.Cells("LedgerAccount").EditedFormattedValue
-                Dim InValidLedgerCode As Boolean = False
-                Dim lgrHelper As LedgerAccountHelper = New LedgerAccountHelper()
-                Dim dt As DataTable = lgrHelper.GetAccountDetails(ledgerAccount)
-                If dt IsNot Nothing Then
-                    If dt.Rows.Count < 1 Then
-                        InValidLedgerCode = True
-                        Exit For
-                    End If
+            Dim ledgerAccount As String = dgvrow.Cells("LedgerAccount").EditedFormattedValue
+            Dim InValidLedgerCode As Boolean = False
+            Dim lgrHelper As LedgerAccountHelper = New LedgerAccountHelper()
+            Dim dt As DataTable = lgrHelper.GetAccountDetails(ledgerAccount)
+            If dt IsNot Nothing Then
+                If dt.Rows.Count < 1 Then
+                    InValidLedgerCode = True
+                    Exit For
                 End If
-
-                If Not InValidLedgerCode And Not str1 = String.Empty And Not dgvrow.Cells("Amount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("LedgerAccount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefNo").EditedFormattedValue = String.Empty Then
-                    Dim rowDecimal As Decimal
-                    rowDecimal = Decimal.Parse(dgvrow.Cells("Amount").EditedFormattedValue)
-                    Dim drcr As String = dgvrow.Cells("DebitCr").EditedFormattedValue.ToString()
-                    If drcr = "Cr" Then
-                        rowDecimal = rowDecimal * -1
-                    End If
-                    detailv = detailv + rowDecimal
-                    detailValues += rowDecimal
-
-                End If
-
-            Next
-            'If detailv + headerValue = 0 Then
-            '    Return True
-            'Else
-            If detailv < 0 Then
-                MessageBox.Show("Voucher header and details amount must match", "Incorrect Amount")
-                Return False
-            Else
-                MessageBox.Show("Amount is not balanced")
-                Return False
             End If
-        Else
-            MessageBox.Show("Insufficient balance, cannot add the voucher!!", "Insufficient Balance", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+            If Not InValidLedgerCode And Not dgvrow.Cells("Amount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("LedgerAccount").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefDate").EditedFormattedValue = String.Empty And Not dgvrow.Cells("RefNo").EditedFormattedValue = String.Empty Then
+                Dim rowDecimal As Decimal
+                rowDecimal = Decimal.Parse(dgvrow.Cells("Amount").EditedFormattedValue)
+                Dim drcr As String = dgvrow.Cells("DebitCr").EditedFormattedValue.ToString()
+                If drcr = "Cr" Then
+                    crAmount = crAmount + rowDecimal
+                Else
+                    drAmount = drAmount + rowDecimal
+                End If
+            End If
+
+        Next
+
+        If drAmount <> crAmount Then
+            MessageBox.Show("Total of all Cr and Dr should be zero", "Incorrect Amount")
             Return False
+        Else
+            Return True
         End If
     End Function
 
@@ -800,59 +788,47 @@
             If VoucherType = "J" Then
                 If dtVoucherDetails IsNot Nothing Then
 
-                    'Validation for delete edit mode. 
-
                     dgvVoucherDetails.DataSource = dtVoucherDetails
 
                     If dtVoucherDetails IsNot Nothing And dtVoucherDetails.Rows.Count > 0 Then
                         Dim dr As DataRow = dtVoucherDetails.Rows(0)
 
-                    End If
-                Else
-                    flgEnable = "No matching Voucher Entry found"
-                End If
-            Else
-                If voucherHeader IsNot Nothing Then
-
-                    If (voucherHeader.VH_VCH_Dt IsNot Nothing And voucherHeader.VH_VCH_NO IsNot Nothing) Then
-                        If (_mode = "delete" Or _mode = "edit") Then
-                            flgEnable = "Voucher is confirmed , modification/deletion not allowed"
-                            Return flgEnable
-                        ElseIf (_mode = "confirm") Then
-                            flgEnable = "Voucher is already confirmed"
-                            Return flgEnable
+                        If dr("VD_VCH_Dt") IsNot Nothing And dr("VD_VCH_Dt") IsNot DBNull.Value And dr("VD_VCH_No") IsNot Nothing And dr("VD_VCH_No") IsNot DBNull.Value Then
+                            If (_mode = "delete" Or _mode = "edit") Then
+                                flgEnable = "Voucher is confirmed , modification/deletion not allowed"
+                                Return flgEnable
+                            ElseIf (_mode = "confirm") Then
+                                flgEnable = "Voucher is already confirmed"
+                                Return flgEnable
+                            End If
+                            pnlConfirm.Enabled = False
+                            datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Short
+                            datepickerVoucherDateConfirm.CustomFormat = "dd-mm-yyyy"
+                            datepickerVoucherDateConfirm.Value = dr("VD_VCH_Dt").ToString()
+                            datepickerVoucherDateConfirm.Enabled = False
+                            lblConfirmNumber.Text = dr("VD_VCH_No").ToString()
+                            lblConfirmNumber.BackColor = Color.Red
+                            lblConfirmNumber.ForeColor = Color.White
+                            lableVoucherStatus.Text = "Status: CONFIRMED"
+                            lblConfirmedVoucherNumber.Visible = True
+                        Else
+                            lableVoucherStatus.Text = "Status: UN-CONFIRMED"
+                            datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Custom
+                            datepickerVoucherDateConfirm.CustomFormat = " "
                         End If
-                        pnlConfirm.Enabled = False
-                        datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Short
-                        datepickerVoucherDateConfirm.CustomFormat = "dd-mm-yyyy"
-                        datepickerVoucherDateConfirm.Value = voucherHeader.VH_VCH_Dt
-                        datepickerVoucherDateConfirm.Enabled = False
-                        lblConfirmNumber.Text = voucherHeader.VH_VCH_NO
-                        lblConfirmNumber.BackColor = Color.Red
-                        lblConfirmNumber.ForeColor = Color.White
-                        lableVoucherStatus.Text = "Status: CONFIRMED"
-                        lblConfirmedVoucherNumber.Visible = True
-                    Else
-                        lableVoucherStatus.Text = "Status: UN-CONFIRMED"
-                        datepickerVoucherDateConfirm.Format = DateTimePickerFormat.Custom
-                        datepickerVoucherDateConfirm.CustomFormat = " "
-                    End If
 
-                    lblConfirmedVoucherNumber.Text = voucherHeader.VH_VCH_Ref_No.ToString()
-                    lblConfirmedVoucherNumber.BackColor = Color.Red
-                    lblConfirmedVoucherNumber.ForeColor = Color.White
+                        lblConfirmedVoucherNumber.Text = dr("VD_VCH_Ref_No").ToString()
+                        lblConfirmedVoucherNumber.BackColor = Color.Red
+                        lblConfirmedVoucherNumber.ForeColor = Color.White
+                        DatePickerVoucherLinkDate.Value = dr("VD_Lnk_Dt").ToString()
 
+                        flgEnable = String.Empty
 
-                    DatePickerVoucherLinkDate.Value = voucherHeader.VH_Lnk_Dt
-
-                    flgEnable = String.Empty
-
-                    If dtVoucherDetails IsNot Nothing Then
-                        dgvVoucherDetails.DataSource = dtVoucherDetails
                     End If
                 Else
                     flgEnable = "No matching Voucher Entry found"
                 End If
+
             End If
         Catch ex As Exception
             Throw ex

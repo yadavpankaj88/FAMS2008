@@ -155,7 +155,7 @@ Public Class VoucherHelper
         params.Add("@VD_Ent_By", InstitutionMasterData.XUsrId)
         params.Add("@VD_VCH_Ref_No", DBNull.Value)
         params.Add("@VD_Upd_By", InstitutionMasterData.XUsrId)
-        params.Add("@VD_Lnk_Dt", voucherdetail.VD_Lnk_Dt)
+        params.Add("@VD_Lnk_Dt", voucherdetail.VD_Lnk_Dt.ToString("MM-dd-yyyy"))
 
         Dim datahelper As DataHelper = New DataHelper()
         datahelper.ExecuteNonQuery(detailSaveQuery, CommandType.Text, params)
@@ -206,7 +206,7 @@ Public Class VoucherHelper
                 Next
             End If
             query = String.Format("Select LTRIM(RTRIM(VD_Acc_Cd)) as 'LedgerAccount',LTRIM(RTRIM(ac.Am_Acc_Nm)) as 'AccountName',VD_ABS_Amt as 'Amount',LTRIM(RTRIM(VD_Cr_Dr)) as 'CrDr'" & _
-                                ",LTRIM(RTRIM(VD_Ref_No)) as 'RefNo',VD_Ref_Dt as 'RefDate'," & _
+                                ",LTRIM(RTRIM(VD_Ref_No)) as 'RefNo',VD_Ref_Dt as 'RefDate',VD_Vch_Ref_No,VD_Vch_No,VD_Lnk_Dt,VD_VCH_Dt," & _
                                 " LTRIM(RTRIM(VD_Narr)) as 'VoucherDesc',LTRIM(RTRIM(VD_Seq_No)) as [VD_Seq_No] from " + InstitutionMasterData.XInstType + "_Voucher_Detail vd Inner Join " + InstitutionMasterData.XInstType + "_Accounts ac on vd.VD_Acc_Cd=ac.Am_Acc_Cd  where [VD_Lnk_No]='{0}' and [VD_Dbk_Cd]='{1}' and [VD_Trn_Typ]='{2}' ORDER BY [VD_Seq_No] Asc", voucherLinkNumber, daybookCode, transType)
             dtVoucherDetails = dataHelper.ExecuteQuery(query, CommandType.Text, Nothing)
 
