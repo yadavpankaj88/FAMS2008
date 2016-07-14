@@ -506,6 +506,7 @@ declare @strQuery as nvarchar(max);
 														WHEN ''BP'' THEN ''BANK PAYMENT''
 														WHEN ''BR'' THEN ''BANK RECEIPT''
 														WHEN ''CT'' THEN ''CONTRA VOUCHER''
+														WHEN ''JV'' THEN ''JOURNAL VOUCHER''
 														END AS [TransactionType]
 								from  ' + @instType + '_Voucher_Header VH
 								LEFT OUTER JOIN User_Master UM1
@@ -545,9 +546,29 @@ declare @strQuery as nvarchar(max);
 									,VD_Ref_Dt as [RefDate]
 									,LTRIM(RTRIM(VD_Narr)) as [VoucherDesc]
 									,LTRIM(RTRIM(VD_Seq_No)) as [VD_Seq_No] 
+									,VD_VCH_NO
+									,VD_VCH_DT
+									,VD_Lnk_DT
+									,VD_Lnk_No
+									,VD_Ref_No
+									,VD_Ref_Dt
+									,ISNULL(UM1.Usr_Nm,''-'') AS [VD_EnteredBy]
+									,ISNULL(UM2.Usr_Nm,''-'') AS [VD_ConfirmedBy]
+									,VD_Dbk_Cd+'' - ''+AM_Acc_Nm AS [DaybookDetails]
+									,CASE VD_Trn_Typ WHEN ''CP'' THEN ''CASH PAYMENT''
+														WHEN ''CR'' THEN ''CASH RECEIPT''
+														WHEN ''BP'' THEN ''BANK PAYMENT''
+														WHEN ''BR'' THEN ''BANK RECEIPT''
+														WHEN ''CT'' THEN ''CONTRA VOUCHER''
+														WHEN ''JV'' THEN ''JOURNAL VOUCHER''
+														END AS [VD_TransactionType]
 							from ' + @instType + '_Voucher_Detail vd 
 							Inner Join ' + @instType + '_Accounts ac 
 							on vd.VD_Acc_Cd=ac.Am_Acc_Cd  
+							LEFT OUTER JOIN User_Master UM1
+							ON UM1.Usr_Id=VD_Ent_By
+							LEFT OUTER JOIN User_Master UM2
+							ON UM2.Usr_Id=VD_Conf_By
 							where [VD_Lnk_No]='''+@VH_Lnk_No+''' 
 							--and [VD_Dbk_Cd]='''+@VH_Dbk_Cd+''' 
 							and [VD_Trn_Typ]='''+@VH_Trn_Typ+'''
